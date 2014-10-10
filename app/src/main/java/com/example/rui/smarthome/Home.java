@@ -1,23 +1,18 @@
 package com.example.rui.smarthome;
 
+import android.app.ActionBar;
 import android.app.Activity;
 
-import android.app.ActionBar;
+import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
+import android.widget.Button;
 
 public class Home extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -45,28 +40,81 @@ public class Home extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Fragment fragment = new HomeView();
+        //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+
+        switch(position) {
+            case 0: {
+                Fragment fragment = new HomeView();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+                break;
+            }
+            case 1: {
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+            case 3:
+            {
+                break;
+            }
+            case 4: {
+                Fragment fragment = new Bath();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+                break;
+            }
+            case 5:
+            {
+                break;
+            }
+            case 6:
+            {
+                break;
+            }
+
+        }
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
+
+            case 0:
+                mTitle = getString(R.string.home);
+                break;
             case 1:
                 mTitle = getString(R.string.dinnerroom);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.bedroom);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.kitchen);
+            break;
+            case 4:
+                mTitle = getString(R.string.bath);
                 break;
+            case 5:
+                mTitle = getString(R.string.office);
+                break;
+            case 6:
+                mTitle = getString(R.string.exterior);
         }
     }
 
@@ -101,6 +149,34 @@ public class Home extends Activity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class HomeView extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            final FragmentManager fragmentManager = getActivity().getFragmentManager();
+            // Inflate the layout for this fragment
+            View view = inflater.inflate(R.layout.fragment_home, container, false);
+            //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
+            Button wc = (Button) view.findViewById((R.id.wc));
+
+            getActivity().getActionBar().setTitle("Home");
+
+            wc.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Bath");
+                    Fragment fragment = new Bath();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
+            return view;
+
+        }
     }
 
     /**
