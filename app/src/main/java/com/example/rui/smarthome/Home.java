@@ -59,7 +59,7 @@ public class Home extends Activity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.dinnerroom);
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
