@@ -31,8 +31,8 @@
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/light"
-        android:layout_alignEnd="@+id/light" />
+        android:layout_alignRight="@+id/seekBar2"
+        android:layout_alignEnd="@+id/seekBar2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +40,40 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/watertemperature"
         android:id="@+id/textView2"
+        android:layout_below="@+id/seekBar2"
+        android:layout_marginTop="44dp"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/waterquantity"
+        android:id="@+id/textView3"
         android:layout_below="@+id/light"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="56dp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar2"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/light"
+        android:layout_alignEnd="@+id/light"
+        android:indeterminate="false" />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/bath"
+        android:id="@+id/textView4"
+        android:layout_alignParentTop="true" />
+
 </RelativeLayout>
