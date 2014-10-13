@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.rui.smarthome" >
 
+    /*<!-- Camera Requirement -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- Camera Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Features -->
+    <uses-feature android:name="android.hardware.camera.flash" />*/
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -9,6 +18,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Home"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

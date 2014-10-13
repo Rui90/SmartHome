@@ -16,5 +16,6 @@
     <string name="light">Luz</string>
     <string name="watertemperature">Temp. água</string>
     <string name="waterquantity">Quant. água</string>
+    <string name="rega">Rega</string>
 
 </resources>

@@ -1,31 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/light"
-        android:checked="false"
-        android:layout_marginTop="30dp"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true" />
-
     <TextView
+        android:layout_marginLeft="230dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/light"
         android:id="@+id/textView"
         android:layout_alignBottom="@+id/light"
-        android:layout_marginLeft="140dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/bath"
+        android:id="@+id/textView" />
+
+    <ToggleButton
+        android:layout_marginLeft="230dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/light"
+        android:checked="false"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_marginLeft="230dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/waterquantity"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/light"
+        android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <SeekBar
+        android:layout_marginLeft="230dp"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
@@ -34,29 +56,19 @@
         android:layout_alignStart="@+id/seekBar2" />
 
     <TextView
+        android:layout_marginLeft="230dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/watertemperature"
         android:id="@+id/textView2"
         android:layout_below="@+id/seekBar2"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         android:layout_alignRight="@+id/textView3"
         android:layout_alignEnd="@+id/textView3" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/waterquantity"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/light"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="56dp"
-        android:layout_marginLeft="140dp" />
-
     <SeekBar
+        android:layout_marginLeft="230dp"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar2"
@@ -65,14 +77,4 @@
         android:layout_below="@+id/textView3"
         android:layout_alignRight="@+id/textView3"
         android:layout_alignEnd="@+id/textView3" />
-
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/bath"
-        android:id="@+id/textView4"
-        android:layout_alignParentTop="true" />
-
 </RelativeLayout>

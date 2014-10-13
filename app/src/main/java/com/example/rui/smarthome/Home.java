@@ -3,6 +3,8 @@ package com.example.rui.smarthome;
 import android.app.ActionBar;
 import android.app.Activity;
 
+import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.content.DialogInterface;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Home extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -31,6 +36,17 @@ public class Home extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        /*if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                heightPixels)
+        {
+            Toast.makeText(this,"Screen switched to Landscape mode",Toast.LENGTH_SHORT).show();
+            //setContentView(R.layout.fragment_home_landscape);
+        }
+        else
+        {
+            Toast.makeText(this,"Screen switched to Portrait mode",Toast.LENGTH_SHORT).show();
+        }*/
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -62,14 +78,29 @@ public class Home extends Activity
                 break;
             }
             case 1: {
+                Fragment fragment = new Room();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             }
             case 2:
             {
+                Fragment fragment = new Bedroom();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             }
             case 3:
             {
+                Fragment fragment = new Kitchen();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             }
             case 4: {
@@ -82,10 +113,20 @@ public class Home extends Activity
             }
             case 5:
             {
+                Fragment fragment = new Office();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             }
             case 6:
             {
+                Fragment fragment = new Exterior();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             }
 
@@ -94,7 +135,6 @@ public class Home extends Activity
 
     public void onSectionAttached(int number) {
         switch (number) {
-
             case 0:
                 mTitle = getString(R.string.home);
                 break;
@@ -161,9 +201,54 @@ public class Home extends Activity
             // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_home, container, false);
             //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
+            Button quarto = (Button) view.findViewById((R.id.quarto));
+            Button sala = (Button) view.findViewById((R.id.sala));
+            Button cozinha = (Button) view.findViewById((R.id.cozinha));
+            Button escritorio = (Button) view.findViewById((R.id.escritorio));
             Button wc = (Button) view.findViewById((R.id.wc));
+            Button exterior = (Button) view.findViewById((R.id.exterior));
 
             getActivity().getActionBar().setTitle("Home");
+
+            quarto.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Bedroom");
+                    Fragment fragment = new Bedroom();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
+
+            sala.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Room");
+                    Fragment fragment = new Bedroom();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
+
+            cozinha.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Kitchen");
+                    Fragment fragment = new Kitchen();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
+
+            escritorio.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Office");
+                    Fragment fragment = new Office();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
 
             wc.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -174,8 +259,18 @@ public class Home extends Activity
                             .commit();
                 }
             });
-            return view;
 
+            exterior.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    getActivity().getActionBar().setTitle("Exterior");
+                    Fragment fragment = new Exterior();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
+            });
+
+            return view;
         }
     }
 
