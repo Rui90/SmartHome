@@ -45,9 +45,12 @@ public class Bedroom extends Fragment {
         Button create_perfil = (Button) view.findViewById(R.id.createprofile);
 
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        final ArrayList<String> list = new ArrayList<String>();
+
+        perfis = PerfisQuarto.ReadXML(context);
+        List<String> list = new ArrayList<String>();
         for (int i = 0; i < perfis.size(); i++) {
-            list.add(perfis.get(i).getName_perfil());
+            Perfil prof = perfis.get(i);
+            list.add(prof.getName_perfil());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_item, list);
@@ -74,7 +77,7 @@ public class Bedroom extends Fragment {
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(getActivity());
-                dialog.setTitle("Criar perfile");
+                dialog.setTitle("Criar perfil");
                 dialog.setContentView(R.layout.popup_perfil);
                 dialog.show();
                 Button saveBtn = (Button) dialog.findViewById(R.id.save);
@@ -105,21 +108,30 @@ public class Bedroom extends Fragment {
                     }
 
                 });
+
+                cancelBtn.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View v) {
+                        dialog.hide();
+                    }
+                });
                 saveBtn.setOnClickListener(new View.OnClickListener() {
 
                     public void onClick(View v) {
                         String name_perfil = name.getText().toString();
                         boolean light_perfil = light.isChecked();
-                        Toast.makeText(getActivity().getApplicationContext(), "name_perfil: " + value.getText().toString() +
-                                " parse: " + Integer.parseInt(value.getText().toString()), Toast.LENGTH_LONG).show();
-                        Log.d("tag", "name_perfil: " + value.getText().toString() + " parse: " +
-                                Integer.parseInt(value.getText().toString()));
                         int valor = 0;
                         if(!value.getText().toString().equals("")) {
                             valor = Integer.parseInt(value.getText().toString());
                         }
-                        perfis.add(new Perfil(name_perfil, light_perfil, valor));
-                        list.add(name_perfil);
+                        Perfil aux = new Perfil(name_perfil, light_perfil, valor);
+                        PerfisQuarto.WriteXML(getActivity(), aux);
+
+                        perfis = PerfisQuarto.ReadXML(context);
+                        List<String> list = new ArrayList<String>();
+                        for (int i = 0; i < perfis.size(); i++) {
+                            Perfil prof = perfis.get(i);
+                            list.add(prof.getName_perfil());
+                        }
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                                 android.R.layout.simple_spinner_item, list);
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
