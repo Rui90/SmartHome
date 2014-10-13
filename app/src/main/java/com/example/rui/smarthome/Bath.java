@@ -44,17 +44,6 @@ public class Bath extends Fragment {
         newFrag();
     }
 
-<<<<<<< HEAD
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getActivity().setContentView(R.layout.bath_layout_land);
-            Toast.makeText(getActivity().getApplicationContext(), "LANDSCAPEEEEE", Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(getActivity().getApplicationContext(), "PORTRAITTTTT", Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-        }
-=======
     public void lightButton(){
         ToggleButton toggle = (ToggleButton) view.findViewById(R.id.light);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -76,6 +65,5 @@ public class Bath extends Fragment {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
->>>>>>> c743007c004b3a6ceb6af16ac93aa9dda5df2e45
     }
 }
