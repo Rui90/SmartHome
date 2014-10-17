@@ -6,8 +6,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
+/*import android.app.Fragment;
+import android.app.FragmentManager;*/
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class Home extends Activity
+public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -61,7 +64,7 @@ public class Home extends Activity
 
         Fragment fragment = new HomeView();
         //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
@@ -73,7 +76,7 @@ public class Home extends Activity
         switch(position) {
             case 0: {
                 Fragment fragment = new HomeView();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
@@ -81,7 +84,7 @@ public class Home extends Activity
             }
             case 1: {
                 Fragment fragment = new Room();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
@@ -90,7 +93,7 @@ public class Home extends Activity
             case 2:
             {
                 Fragment fragment = new Bedroom();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
@@ -99,7 +102,7 @@ public class Home extends Activity
             case 3:
             {
                 Fragment fragment = new Kitchen();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
@@ -107,31 +110,20 @@ public class Home extends Activity
             }
             case 4: {
                 Fragment fragment = new Bath();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
                 break;
             }
-            case 5:
-            {
+            case 5: {
                 Fragment fragment = new Office();
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
                 break;
             }
-            case 6:
-            {
-                Fragment fragment = new Exterior();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit();
-                break;
-            }
-
         }
     }
 
@@ -155,8 +147,6 @@ public class Home extends Activity
             case 5:
                 mTitle = getString(R.string.office);
                 break;
-            case 6:
-                mTitle = getString(R.string.exterior);
         }
     }
 
@@ -195,8 +185,9 @@ public class Home extends Activity
 
     public void onBackPressed() {
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack();
+       /* FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.findFragmentByTag()
+        fragmentManager.*/
         /*List l = fragmentManager.getFragment();
         if (l == null) {
             finish();
@@ -215,7 +206,7 @@ public class Home extends Activity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            final FragmentManager fragmentManager = getActivity().getFragmentManager();
+            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_home, container, false);
             //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
@@ -272,16 +263,6 @@ public class Home extends Activity
                 public void onClick(View v) {
                     getActivity().getActionBar().setTitle("Bath");
                     Fragment fragment = new Bath();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .commit();
-                }
-            });
-
-            exterior.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    getActivity().getActionBar().setTitle("Exterior");
-                    Fragment fragment = new Exterior();
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, fragment)
                             .commit();

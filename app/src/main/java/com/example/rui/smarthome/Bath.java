@@ -1,16 +1,17 @@
 package com.example.rui.smarthome;
 
-import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 /**
  * Created by Rui on 10/10/2014.
