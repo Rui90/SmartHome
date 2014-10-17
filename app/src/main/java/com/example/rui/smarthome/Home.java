@@ -185,20 +185,22 @@ public class Home extends FragmentActivity
 
     public void onBackPressed() {
 
-       /* FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.findFragmentByTag()
-        fragmentManager.*/
-        /*List l = fragmentManager.getFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List l = fragmentManager.getFragments();
         if (l == null) {
             finish();
         } else {
             String[] parts = l.get(l.size() - 1).toString().split("\\{");
             if (parts[0].equals("Home")) {
                 finish();
-            } else if (parts[0].equals("PointsList")) {
-
-            }*/
+            } else {
+                Fragment fragment = new HomeView();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+            }
         }
+    }
 
     public static class HomeView extends Fragment {
 
@@ -215,7 +217,6 @@ public class Home extends FragmentActivity
             Button cozinha = (Button) view.findViewById((R.id.cozinha));
             Button escritorio = (Button) view.findViewById((R.id.escritorio));
             Button wc = (Button) view.findViewById((R.id.wc));
-            Button exterior = (Button) view.findViewById((R.id.exterior));
 
             getActivity().getActionBar().setTitle("Home");
 
