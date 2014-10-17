@@ -1,9 +1,10 @@
 package com.example.rui.smarthome;
 
-import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +111,7 @@ public class Room extends Fragment {
 
     public void newFrag(){
         Fragment fragment = new Room();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
