@@ -19,6 +19,8 @@ import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class Home extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -190,6 +192,22 @@ public class Home extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onBackPressed() {
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack();
+        /*List l = fragmentManager.getFragment();
+        if (l == null) {
+            finish();
+        } else {
+            String[] parts = l.get(l.size() - 1).toString().split("\\{");
+            if (parts[0].equals("Home")) {
+                finish();
+            } else if (parts[0].equals("PointsList")) {
+
+            }*/
+        }
 
     public static class HomeView extends Fragment {
 
