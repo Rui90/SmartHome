@@ -223,7 +223,7 @@ public class Home extends Activity
             sala.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     getActivity().getActionBar().setTitle("Room");
-                    Fragment fragment = new Bedroom();
+                    Fragment fragment = new Room();
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, fragment)
                             .commit();

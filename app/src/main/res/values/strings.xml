@@ -17,5 +17,7 @@
     <string name="watertemperature">Temp. água</string>
     <string name="waterquantity">Quant. água</string>
     <string name="rega">Rega</string>
+    <string name="arcondicionado">Ar Condicionado</string>
+    <string name="window">Janela</string>
 
 </resources>

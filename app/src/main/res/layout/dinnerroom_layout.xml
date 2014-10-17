@@ -4,4 +4,64 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/dinnerroom"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:src="@drawable/lampada"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/valueLight"
+        android:layout_centerHorizontal="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/arcondicionado"
+        android:id="@+id/arcondicionado"
+        android:checked="false"
+        android:layout_below="@+id/imageButton"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="65dp"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/window"
+        android:id="@+id/windowswitch"
+        android:checked="false"
+        android:layout_below="@+id/seekBar"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="100dp"/>
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_below="@+id/arcondicionado"
+        android:layout_marginTop="5dp"
+        android:layout_alignRight="@+id/arcondicionado"
+        android:layout_alignEnd="@+id/arcondicionado"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView2"
+        android:layout_toEndOf="@+id/seekBar"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_toRightOf="@+id/seekBar" />
+
 </RelativeLayout>
+

@@ -4,34 +4,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/light"
-        android:checked="false"
-        android:layout_marginTop="30dp"
-        android:layout_toEndOf="@+id/Nome"
-        android:layout_below="@+id/valueLight"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/light"
-        android:id="@+id/Nome"
-        android:layout_alignBottom="@+id/light"
-        android:layout_marginLeft="140dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <SeekBar
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
-        android:layout_below="@+id/janel"
+        android:layout_above="@+id/seekBar2"
         android:layout_alignLeft="@+id/seekBar2"
-        android:layout_alignStart="@+id/seekBar2" />
+        android:layout_alignStart="@+id/seekBar2"
+        android:layout_marginBottom="53dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,10 +19,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/watertemperature"
         android:id="@+id/janel"
-        android:layout_below="@+id/seekBar2"
-        android:layout_marginTop="44dp"
-        android:layout_alignRight="@+id/light_bed"
-        android:layout_alignEnd="@+id/light_bed" />
+        android:layout_above="@+id/seekBar2"
+        android:layout_alignRight="@+id/imageButton"
+        android:layout_alignEnd="@+id/imageButton" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,21 +29,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/waterquantity"
         android:id="@+id/light_bed"
-        android:layout_below="@+id/light"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="56dp"
-        android:layout_marginLeft="140dp" />
+        android:layout_above="@+id/seekBar"
+        android:layout_alignLeft="@+id/janel"
+        android:layout_alignStart="@+id/janel" />
 
     <SeekBar
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar2"
         android:indeterminate="false"
-        android:layout_toStartOf="@+id/janel"
-        android:layout_below="@+id/light_bed"
-        android:layout_alignRight="@+id/light_bed"
-        android:layout_alignEnd="@+id/light_bed" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/imageButton"
+        android:layout_alignStart="@+id/imageButton"
+        android:layout_marginBottom="113dp" />
 
     <TextView
         android:layout_centerHorizontal="true"
@@ -72,7 +49,36 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/bath"
-        android:id="@+id/valueLight"
-        android:layout_alignParentTop="true" />
+        android:id="@+id/valueLight" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:src="@drawable/lampada"
+        android:layout_marginTop="53dp"
+        android:layout_below="@+id/valueLight"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView"
+        android:layout_toEndOf="@+id/seekBar"
+        android:layout_alignBottom="@+id/seekBar"
+        android:layout_toRightOf="@+id/seekBar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView2"
+        android:layout_toEndOf="@+id/valueLight"
+        android:layout_alignBottom="@+id/seekBar2"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
 </RelativeLayout>
