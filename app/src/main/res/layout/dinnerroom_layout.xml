@@ -43,15 +43,12 @@
         android:layout_marginLeft="100dp"/>
 
     <SeekBar
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
         android:layout_below="@+id/arcondicionado"
         android:layout_marginTop="5dp"
-        android:layout_alignRight="@+id/arcondicionado"
-        android:layout_alignEnd="@+id/arcondicionado"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_marginLeft="200dp" />
 
     <TextView
         android:layout_width="wrap_content"

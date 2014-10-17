@@ -2,7 +2,6 @@ package com.example.rui.smarthome;
 
 import android.app.FragmentManager;
 import android.content.res.Configuration;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -42,7 +41,7 @@ public class Room extends Fragment {
 
         final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
-        arcondicionado.setProgress(0);
+        final TextView value = (TextView) view.findViewById(R.id.textView2);
         arcondicionado.setMax(0);
         arcondicionado.setLeft(0);
         arcondicionado.incrementProgressBy(0);
@@ -50,9 +49,6 @@ public class Room extends Fragment {
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
-                final TextView value = (TextView) view.findViewById(R.id.textView2);
 
                 if(b){
                     arcondicionado.setMax(40);
