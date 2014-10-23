@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/bath"
+        android:textSize="40dp"
+        android:id="@+id/Nome" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/waterquantity"
+        android:textSize="25sp"
+        android:id="@+id/light_bed"
+        android:layout_above="@+id/seekBar"
+        android:layout_alignLeft="@+id/seekBar"
+        android:layout_alignStart="@+id/seekBar"
+        android:layout_marginLeft="30dp"/>
+
+    <SeekBar
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_below="@+id/janel"
+        android:layout_alignRight="@+id/Nome"
+        android:layout_alignEnd="@+id/Nome" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/watertemperature"
+        android:textSize="25sp"
+        android:id="@+id/janel"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/seekBar2"
+        android:layout_alignStart="@+id/seekBar2"
+        android:layout_marginLeft="30dp"/>
+
+    <SeekBar
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar2"
+        android:indeterminate="false"
+        android:layout_toEndOf="@+id/seekBar"
+        android:layout_marginLeft="72dp"
+        android:layout_below="@+id/janel"
+        android:layout_toRightOf="@+id/seekBar" />
+
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageButton"
+        android:layout_toStartOf="@+id/light_bed"
+        android:src="@drawable/lampada"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/light_bed"
+        android:layout_marginRight="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView"
+        android:layout_marginTop="290dp"
+        android:layout_marginLeft="500dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView2"
+        android:layout_marginTop="290dp"
+        android:layout_marginLeft="780dp" />
+
+</RelativeLayout>

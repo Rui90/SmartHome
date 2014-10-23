@@ -1,31 +1,42 @@
 package com.example.rui.smarthome;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-
-import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Point;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-/*import android.app.Fragment;
-import android.app.FragmentManager;*/
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.content.DialogInterface;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ListView;
 
-import java.util.List;
+import java.util.*;
 
 public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    WifiManager mainWifiObj;
+    WifiScanReceiver wifiReceiver;
+    //ListView list;
+    String wifis[];
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -40,7 +51,14 @@ public class Home extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_home);
+
+        //list = (ListView)findViewById(R.id.listView1);
+        mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiReceiver = new WifiScanReceiver();
+        mainWifiObj.startScan();
 
         /*if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
                 heightPixels)
@@ -116,14 +134,6 @@ public class Home extends FragmentActivity
                         .commit();
                 break;
             }
-            case 5: {
-                Fragment fragment = new Office();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit();
-                break;
-            }
         }
     }
 
@@ -143,9 +153,6 @@ public class Home extends FragmentActivity
             break;
             case 4:
                 mTitle = getString(R.string.bath);
-                break;
-            case 5:
-                mTitle = getString(R.string.office);
                 break;
         }
     }
@@ -202,20 +209,95 @@ public class Home extends FragmentActivity
         }
     }
 
+    protected void onPause() {
+        unregisterReceiver(wifiReceiver);
+        super.onPause();
+    }
+
+    protected void onResume() {
+        registerReceiver(wifiReceiver, new IntentFilter(
+                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        super.onResume();
+    }
+
+    class WifiScanReceiver extends BroadcastReceiver {
+        @SuppressLint("UseValueOf")
+        public void onReceive(Context c, Intent intent) {
+            List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
+            wifis = new String[wifiScanList.size()];
+            for(int i = 0; i < wifiScanList.size(); i++){
+                double value = calculateDistance(wifiScanList.get(i).level,
+                        wifiScanList.get(i).frequency);
+                wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
+                        "Level: " + wifiScanList.get(i).level + "\n" +
+                        "Frequency: " + wifiScanList.get(i).frequency +
+                        "\n" + "Distance: " + value + "\n");
+            }
+
+            ListView list = (ListView)findViewById(R.id.listView1);
+            list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_list_item_1,wifis));
+        }
+    }
+
+    public double calculateDistance(double signalLevelInDb, double freqInMHz) {
+        double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(signalLevelInDb)) / 20.0;
+        return Math.pow(10.0, exp);
+    }
+
     public static class HomeView extends Fragment {
+
+        private String screen_Size = "medium";
+        View view;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
+            WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+
             final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             // Inflate the layout for this fragment
-            View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+            if((width>720 && height > 1100)){
+                screen_Size = "large";
+            }
+
+            // verificar consoante a orientaçao qual o layout correcto para um device medium
+
+            if((getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                    heightPixels) && screen_Size.equals("medium"))
+            {
+                view = inflater.inflate(R.layout.fragment_home_land, container, false);
+            }
+            else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
+                    heightPixels) && screen_Size.equals("medium"))
+            {
+                view = inflater.inflate(R.layout.fragment_home, container, false);
+            }
+
+            // verificar consoante a orientaçao qual o layout correcto para um device large
+
+            if((getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                    heightPixels) && screen_Size.equals("large"))
+            {
+                view = inflater.inflate(R.layout.home_large_land, container, false);
+            }
+            else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
+                    heightPixels) && screen_Size.equals("large"))
+            {
+                view = inflater.inflate(R.layout.home_large, container, false);
+            }
+
             //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
             Button quarto = (Button) view.findViewById((R.id.quarto));
             Button sala = (Button) view.findViewById((R.id.sala));
             Button cozinha = (Button) view.findViewById((R.id.cozinha));
-            Button escritorio = (Button) view.findViewById((R.id.escritorio));
             Button wc = (Button) view.findViewById((R.id.wc));
 
             getActivity().getActionBar().setTitle("Home");
@@ -250,16 +332,6 @@ public class Home extends FragmentActivity
                 }
             });
 
-            escritorio.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    getActivity().getActionBar().setTitle("Office");
-                    Fragment fragment = new Office();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .commit();
-                }
-            });
-
             wc.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     getActivity().getActionBar().setTitle("Bath");
@@ -271,6 +343,20 @@ public class Home extends FragmentActivity
             });
 
             return view;
+        }
+
+        @Override
+        public void onConfigurationChanged(Configuration newConfig) {
+            super.onConfigurationChanged(newConfig);
+            newFrag();
+        }
+
+        public void newFrag(){
+            Fragment fragment = new HomeView();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
         }
     }
 

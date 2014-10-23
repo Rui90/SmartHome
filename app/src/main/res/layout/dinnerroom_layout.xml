@@ -28,19 +28,18 @@
         android:text="@string/arcondicionado"
         android:id="@+id/arcondicionado"
         android:checked="false"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@+id/imageButton2"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="65dp"/>
 
-    <Switch
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/window"
-        android:id="@+id/windowswitch"
-        android:checked="false"
-        android:layout_below="@+id/seekBar"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="100dp"/>
+        android:id="@+id/imageButton2"
+        android:src="@drawable/janela"
+        android:layout_marginTop="220dp"
+        android:layout_below="@+id/valueLight"
+        android:layout_centerHorizontal="true" />
 
     <SeekBar
         android:layout_width="100dp"
