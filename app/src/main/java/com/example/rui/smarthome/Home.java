@@ -41,8 +41,6 @@ public class Home extends FragmentActivity
 
     Timer timer = new Timer();
 
-
-
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -64,21 +62,6 @@ public class Home extends FragmentActivity
 
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
-
-        //list = (ListView)findViewById(R.id.listView1);
-
-
-
-        /*if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
-                heightPixels)
-        {
-            Toast.makeText(this,"Screen switched to Landscape mode",Toast.LENGTH_SHORT).show();
-            //setContentView(R.layout.fragment_home_landscape);
-        }
-        else
-        {
-            Toast.makeText(this,"Screen switched to Portrait mode",Toast.LENGTH_SHORT).show();
-        }*/
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);

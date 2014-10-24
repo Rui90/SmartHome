@@ -106,8 +106,7 @@ public class NavigationDrawerFragment extends Fragment {
                     getString(R.string.dinnerroom),
                     getString(R.string.bedroom),
                     getString(R.string.kitchen),
-                    getString(R.string.bath),
-                    getString(R.string.office)
+                    getString(R.string.bath)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
