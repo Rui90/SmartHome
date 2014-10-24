@@ -47,7 +47,7 @@ public class Room extends Fragment {
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
-
+    private MyApplication myApplication;
     private static ServerSocket serverSocket;
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;
@@ -56,6 +56,7 @@ public class Room extends Fragment {
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -101,8 +102,9 @@ public class Room extends Fragment {
         final TextView value = (TextView) view.findViewById(R.id.textView2);
         arcondicionado.setMax(0);
         arcondicionado.setLeft(0);
-        arcondicionado.incrementProgressBy(0);
-
+        arcondicionado.incrementProgressBy(1);
+        arcondicionadoOnOff.setChecked(myApplication.getRoomACState());
+        
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -110,9 +112,10 @@ public class Room extends Fragment {
                 arcondicionado.setMax(40);
                 arcondicionado.setLeft(0);
                 arcondicionado.incrementProgressBy(1);
-                arcondicionado.setProgress(0);
+                arcondicionado.setProgress(myApplication.getRoomACValue());
+                myApplication.setRoomACState(true);
 
-                if(b){
+                if(myApplication.getRoomACState()){
                     messsage = "Ligar arcondicionado";
                     SendMessage sendMessageTask = new SendMessage();
                     sendMessageTask.execute();
@@ -122,6 +125,7 @@ public class Room extends Fragment {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                             value.setText(Integer.toString(progress));
+                            myApplication.setRoomACValue(progress);
 
 //                            messsage = Integer.toString(progress);
 //                            SendMessage sendMessageTask = new SendMessage();
@@ -137,7 +141,8 @@ public class Room extends Fragment {
                         }
 
                     });
-                } else if(!b) {
+                } else {
+                    myApplication.setRoomACValue(0);
                     arcondicionado.setProgress(0);
                     arcondicionado.setMax(0);
                     arcondicionado.setLeft(0);
