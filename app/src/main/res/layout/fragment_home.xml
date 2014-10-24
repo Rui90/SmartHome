@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/bedroom"
         android:id="@+id/quarto"
@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/dinnerroom"
         android:id="@+id/sala"
@@ -23,7 +23,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/kitchen"
         android:id="@+id/cozinha"
@@ -32,7 +32,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="@string/bath"
         android:id="@+id/wc"
@@ -43,8 +43,8 @@
     <ListView
         android:id="@+id/listView1"
         android:layout_width="250dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="115dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="120dp"
         android:drawSelectorOnTop="false"
         android:background="@android:color/background_dark"

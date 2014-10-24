@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,10 @@ public class Home extends FragmentActivity
     //ListView list;
     String wifis[];
 
+    Timer timer = new Timer();
+
+
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -55,10 +60,14 @@ public class Home extends FragmentActivity
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_home);
 
-        //list = (ListView)findViewById(R.id.listView1);
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        wifiReceiver = new WifiScanReceiver();
-        mainWifiObj.startScan();
+
+        timer.schedule(new RemindTask(), 0, //initial delay
+                1 * 3000);
+
+        //list = (ListView)findViewById(R.id.listView1);
+
+
 
         /*if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
                 heightPixels)
@@ -86,6 +95,13 @@ public class Home extends FragmentActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+    }
+
+    class RemindTask extends TimerTask {
+        public void run() {
+                wifiReceiver = new WifiScanReceiver();
+                mainWifiObj.startScan();
+        }
     }
 
     @Override
@@ -237,6 +253,7 @@ public class Home extends FragmentActivity
             ListView list = (ListView)findViewById(R.id.listView1);
             list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                     android.R.layout.simple_list_item_1,wifis));
+
         }
     }
 

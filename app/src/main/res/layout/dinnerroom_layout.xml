@@ -59,5 +59,16 @@
         android:layout_alignTop="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar" />
 
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="120dp"
+        android:layout_height="330dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="240dp"
+        android:drawSelectorOnTop="false"
+        android:background="@android:color/background_dark"
+        android:listSelector="@android:color/darker_gray" >
+    </ListView>
+
 </RelativeLayout>
 
