@@ -7,6 +7,13 @@ import android.app.Application;
  */
 public class MyApplication extends Application {
 
+    public MyApplication() {}
+
+    public MyApplication(boolean state, int value) {
+        this.roomACState = state;
+        this.roomACValue = value;
+    }
+
     public boolean getRoomACState() {
         return roomACState;
     }

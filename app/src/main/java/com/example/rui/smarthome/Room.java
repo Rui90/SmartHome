@@ -47,7 +47,7 @@ public class Room extends Fragment {
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
-    private MyApplication myApplication;
+    private MyApplication myApplication = new MyApplication(false, 0);
     private static ServerSocket serverSocket;
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;

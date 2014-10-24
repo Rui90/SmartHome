@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class Home extends FragmentActivity
     WifiManager mainWifiObj;
     WifiScanReceiver wifiReceiver;
     //ListView list;
-    String wifis[];
+    List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
 
     Timer timer = new Timer();
 
@@ -223,13 +224,15 @@ public class Home extends FragmentActivity
         @SuppressLint("UseValueOf")
         public void onReceive(Context c, Intent intent) {
             List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
-            wifis = new String[wifiScanList.size()];
+            //wifis = new String[wifiScanList.size()];
 
-            if(wifiScanList.size() >= 4) {
+            if(wifiScanList.size() >= 4 && accessPoints.size()==0) {
 
                 for (int i = 0; i < 4; i++) {
                     double value = calculateDistance(wifiScanList.get(i).level,
                             wifiScanList.get(i).frequency);
+                    accessPoints.add(new AccessPoint(wifiScanList.get(i), value));
+
 //                    wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
 //                            "Level: " + wifiScanList.get(i).level + "\n" +
 //                            "Frequency: " + wifiScanList.get(i).frequency +
@@ -237,12 +240,13 @@ public class Home extends FragmentActivity
                     //wifis[i] = wifiScanList.get(i);
                 }
 
-                ListView list = (ListView) findViewById(R.id.listView1);
-                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, wifis));
+//                ListView list = (ListView) findViewById(R.id.listView1);
+//                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+//                        android.R.layout.simple_list_item_1, wifis));
 
             }
-
+//            Toast.makeText(getApplicationContext(), "size: "  + accessPoints.size(),
+//                    Toast.LENGTH_LONG).show();
         }
     }
 
