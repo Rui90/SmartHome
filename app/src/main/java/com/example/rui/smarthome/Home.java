@@ -38,7 +38,9 @@ public class Home extends FragmentActivity
     WifiManager mainWifiObj;
     WifiScanReceiver wifiReceiver;
     //ListView list;
-    List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
+    private static MyApplication accesspoints = new MyApplication();
+    private List<AccessPoint> accessPointsList = new ArrayList<AccessPoint>();
+    String[] wifis;
 
     Timer timer = new Timer();
 
@@ -209,9 +211,24 @@ public class Home extends FragmentActivity
         }
     }
 
+    @Override
+    public void onStop(){
+        try{
+            unregisterReceiver(wifiReceiver);
+            super.onStop();
+        } catch(Exception e){
+
+        }
+        finish();
+    }
+
     protected void onPause() {
-        unregisterReceiver(wifiReceiver);
-        super.onPause();
+        try{
+            unregisterReceiver(wifiReceiver);
+            super.onPause();
+        } catch(Exception e){
+
+        }
     }
 
     protected void onResume() {
@@ -224,25 +241,78 @@ public class Home extends FragmentActivity
         @SuppressLint("UseValueOf")
         public void onReceive(Context c, Intent intent) {
             List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
-            //wifis = new String[wifiScanList.size()];
+            wifis = new String[wifiScanList.size()];
 
-            if(wifiScanList.size() >= 4 && accessPoints.size()==0) {
+            Map<String, Double> mapa = new HashMap<String, Double>();
+
+            if(accessPointsList.size()==4){
+                /*Log.d("tag", "ACCESS POINT : " + accessPointsList.size());
+                Log.d("tag", "ACCESS POINT : " + accessPointsList.get(0).getDistance());
+                Log.d("tag", "ACCESS POINT : " + accessPointsList.get(1).getScanResult());
+                Log.d("tag", "ACCESS POINT : " + accessPointsList.get(2).getScanResult());
+                Log.d("tag", "ACCESS POINT : " + accessPointsList.get(3).getScanResult());*/
+                for(int i = 0; i < wifiScanList.size(); i++){
+                    for(int j = 0; j < accessPointsList.size(); j++){
+                        Log.d("tag", "WWWWWWWWWWIFI: " + wifiScanList.get(i).SSID);
+                        Log.d("tag", "ACCESS POINT : " + accessPointsList.get(j).getScanResult());
+                        //Log.d("tag", "AAAAAAAAAACCESS: " + accessPointsList.get(j).getScanResult().SSID);
+                        if(wifiScanList.get(i).SSID.equals(accessPointsList.get(j).getScanResult())){
+                            double dist = calculateDistance(wifiScanList.get(i).level,
+                                    wifiScanList.get(i).frequency);
+                            if(dist < accessPointsList.get(i).getDistance()){
+                                mapa.put(accessPointsList.get(j).getScanResult(),
+                                        (accessPointsList.get(i).getDistance() - dist));
+                                Toast.makeText(getApplicationContext(), "DISTANCIA: " +
+                                                (accessPointsList.get(i).getDistance() - dist),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            String str;
+            Double min = 0.0;
+            for(Map.Entry<String,Double> e:mapa.entrySet()){
+                if(min.compareTo(e.getValue())>0){
+                    str = e.getKey();
+                    min = e.getValue();
+                    Toast.makeText(getApplicationContext(), "A aproximar de: " + str,
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            if(wifiScanList.size() >= 4 && accessPointsList.size()==0) {
 
                 for (int i = 0; i < 4; i++) {
+
+                    //Log.d("tag", "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL: " + wifiScanList.get(i).SSID);
                     double value = calculateDistance(wifiScanList.get(i).level,
                             wifiScanList.get(i).frequency);
-                    accessPoints.add(new AccessPoint(wifiScanList.get(i), value));
+                    AccessPoint ponto = new AccessPoint(wifiScanList.get(i).SSID, value);
+                    //accessPointsList.add(new AccessPoint(wifiScanList.get(i).BSSID, value));
+                    accessPointsList.add(ponto);
 
-//                    wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
-//                            "Level: " + wifiScanList.get(i).level + "\n" +
-//                            "Frequency: " + wifiScanList.get(i).frequency +
-//                            "\n" + "Distance: " + value + "\n");
+                    //Log.d("tag", "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP: " + accessPointsList.get(i).getScanResult());
+
+                    //Log.d("tag", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCESS POINT : " + wifiScanList.get(i));
+
+                    //Log.d("tag", "Nome: " + wifiScanList.get(i).BSSID + " Distancia: " + value);
+
+
+                    wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
+                            "Level: " + wifiScanList.get(i).level + "\n" +
+                            "Frequency: " + wifiScanList.get(i).frequency +
+                            "\n" + "Distance: " + value + "\n");
                     //wifis[i] = wifiScanList.get(i);
                 }
 
-//                ListView list = (ListView) findViewById(R.id.listView1);
-//                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-//                        android.R.layout.simple_list_item_1, wifis));
+                //accesspoints = (MyApplication) accessPointsList;
+
+                ListView list = (ListView) findViewById(R.id.listView1);
+                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, wifis));
 
             }
 //            Toast.makeText(getApplicationContext(), "size: "  + accessPoints.size(),

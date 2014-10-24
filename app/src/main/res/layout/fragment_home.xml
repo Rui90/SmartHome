@@ -40,15 +40,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <!--<ListView-->
-        <!--android:id="@+id/listView1"-->
-        <!--android:layout_width="250dp"-->
-        <!--android:layout_height="500dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginLeft="120dp"-->
-        <!--android:drawSelectorOnTop="false"-->
-        <!--android:background="@android:color/background_dark"-->
-        <!--android:listSelector="@android:color/darker_gray" >-->
-    <!--</ListView>-->
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="250dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="120dp"
+        android:drawSelectorOnTop="false"
+        android:background="@android:color/background_dark"
+        android:listSelector="@android:color/darker_gray" >
+    </ListView>
 
 </RelativeLayout>

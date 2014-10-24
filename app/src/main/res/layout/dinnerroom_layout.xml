@@ -40,13 +40,7 @@
         android:layout_below="@+id/valueLight"
         android:layout_centerHorizontal="true" />
 
-    <SeekBar
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_below="@+id/arcondicionado"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="200dp" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,6 +51,16 @@
         android:layout_toEndOf="@+id/seekBar"
         android:layout_alignTop="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_below="@+id/arcondicionado"
+        android:layout_alignLeft="@+id/arcondicionado"
+        android:layout_alignStart="@+id/arcondicionado"
+        android:layout_alignRight="@+id/arcondicionado"
+         />
 
     <!--<ListView-->
         <!--android:id="@+id/listView1"-->

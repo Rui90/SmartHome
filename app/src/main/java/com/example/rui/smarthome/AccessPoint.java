@@ -7,15 +7,15 @@ import android.net.wifi.ScanResult;
  */
 public class AccessPoint {
 
-    private ScanResult scanResult;
+    private String scanResult;
     private double distance;
 
-    public AccessPoint(ScanResult scanR, double distance){
+    public AccessPoint(String scanR, double distance){
         scanR = scanResult;
         distance = distance;
     }
 
-    public ScanResult getScanResult(){
+    public String getScanResult(){
         return scanResult;
     }
 
@@ -23,7 +23,7 @@ public class AccessPoint {
         return distance;
     }
 
-    public void setScanResult(ScanResult scan){
+    public void setScanResult(String scan){
         scanResult = scan;
     }
 
