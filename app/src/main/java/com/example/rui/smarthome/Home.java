@@ -224,18 +224,24 @@ public class Home extends FragmentActivity
         public void onReceive(Context c, Intent intent) {
             List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
             wifis = new String[wifiScanList.size()];
-            for(int i = 0; i < wifiScanList.size(); i++){
-                double value = calculateDistance(wifiScanList.get(i).level,
-                        wifiScanList.get(i).frequency);
-                wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
-                        "Level: " + wifiScanList.get(i).level + "\n" +
-                        "Frequency: " + wifiScanList.get(i).frequency +
-                        "\n" + "Distance: " + value + "\n");
-            }
 
-            ListView list = (ListView)findViewById(R.id.listView1);
-            list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                    android.R.layout.simple_list_item_1,wifis));
+            if(wifiScanList.size() >= 4) {
+
+                for (int i = 0; i < 4; i++) {
+                    double value = calculateDistance(wifiScanList.get(i).level,
+                            wifiScanList.get(i).frequency);
+//                    wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
+//                            "Level: " + wifiScanList.get(i).level + "\n" +
+//                            "Frequency: " + wifiScanList.get(i).frequency +
+//                            "\n" + "Distance: " + value + "\n");
+                    //wifis[i] = wifiScanList.get(i);
+                }
+
+                ListView list = (ListView) findViewById(R.id.listView1);
+                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, wifis));
+
+            }
 
         }
     }

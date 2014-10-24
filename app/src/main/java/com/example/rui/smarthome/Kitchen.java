@@ -215,7 +215,7 @@ public class Kitchen extends Fragment {
         protected Void doInBackground(Void... params) {
             try {
 
-                client = new Socket("10.22.104.110", 4444); // connect to the server
+                client = new Socket("192.168.1.100", 4444); // connect to the server
                 printwriter = new PrintWriter(client.getOutputStream(), true);
                 printwriter.write(messsage); // write the message to output stream
 
