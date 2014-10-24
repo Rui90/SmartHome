@@ -47,11 +47,12 @@ public class Room extends Fragment {
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
-    private MyApplication myApplication = new MyApplication(false, 0);
+    private static MyApplication myApplication = new MyApplication(false, 0);
     private static ServerSocket serverSocket;
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
+    private Switch arcondicionadoOnOff;
 
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,12 +98,13 @@ public class Room extends Fragment {
 
         windowButton();
 
-        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+        arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
         arcondicionado.setMax(0);
         arcondicionado.setLeft(0);
         arcondicionado.incrementProgressBy(1);
+        value.setText(Integer.toString(myApplication.getRoomACValue()));
         arcondicionadoOnOff.setChecked(myApplication.getRoomACState());
         
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -113,7 +115,8 @@ public class Room extends Fragment {
                 arcondicionado.setLeft(0);
                 arcondicionado.incrementProgressBy(1);
                 arcondicionado.setProgress(myApplication.getRoomACValue());
-                myApplication.setRoomACState(true);
+                myApplication.setRoomACState(b);
+
 
                 if(myApplication.getRoomACState()){
                     messsage = "Ligar arcondicionado";
