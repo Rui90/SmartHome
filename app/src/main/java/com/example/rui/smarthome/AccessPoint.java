@@ -11,8 +11,8 @@ public class AccessPoint {
     private double distance;
 
     public AccessPoint(String scanR, double distance){
-        scanR = scanResult;
-        distance = distance;
+        this.scanResult = scanR;
+        this.distance = distance;
     }
 
     public String getScanResult(){
