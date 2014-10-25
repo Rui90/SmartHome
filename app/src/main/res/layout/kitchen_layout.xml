@@ -4,7 +4,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -18,9 +18,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageButton"
         android:src="@drawable/lampada"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/valueLight"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/imageButton2"
+        android:layout_toStartOf="@+id/imageButton2" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -37,8 +38,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageButton2"
         android:src="@drawable/janela"
-        android:layout_marginTop="220dp"
-        android:layout_below="@+id/valueLight"
+        android:layout_alignTop="@+id/imageButton"
         android:layout_centerHorizontal="true" />
 
     <SeekBar
@@ -59,15 +59,111 @@
         android:layout_alignTop="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar" />
 
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="120dp"
-        android:layout_height="330dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="240dp"
-        android:drawSelectorOnTop="false"
-        android:background="@android:color/background_dark"
-        android:listSelector="@android:color/darker_gray" >
-    </ListView>
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Microondas"
+        android:id="@+id/microwave"
+        android:checked="false"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/imageButton"
+        android:layout_alignStart="@+id/imageButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tempo"
+        android:id="@+id/textView3"
+        android:layout_toStartOf="@+id/imageButton2"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/microwave"
+        android:layout_alignLeft="@+id/microwave"
+        android:layout_alignStart="@+id/microwave" />
+
+    <Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometer"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/imageButton2"
+        android:layout_alignStart="@+id/imageButton2" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerKitchen"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_toRightOf="@+id/chronometer"
+        android:layout_toEndOf="@+id/chronometer"
+        android:layout_marginLeft="21dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:id="@+id/mode"
+        android:layout_alignBottom="@+id/spinnerKitchen"
+        android:layout_alignRight="@+id/spinnerKitchen"
+        android:layout_alignEnd="@+id/spinnerKitchen" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forno"
+        android:id="@+id/forno"
+        android:layout_toStartOf="@+id/chronometer"
+        android:checked="false"
+        android:layout_below="@+id/spinnerKitchen"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignRight="@+id/imageButton2"
+        android:layout_alignEnd="@+id/imageButton2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Temperatura"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/forno"
+        android:layout_alignLeft="@+id/forno"
+        android:layout_alignStart="@+id/forno"
+        android:layout_marginTop="21dp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar3"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_alignLeft="@+id/spinnerKitchen"
+        android:layout_alignStart="@+id/spinnerKitchen"
+        android:layout_toLeftOf="@+id/mode"
+        android:layout_toStartOf="@+id/mode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/temp"
+        android:layout_below="@+id/seekBar3"
+        android:layout_alignLeft="@+id/seekBar3"
+        android:layout_alignStart="@+id/seekBar3" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:id="@+id/set2"
+        android:layout_alignBottom="@+id/seekBar3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/seekBar3"
+        android:layout_toEndOf="@+id/seekBar3"
+        android:layout_below="@+id/forno" />
+
 
 </RelativeLayout>

@@ -272,7 +272,7 @@ public class Home extends FragmentActivity
                         }
                     }
                 }
-                cases(aux);
+                //cases(aux);
             }
 
            /* String str;
@@ -300,9 +300,9 @@ public class Home extends FragmentActivity
                             "Frequency: " + wifiScanList.get(i).frequency +
                             "\n" + "Distance: " + value + "\n");
                 }
-                ListView list = (ListView) findViewById(R.id.listView1);
+                /*ListView list = (ListView) findViewById(R.id.listView1);
                 list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, wifis));
+                        android.R.layout.simple_list_item_1, wifis));*/
 
             }
         }
