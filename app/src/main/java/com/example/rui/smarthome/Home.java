@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.*;
@@ -38,9 +39,9 @@ public class Home extends FragmentActivity
     WifiManager mainWifiObj;
     WifiScanReceiver wifiReceiver;
     //ListView list;
-    private static MyApplication accesspoints = new MyApplication();
     private List<AccessPoint> accessPointsList = new ArrayList<AccessPoint>();
     String[] wifis;
+    private static boolean mode;
 
     Timer timer = new Timer();
 
@@ -75,12 +76,14 @@ public class Home extends FragmentActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        Fragment fragment = new HomeView();
+        Fragment fragment = new ModeSelect();
         //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+
+
     }
 
     class RemindTask extends TimerTask {
@@ -244,66 +247,54 @@ public class Home extends FragmentActivity
     class WifiScanReceiver extends BroadcastReceiver {
         @SuppressLint("UseValueOf")
         public void onReceive(Context c, Intent intent) {
-            List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
-            wifis = new String[wifiScanList.size()];
+            if (mode) {
+                Log.d("entrei", "mode: " + mode);
+                List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
+                wifis = new String[wifiScanList.size()];
 
-            Map<String, Double> mapa = new HashMap<String, Double>();
-            double minDist;
-            int aux = 0; // é uma variavel que vai tratr d mudança de página
-            int break_aux = 0; // uma variavel que vai fazer com que nao se tenha que percorrer toda a lista de wifi... sempre que encontrarmos na wifiScanList um accessPoint igual a
-            // uma das nossas guardadas, aumenta, quando chegar as 4 é porque ja comparamos com todos e nao vale a pena continuar
-            if(accessPointsList.size() == 4){
-                minDist = accessPointsList.get(0).getDistance();
-                for(int i = 0; i < wifiScanList.size() && break_aux < 4; i++){
-                    for(int j = 0; j < accessPointsList.size(); j++){
-                        if(wifiScanList.get(i).SSID.equals(accessPointsList.get(j).getScanResult())){
-                            break_aux++;
-                            double newDist = calculateDistance(wifiScanList.get(i).level,
-                                    wifiScanList.get(i).frequency);
-                            double AccessPointDist = accessPointsList.get(j).getDistance();
-                            if(AccessPointDist < minDist){
-                                minDist = AccessPointDist;
-                                if(newDist < minDist){
-                                    minDist = newDist;
-                                    aux = i;
-                                    Log.d("entrei", "valor aux: " + aux + " valor de minDist: " + minDist);
+                double minDist;
+                int aux = 0; // é uma variavel que vai tratr d mudança de página
+                int break_aux = 0; // uma variavel que vai fazer com que nao se tenha que percorrer toda a lista de wifi... sempre que encontrarmos na wifiScanList um accessPoint igual a
+                // uma das nossas guardadas, aumenta, quando chegar as 4 é porque ja comparamos com todos e nao vale a pena continuar
+                if (accessPointsList.size() == 4) {
+                    Log.d("entrei", "mode2: " + mode);
+                    minDist = accessPointsList.get(0).getDistance();
+                    for (int i = 0; i < wifiScanList.size() && break_aux < 4; i++) {
+                        for (int j = 0; j < accessPointsList.size(); j++) {
+                            if (wifiScanList.get(i).SSID.equals(accessPointsList.get(j).getScanResult())) {
+                                break_aux++;
+                                double newDist = calculateDistance(wifiScanList.get(i).level,
+                                        wifiScanList.get(i).frequency);
+                                double AccessPointDist = accessPointsList.get(j).getDistance();
+                                if (AccessPointDist < minDist) {
+                                    Log.d("entrei", "mode3: " + mode);
+                                    minDist = AccessPointDist;
+                                    if (newDist < minDist) {
+                                        Log.d("entrei", "nunca ca entro e nao sei porque!");
+                                        minDist = newDist;
+                                        aux = i;
+                                        Log.d("entrei", "valor aux: " + aux + " valor de minDist: " + minDist);
+                                    }
                                 }
                             }
                         }
                     }
+                    cases(aux);
                 }
-                //cases(aux);
-            }
 
-           /* String str;
-            Double min = 0.0;
-            for(Map.Entry<String,Double> e:mapa.entrySet()){
-                if(min.compareTo(e.getValue())>0){
-                    str = e.getKey();
-                    min = e.getValue();
-                    Toast.makeText(getApplicationContext(), "A aproximar de: " + str,
-                            Toast.LENGTH_LONG).show();
+                if (wifiScanList.size() >= 4 && accessPointsList.size() == 0) {
+                    for (int i = 0; i < 4; i++) {
+                        double value = calculateDistance(wifiScanList.get(i).level,
+                                wifiScanList.get(i).frequency);
+                        AccessPoint ponto = new AccessPoint(wifiScanList.get(i).SSID, value);
+                        accessPointsList.add(ponto);
+
+                        wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
+                                "Level: " + wifiScanList.get(i).level + "\n" +
+                                "Frequency: " + wifiScanList.get(i).frequency +
+                                "\n" + "Distance: " + value + "\n");
+                    }
                 }
-            }*/
-
-            if(wifiScanList.size() >= 4 && accessPointsList.size() == 0 ) {
-
-                for (int i = 0; i < 4; i++) {
-
-                    double value = calculateDistance(wifiScanList.get(i).level,
-                            wifiScanList.get(i).frequency);
-                    AccessPoint ponto = new AccessPoint(wifiScanList.get(i).SSID, value);
-                    accessPointsList.add(ponto);
-
-                    wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
-                            "Level: " + wifiScanList.get(i).level + "\n" +
-                            "Frequency: " + wifiScanList.get(i).frequency +
-                            "\n" + "Distance: " + value + "\n");
-                }
-                /*ListView list = (ListView) findViewById(R.id.listView1);
-                list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, wifis));*/
-
             }
         }
     }
@@ -311,6 +302,48 @@ public class Home extends FragmentActivity
     public double calculateDistance(double signalLevelInDb, double freqInMHz) {
         double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(signalLevelInDb)) / 20.0;
         return Math.pow(10.0, exp);
+    }
+
+    public static class ModeSelect extends  Fragment {
+
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.mainfragment, container, false);
+
+            final RadioGroup radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
+            final Button buttonradio = (Button) view.findViewById(R.id.RadioButton);
+            buttonradio.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    int buttonID = radiogroup.getCheckedRadioButtonId();
+                    switch (buttonID) {
+                        case R.id.manualRadio: {
+                            mode = false;
+                            Toast.makeText(getActivity().getApplicationContext(), "false", Toast.LENGTH_LONG).show();
+                            Fragment fragment = new HomeView();
+                            //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
+                            break;
+                        }
+                        case R.id.modoauto: {
+                            mode = true;
+                            Fragment fragment = new HomeView();
+                            Toast.makeText(getActivity().getApplicationContext(), "true", Toast.LENGTH_LONG).show();
+                            //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
+                            break;
+                        }
+                    }
+                }
+            });
+            return view;
+        }
+
     }
 
     public static class HomeView extends Fragment {

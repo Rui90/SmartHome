@@ -53,7 +53,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/tvonoff"
         android:layout_toStartOf="@+id/light_bed"
         android:src="@drawable/lampada"
         android:layout_centerVertical="true"
@@ -68,7 +68,7 @@
         android:id="@+id/textView"
         android:layout_toStartOf="@+id/janel"
         android:layout_toEndOf="@+id/seekBar"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@+id/tvonoff"
         android:layout_toRightOf="@+id/seekBar" />
 
     <TextView

@@ -7,9 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -86,13 +83,30 @@ public class Room extends Fragment {
         if((getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
                 heightPixels) && screen_Size.equals("large"))
         {
-            view = inflater.inflate(R.layout.room_large_land, container, false);
+            view = inflater.inflate(R.layout.dinnerroom_large_layout, container, false);
         }
         else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
                 heightPixels) && screen_Size.equals("large"))
         {
-            view = inflater.inflate(R.layout.room_layout_large, container, false);
+            view = inflater.inflate(R.layout.dinnerroom_layout_land, container, false);
         }
+
+        ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
+        tvbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(x%2==0){
+                    messsage = "Ligar luz";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                } else {
+                    messsage = "Desligar luz";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                }
+                x++;
+            }
+        });
 
         lightButton();
 
@@ -106,6 +120,8 @@ public class Room extends Fragment {
         arcondicionado.incrementProgressBy(1);
         value.setText(Integer.toString(myApplication.getRoomACValue()));
         arcondicionadoOnOff.setChecked(myApplication.getRoomACState());
+
+
         
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -169,7 +185,7 @@ public class Room extends Fragment {
     }
 
     public void lightButton(){
-        ImageButton button = (ImageButton) view.findViewById(R.id.imageButton);
+        ImageButton button = (ImageButton) view.findViewById(R.id.tvonoff);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

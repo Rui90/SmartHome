@@ -20,8 +20,8 @@
         android:text="@string/watertemperature"
         android:id="@+id/janel"
         android:layout_above="@+id/seekBar2"
-        android:layout_alignRight="@+id/imageButton"
-        android:layout_alignEnd="@+id/imageButton" />
+        android:layout_alignRight="@+id/tvonoff"
+        android:layout_alignEnd="@+id/tvonoff" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,8 +39,8 @@
         android:id="@+id/seekBar2"
         android:indeterminate="false"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/imageButton"
-        android:layout_alignStart="@+id/imageButton"
+        android:layout_alignLeft="@+id/tvonoff"
+        android:layout_alignStart="@+id/tvonoff"
         android:layout_marginBottom="113dp" />
 
     <TextView
@@ -54,7 +54,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/tvonoff"
         android:src="@drawable/lampada"
         android:layout_marginTop="53dp"
         android:layout_below="@+id/valueLight"

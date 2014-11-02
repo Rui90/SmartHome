@@ -239,7 +239,7 @@ public class Kitchen extends Fragment {
     }
 
     public void lightButton(){
-        ImageButton button = (ImageButton) view.findViewById(R.id.imageButton);
+        ImageButton button = (ImageButton) view.findViewById(R.id.tvonoff);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

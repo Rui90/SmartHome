@@ -16,7 +16,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/tvonoff"
         android:src="@drawable/lampada"
         android:layout_centerVertical="true"
         android:layout_marginLeft="50dp" />
@@ -27,7 +27,7 @@
         android:text="@string/arcondicionado"
         android:id="@+id/arcondicionado"
         android:checked="false"
-        android:layout_alignTop="@+id/imageButton"
+        android:layout_alignTop="@+id/tvonoff"
         android:layout_toEndOf="@id/imageButton2"
         android:layout_marginLeft="20dp" />
 
