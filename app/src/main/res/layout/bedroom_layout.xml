@@ -2,33 +2,44 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <Switch
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Luz"
-        android:id="@+id/lightswitch"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:checked="false" />
+        android:id="@+id/lampada"
+        android:src="@drawable/lampada1"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="10dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:src="@drawable/janela1"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toEndOf="@id/lampada"
+        android:layout_toRightOf="@id/lampada" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_below="@+id/lightswitch"
+        android:layout_below="@+id/lampada"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="65dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Novo Perfil"
+        android:text="Novo Modo"
         android:id="@+id/createprofile"
         android:layout_below="@+id/spinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>

@@ -1,21 +1,34 @@
 package com.example.rui.smarthome;
 
 import android.app.Dialog;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +40,60 @@ public class Bedroom extends Fragment {
     List<Perfil> perfis = new ArrayList<Perfil>();
     private Context context;
 
+    private Socket client;
+    private PrintWriter printwriter;
+    private String messsage;
+
+    private int x, y = 0;
+
+    View view;
+    private String screen_Size = "medium";
+
     // metodo para mostrar o que vai aparecer na criaco
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         context = getActivity();
 
-        // vai buscar o layout que queres mostrar no ecra
-        View view = inflater.inflate(R.layout.bedroom_layout, container, false);
-        Switch light = (Switch) view.findViewById(R.id.lightswitch);
-        Button create_perfil = (Button) view.findViewById(R.id.createprofile);
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
 
+        if((width>720 && height > 1100)){
+            screen_Size = "large";
+        }
+
+        if((getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                heightPixels) && screen_Size.equals("medium"))
+        {
+            view = inflater.inflate(R.layout.bedroom_layout_land, container, false);
+        }
+        else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
+                heightPixels) && screen_Size.equals("medium"))
+        {
+            view = inflater.inflate(R.layout.bedroom_layout, container, false);
+        }
+
+        if((getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                heightPixels) && screen_Size.equals("large"))
+        {
+            view = inflater.inflate(R.layout.bedroom_large_land, container, false);
+        }
+        else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
+                heightPixels) && screen_Size.equals("large"))
+        {
+            view = inflater.inflate(R.layout.bedroom_layout_large, container, false);
+        }
+
+        lightButton();
+
+        windowButton();
+
+        ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
+        Button create_perfil = (Button) view.findViewById(R.id.createprofile);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
 
         perfis = PerfisQuarto.ReadXML(context);
@@ -78,7 +134,7 @@ public class Bedroom extends Fragment {
                 Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
 
                 final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
-                final Switch light = (Switch) dialog.findViewById(R.id.window);
+                final Switch window = (Switch) dialog.findViewById(R.id.window);
                 final SeekBar intensity = (SeekBar) dialog.findViewById(R.id.seekBar);
                 intensity.setMax(100);
                 intensity.setLeft(0);
@@ -112,12 +168,12 @@ public class Bedroom extends Fragment {
 
                     public void onClick(View v) {
                         String name_perfil = name.getText().toString();
-                        boolean light_perfil = light.isChecked();
+                        boolean window_perfil = window.isChecked();
                         int valor = 0;
                         if(!value.getText().toString().equals("")) {
                             valor = Integer.parseInt(value.getText().toString());
                         }
-                        Perfil aux = new Perfil(name_perfil, light_perfil, valor);
+                        Perfil aux = new Perfil(name_perfil, window_perfil, valor);
                         PerfisQuarto.WriteXML(getActivity(), aux);
 
                         perfis = PerfisQuarto.ReadXML(context);
@@ -133,12 +189,129 @@ public class Bedroom extends Fragment {
                         //Closes the dialog
                         dialog.hide();
 
+                        if(window_perfil){
+                            messsage = "Modo \"" + name_perfil + "\" criado com janela aberta e intensidade da luz a " + valor;
+                        } else {
+                            messsage = "Modo \"" + name_perfil + "\" criado com janela fechada e intensidade da luz a " + valor;
+                        }
+                        SendMessage sendMessageTask = new SendMessage();
+                        sendMessageTask.execute();
                     }
 
                 });
             }
         });
         return view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        newFrag();
+    }
+
+    public void lightButton(){
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+
+        button.setBackgroundColor(Color.WHITE);
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    button.setBackgroundColor(Color.LTGRAY);
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    button.setBackgroundColor(Color.WHITE);
+                }
+
+                return true;
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(x%2==0){
+                    messsage = "Ligar luz4";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                } else {
+                    messsage = "Desligar luz4";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                }
+                x++;
+            }
+        });
+    }
+
+    public void windowButton(){
+        final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
+
+        button.setBackgroundColor(Color.WHITE);
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    button.setBackgroundColor(Color.LTGRAY);
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    button.setBackgroundColor(Color.WHITE);
+                }
+
+                return true;
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(y%2==0){
+                    messsage = "Abrir janela3";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                } else {
+                    messsage = "Fechar janela3";
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
+                }
+                y++;
+            }
+        });
+    }
+
+    public void newFrag(){
+        Fragment fragment = new Bedroom();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
+
+    private class SendMessage extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+
+                client = new Socket("192.168.0.100", 4444); // connect to the server
+                printwriter = new PrintWriter(client.getOutputStream(), true);
+                printwriter.write(messsage); // write the message to output stream
+
+                printwriter.flush();
+                printwriter.close();
+                client.close(); // closing the connection
+
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
     }
 
 }

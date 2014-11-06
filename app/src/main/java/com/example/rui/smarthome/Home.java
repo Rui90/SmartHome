@@ -306,9 +306,28 @@ public class Home extends FragmentActivity
 
     public static class ModeSelect extends  Fragment {
 
+        View view;
+        private String screen_Size = "medium";
+
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.mainfragment, container, false);
+
+            WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+
+            if((width>720 && height > 1100)){
+                screen_Size = "large";
+            }
+
+            if(screen_Size.equals("large")){
+                view = inflater.inflate(R.layout.mainfragment_large, container, false);
+            } else{
+                view = inflater.inflate(R.layout.mainfragment, container, false);
+            }
 
             final RadioGroup radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
             final Button buttonradio = (Button) view.findViewById(R.id.RadioButton);

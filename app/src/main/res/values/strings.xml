@@ -19,5 +19,6 @@
     <string name="rega">Rega</string>
     <string name="arcondicionado">Ar Condicionado</string>
     <string name="window">Janela</string>
+    <color name="white">#FFFFFF</color>
 
 </resources>

@@ -2,24 +2,16 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/dinnerroom"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvonoff"
-        android:src="@drawable/lampada"
-        android:layout_marginTop="80dp"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/lampada"
+        android:src="@drawable/lampada1"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="10dp" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -27,20 +19,19 @@
         android:text="@string/arcondicionado"
         android:id="@+id/arcondicionado"
         android:checked="false"
-        android:layout_below="@+id/imageButton2"
-        android:layout_marginTop="40dp"
+        android:layout_below="@+id/tvButton"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="65dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton2"
-        android:src="@drawable/janela"
-        android:layout_marginTop="220dp"
-        android:layout_below="@+id/valueLight"
-        android:layout_centerHorizontal="true" />
-
-
+        android:src="@drawable/janela1"
+        android:layout_marginTop="95dp"
+        android:layout_marginLeft="35dp"
+        android:layout_toEndOf="@id/lampada"
+        android:layout_toRightOf="@id/lampada" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,8 +50,15 @@
         android:layout_below="@+id/arcondicionado"
         android:layout_alignLeft="@+id/arcondicionado"
         android:layout_alignStart="@+id/arcondicionado"
-        android:layout_alignRight="@+id/arcondicionado"
-         />
+        android:layout_alignRight="@+id/arcondicionado" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvButton"
+        android:src="@drawable/telev1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="230dp" />
 
     <!--<ListView-->
         <!--android:id="@+id/listView1"-->

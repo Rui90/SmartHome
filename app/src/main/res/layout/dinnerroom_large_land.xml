@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageButton
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:id="@+id/lampada"
+        android:src="@drawable/lampada2"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="50dp" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/arcondicionado"
+        android:id="@+id/arcondicionado"
+        android:checked="false"
+        android:textSize="40sp"
+        android:layout_below="@id/lampada"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"/>
+
+    <ImageButton
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageButton2"
+        android:src="@drawable/janela2"
+        android:layout_marginLeft="340dp"
+        android:layout_marginTop="95dp"/>
+
+    <SeekBar
+        android:layout_width="400dp"
+        android:layout_height="40dp"
+        android:id="@+id/seekBar"
+        android:layout_below="@+id/arcondicionado"
+        android:layout_marginStart="150dp"
+        android:layout_marginLeft="280dp" />
+
+    <ImageButton
+        android:layout_width="260dp"
+        android:layout_height="190dp"
+        android:id="@+id/tvButton"
+        android:src="@drawable/telev2"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="660dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView2"
+        android:layout_toEndOf="@+id/seekBar"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_toRightOf="@+id/seekBar" />
+
+</RelativeLayout>

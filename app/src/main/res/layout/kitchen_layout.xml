@@ -2,72 +2,64 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/kitchen"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvonoff"
-        android:src="@drawable/lampada"
-        android:layout_marginTop="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/imageButton2"
-        android:layout_toStartOf="@+id/imageButton2" />
+        android:id="@+id/lampada"
+        android:src="@drawable/lampada1"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/arcondicionado"
-        android:id="@+id/arcondicionado"
-        android:checked="false"
-        android:layout_below="@+id/imageButton2"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="65dp"/>
+    <!--<Switch-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/arcondicionado"-->
+        <!--android:id="@+id/arcondicionado"-->
+        <!--android:checked="false"-->
+        <!--android:layout_below="@+id/imageButton2"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--android:layout_marginLeft="65dp"/>-->
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton2"
-        android:src="@drawable/janela"
-        android:layout_alignTop="@+id/tvonoff"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/janela1"
+        android:layout_alignTop="@+id/lampada"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="30dp"/>
 
-    <SeekBar
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_below="@+id/arcondicionado"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="200dp" />
+    <!--<SeekBar-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/seekBar"-->
+        <!--android:layout_below="@+id/arcondicionado"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginLeft="200dp" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/textView2"
-        android:layout_toEndOf="@+id/seekBar"
-        android:layout_alignTop="@+id/seekBar"
-        android:layout_toRightOf="@+id/seekBar" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:text=""-->
+        <!--android:id="@+id/textView2"-->
+        <!--android:layout_toEndOf="@+id/seekBar"-->
+        <!--android:layout_alignTop="@+id/seekBar"-->
+        <!--android:layout_toRightOf="@+id/seekBar" />-->
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Microondas"
+        android:textSize="20sp"
         android:id="@+id/microwave"
         android:checked="false"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/tvonoff"
-        android:layout_alignStart="@+id/tvonoff" />
+        android:layout_marginTop="220dp"
+        android:layout_alignLeft="@+id/textView3" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,19 +67,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Tempo"
         android:id="@+id/textView3"
-        android:layout_toStartOf="@+id/imageButton2"
-        android:layout_marginTop="29dp"
-        android:layout_below="@+id/microwave"
-        android:layout_alignLeft="@+id/microwave"
-        android:layout_alignStart="@+id/microwave" />
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="30dp"/>
 
     <Chronometer
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chronometer"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/imageButton2"
-        android:layout_alignStart="@+id/imageButton2" />
+        android:layout_toRightOf="@+id/textView3"
+        android:layout_marginLeft="10dp" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -96,7 +85,7 @@
         android:layout_alignTop="@+id/textView3"
         android:layout_toRightOf="@+id/chronometer"
         android:layout_toEndOf="@+id/chronometer"
-        android:layout_marginLeft="21dp" />
+        android:layout_marginLeft="20dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -112,14 +101,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Forno"
+        android:textSize="20sp"
         android:id="@+id/forno"
-        android:layout_toStartOf="@+id/chronometer"
         android:checked="false"
         android:layout_below="@+id/spinnerKitchen"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_alignRight="@+id/imageButton2"
-        android:layout_alignEnd="@+id/imageButton2" />
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -136,18 +123,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar3"
-        android:layout_alignTop="@+id/textView4"
         android:layout_alignLeft="@+id/spinnerKitchen"
         android:layout_alignStart="@+id/spinnerKitchen"
         android:layout_toLeftOf="@+id/mode"
-        android:layout_toStartOf="@+id/mode" />
+        android:layout_toStartOf="@+id/mode"
+        android:layout_below="@+id/textView4"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/temp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/textView2"
         android:layout_below="@+id/seekBar3"
         android:layout_alignLeft="@+id/seekBar3"
         android:layout_alignStart="@+id/seekBar3" />
@@ -162,8 +149,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/seekBar3"
-        android:layout_toEndOf="@+id/seekBar3"
-        android:layout_below="@+id/forno" />
-
+        android:layout_toEndOf="@+id/seekBar3" />
 
 </RelativeLayout>

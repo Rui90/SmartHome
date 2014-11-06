@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <SeekBar
         android:layout_width="120dp"
@@ -20,8 +21,8 @@
         android:text="@string/watertemperature"
         android:id="@+id/janel"
         android:layout_above="@+id/seekBar2"
-        android:layout_alignRight="@+id/tvonoff"
-        android:layout_alignEnd="@+id/tvonoff" />
+        android:layout_alignStart="@+id/seekBar2"
+        android:layout_alignLeft="@+id/seekBar2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,8 +31,8 @@
         android:text="@string/waterquantity"
         android:id="@+id/light_bed"
         android:layout_above="@+id/seekBar"
-        android:layout_alignLeft="@+id/janel"
-        android:layout_alignStart="@+id/janel" />
+        android:layout_alignStart="@+id/seekBar"
+        android:layout_alignLeft="@+id/seekBar" />
 
     <SeekBar
         android:layout_width="120dp"
@@ -39,25 +40,16 @@
         android:id="@+id/seekBar2"
         android:indeterminate="false"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/tvonoff"
-        android:layout_alignStart="@+id/tvonoff"
+        android:layout_alignLeft="@+id/lampada"
+        android:layout_alignStart="@+id/lampada"
         android:layout_marginBottom="113dp" />
-
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/bath"
-        android:id="@+id/valueLight" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvonoff"
-        android:src="@drawable/lampada"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/valueLight"
+        android:id="@+id/lampada"
+        android:src="@drawable/lampada1"
+        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -76,7 +68,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
         android:id="@+id/textView2"
-        android:layout_toEndOf="@+id/valueLight"
         android:layout_alignBottom="@+id/seekBar2"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView" />

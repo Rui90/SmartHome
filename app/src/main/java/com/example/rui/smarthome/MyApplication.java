@@ -11,6 +11,12 @@ public class MyApplication extends Application {
 
     private boolean roomACState;
     private int roomACValue;
+    private int wc_water;
+    private int wc_temp;
+    private int kitchen_forno;
+    private boolean forno;
+    private boolean microwave;
+    private int micro_pos;
     List<AccessPoint> accesspoints;
 
     public MyApplication(List<AccessPoint> accessPoints) {
@@ -52,6 +58,24 @@ public class MyApplication extends Application {
         this.roomACValue = value;
     }
 
+    public MyApplication(int value) {
+        this.wc_water = value;
+    }
+
+    public MyApplication(int value, String x) {
+        this.wc_temp = value;
+    }
+
+    public MyApplication(int value, boolean status, String y) {
+        this.kitchen_forno = value;
+        this.forno = status;
+    }
+
+    public MyApplication(boolean microwave, int micro_pos, String x, String y){
+        this.microwave = microwave;
+        this.micro_pos = micro_pos;
+    }
+
     public boolean getRoomACState() {
         return roomACState;
     }
@@ -66,6 +90,26 @@ public class MyApplication extends Application {
 
     public void setRoomACValue(int roomACValue) {
         this.roomACValue = roomACValue;
+    }
+
+    public int getWCWater() { return wc_water; }
+
+    public void setWCWater(int value) { this.wc_water = value; }
+
+    public int getWCTemp() { return wc_temp; }
+
+    public void setWCTemp(int value) { this.wc_temp = value; }
+
+    public int getKitchen_forno() { return kitchen_forno; }
+
+    public void setKitchen_forno(int value) { this.kitchen_forno = value; }
+
+    public boolean getForno() {
+        return forno;
+    }
+
+    public void setForno(boolean status) {
+        this.forno = status;
     }
 
     public AccessPoint getPoint4() {
@@ -101,4 +145,19 @@ public class MyApplication extends Application {
     }
 
 
+    public boolean isMicrowave() {
+        return microwave;
+    }
+
+    public void setMicrowave(boolean microwave) {
+        this.microwave = microwave;
+    }
+
+    public int getMicro_pos() {
+        return micro_pos;
+    }
+
+    public void setMicro_pos(int micro_pos) {
+        this.micro_pos = micro_pos;
+    }
 }
