@@ -36,10 +36,31 @@ public class MyApplication extends Application {
    // ROOM
     private boolean roomACState;
     private int roomACValue;
+    private List<Perfil> perfis = new ArrayList<Perfil>();
 
     public MyApplication(boolean state, int value) {
         this.roomACState = state;
         this.roomACValue = value;
+    }
+
+    public void addPerfil(Perfil p) {
+        perfis.add(p);
+    }
+
+    public void removePerfil(int pos) {
+        perfis.remove(pos);
+    }
+
+    public int getPerfisSize() {
+        return perfis.size();
+    }
+
+    public Perfil getPerfil(int pos){
+       return perfis.get(pos);
+    }
+
+    public List<Perfil> getPerfis() {
+        return this.perfis;
     }
 
     public boolean getRoomACState() {

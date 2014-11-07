@@ -86,4 +86,14 @@
         android:layout_alignRight="@+id/seekBar"
         android:layout_alignEnd="@+id/seekBar" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apagar"
+        android:visibility="gone"
+        android:id="@+id/deleteButton"
+        android:layout_alignTop="@+id/cancel"
+        android:layout_toRightOf="@+id/cancel"
+        android:layout_toEndOf="@+id/cancel" />
+
 </RelativeLayout>

@@ -27,4 +27,16 @@ public class Perfil {
         return this.value;
     }
 
+    public void setNamePerfil(String perfil) {
+        this.name_perfil = perfil;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void light(boolean onOff){
+        this.light_perfil = onOff;
+    }
+
 }
