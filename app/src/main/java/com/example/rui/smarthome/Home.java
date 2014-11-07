@@ -39,9 +39,7 @@ public class Home extends FragmentActivity
     WifiManager mainWifiObj;
     WifiScanReceiver wifiReceiver;
     //ListView list;
-    private List<AccessPoint> accessPointsList = new ArrayList<AccessPoint>();
     String[] wifis;
-    private static boolean mode;
 
     Timer timer = new Timer();
 
@@ -247,8 +245,8 @@ public class Home extends FragmentActivity
     class WifiScanReceiver extends BroadcastReceiver {
         @SuppressLint("UseValueOf")
         public void onReceive(Context c, Intent intent) {
-            if (mode) {
-                Log.d("entrei", "mode: " + mode);
+            if ( ((MyApplication) getApplication()).getMode()) {
+             //   Log.d("entrei", "mode: " + mode);
                 List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
                 wifis = new String[wifiScanList.size()];
 
@@ -256,18 +254,18 @@ public class Home extends FragmentActivity
                 int aux = 0; // é uma variavel que vai tratr d mudança de página
                 int break_aux = 0; // uma variavel que vai fazer com que nao se tenha que percorrer toda a lista de wifi... sempre que encontrarmos na wifiScanList um accessPoint igual a
                 // uma das nossas guardadas, aumenta, quando chegar as 4 é porque ja comparamos com todos e nao vale a pena continuar
-                if (accessPointsList.size() == 4) {
-                    Log.d("entrei", "mode2: " + mode);
-                    minDist = accessPointsList.get(0).getDistance();
+                if (((MyApplication) getApplication()).getSize() == 4) {
+                   // Log.d("entrei", "mode2: " + mode);
+                    minDist = ((MyApplication) getApplication()).getAccessPoint(0).getDistance();
                     for (int i = 0; i < wifiScanList.size() && break_aux < 4; i++) {
-                        for (int j = 0; j < accessPointsList.size(); j++) {
-                            if (wifiScanList.get(i).SSID.equals(accessPointsList.get(j).getScanResult())) {
+                        for (int j = 0; j < ((MyApplication) getApplication()).getSize(); j++) {
+                            if (wifiScanList.get(i).SSID.equals(((MyApplication) getApplication()).getAccessPoint(j).getScanResult())) {
                                 break_aux++;
                                 double newDist = calculateDistance(wifiScanList.get(i).level,
                                         wifiScanList.get(i).frequency);
-                                double AccessPointDist = accessPointsList.get(j).getDistance();
+                                double AccessPointDist = ((MyApplication) getApplication()).getAccessPoint(j).getDistance();
                                 if (AccessPointDist < minDist) {
-                                    Log.d("entrei", "mode3: " + mode);
+                                  //  Log.d("entrei", "mode3: " + mode);
                                     minDist = AccessPointDist;
                                     if (newDist < minDist) {
                                         Log.d("entrei", "nunca ca entro e nao sei porque!");
@@ -282,12 +280,12 @@ public class Home extends FragmentActivity
                     cases(aux);
                 }
 
-                if (wifiScanList.size() >= 4 && accessPointsList.size() == 0) {
+                if (wifiScanList.size() >= 4 && ((MyApplication) getApplication()).getSize() == 0) {
                     for (int i = 0; i < 4; i++) {
                         double value = calculateDistance(wifiScanList.get(i).level,
                                 wifiScanList.get(i).frequency);
                         AccessPoint ponto = new AccessPoint(wifiScanList.get(i).SSID, value);
-                        accessPointsList.add(ponto);
+                        ((MyApplication) getApplication()).addAccessPoints(ponto);
 
                         wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
                                 "Level: " + wifiScanList.get(i).level + "\n" +
@@ -336,7 +334,7 @@ public class Home extends FragmentActivity
                     int buttonID = radiogroup.getCheckedRadioButtonId();
                     switch (buttonID) {
                         case R.id.manualRadio: {
-                            mode = false;
+                            ((MyApplication) getActivity().getApplication()).setMode(false);
                             Toast.makeText(getActivity().getApplicationContext(), "false", Toast.LENGTH_LONG).show();
                             Fragment fragment = new HomeView();
                             //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
@@ -347,10 +345,9 @@ public class Home extends FragmentActivity
                             break;
                         }
                         case R.id.modoauto: {
-                            mode = true;
+                            ((MyApplication) getActivity().getApplication()).setMode(true);
                             Fragment fragment = new HomeView();
                             Toast.makeText(getActivity().getApplicationContext(), "true", Toast.LENGTH_LONG).show();
-                            //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
