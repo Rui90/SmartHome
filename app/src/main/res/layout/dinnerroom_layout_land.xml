@@ -10,8 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/lampada"
         android:src="@drawable/lampada1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="30dp" />
 
     <Switch
@@ -20,11 +18,9 @@
         android:text="@string/arcondicionado"
         android:id="@+id/arcondicionado"
         android:checked="false"
-        android:layout_alignTop="@+id/lampada"
-        android:layout_toEndOf="@id/imageButton2"
-        android:layout_toRightOf="@id/imageButton2"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp"/>
+        android:layout_below="@+id/imageButton2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -32,7 +28,7 @@
         android:id="@+id/imageButton2"
         android:src="@drawable/janela1"
         android:layout_marginStart="200dp"
-        android:layout_marginLeft="170dp"
+        android:layout_marginLeft="180dp"
         android:layout_marginTop="60dp" />
 
     <SeekBar
@@ -49,9 +45,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvButton"
         android:src="@drawable/telev1"
-        android:layout_below="@id/lampada"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="100dp" />
+        android:layout_toRightOf="@id/imageButton2"
+        android:layout_marginTop="56dp"
+        android:layout_marginLeft="20dp" />
 
     <TextView
         android:layout_width="wrap_content"

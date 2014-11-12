@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,10 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class Home extends FragmentActivity
@@ -40,6 +45,10 @@ public class Home extends FragmentActivity
     WifiScanReceiver wifiReceiver;
     //ListView list;
     String[] wifis;
+
+    private Socket client;
+    private PrintWriter printwriter;
+    private String messsage;
 
     Timer timer = new Timer();
 
@@ -259,7 +268,7 @@ public class Home extends FragmentActivity
                     minDist = ((MyApplication) getApplication()).getAccessPoint(0).getDistance();
                     for (int i = 0; i < wifiScanList.size() && break_aux < 4; i++) {
                         for (int j = 0; j < ((MyApplication) getApplication()).getSize(); j++) {
-                            if (wifiScanList.get(i).SSID.equals(((MyApplication) getApplication()).getAccessPoint(j).getScanResult())) {
+                            if (wifiScanList.get(i).BSSID.equals(((MyApplication) getApplication()).getAccessPoint(j).getScanResult())) {
                                 break_aux++;
                                 double newDist = calculateDistance(wifiScanList.get(i).level,
                                         wifiScanList.get(i).frequency);
@@ -284,14 +293,27 @@ public class Home extends FragmentActivity
                     for (int i = 0; i < 4; i++) {
                         double value = calculateDistance(wifiScanList.get(i).level,
                                 wifiScanList.get(i).frequency);
-                        AccessPoint ponto = new AccessPoint(wifiScanList.get(i).SSID, value);
+                        AccessPoint ponto = new AccessPoint(wifiScanList.get(i).BSSID, value);
                         ((MyApplication) getApplication()).addAccessPoints(ponto);
 
-                        wifis[i] = ((wifiScanList.get(i)).SSID + "\n" +
+                        wifis[i] = ((wifiScanList.get(i)).BSSID + "\n" +
                                 "Level: " + wifiScanList.get(i).level + "\n" +
                                 "Frequency: " + wifiScanList.get(i).frequency +
                                 "\n" + "Distance: " + value + "\n");
                     }
+
+                    messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
+                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
+                            + "-Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
+                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(1).getDistance()
+                            + "-Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
+                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(2).getDistance()
+                            +  "-Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
+                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();
+
+                    //Log.d("tag", messsage);
+                    SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();
                 }
             }
         }
@@ -515,6 +537,30 @@ public class Home extends FragmentActivity
             ((Home) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    private class SendMessage extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+
+                client = new Socket("192.168.0.101", 4444); // connect to the server
+                printwriter = new PrintWriter(client.getOutputStream(), true);
+                printwriter.write(messsage); // write the message to output stream
+
+                printwriter.flush();
+                printwriter.close();
+                client.close(); // closing the connection
+
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
     }
 
 }

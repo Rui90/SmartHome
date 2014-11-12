@@ -359,10 +359,10 @@ public class Bedroom extends Fragment {
     }
 
     public void lightButton(){
-        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
 
         button.setBackgroundColor(Color.WHITE);
-        button.setOnTouchListener(new View.OnTouchListener() {
+        /*button.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -375,7 +375,7 @@ public class Bedroom extends Fragment {
 
                 return true;
             }
-        });
+        });*/
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,10 +395,10 @@ public class Bedroom extends Fragment {
     }
 
     public void windowButton(){
-        final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
+        ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
 
         button.setBackgroundColor(Color.WHITE);
-        button.setOnTouchListener(new View.OnTouchListener() {
+        /*button.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -411,7 +411,7 @@ public class Bedroom extends Fragment {
 
                 return true;
             }
-        });
+        });*/
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -461,7 +461,7 @@ public class Bedroom extends Fragment {
         protected Void doInBackground(Void... params) {
             try {
 
-                client = new Socket("192.168.0.100", 4444); // connect to the server
+                client = new Socket("192.168.0.101", 4444); // connect to the server
                 printwriter = new PrintWriter(client.getOutputStream(), true);
                 printwriter.write(messsage); // write the message to output stream
 

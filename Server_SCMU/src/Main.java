@@ -18,7 +18,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			InetAddress addr = InetAddress.getByName("192.168.0.100");
+			InetAddress addr = InetAddress.getByName("192.168.0.101");
 			serverSocket = new ServerSocket(4444, 50, addr); // Server socket
 
 		} catch (IOException e) {
@@ -189,7 +189,17 @@ public class Main {
 				} 
 				
 				else {
-					System.out.println(message);
+					if(message.startsWith("Ponto")){
+						String[] pontos = message.split("-");
+						String ponto1 = pontos[0] + "\n";
+						String ponto2 = pontos[1] + "\n";
+						String ponto3 = pontos[2] + "\n";
+						String ponto4 = pontos[3] + "\n";
+						System.out.println(ponto1 + ponto2 + ponto3 + ponto4);
+					} else {
+						System.out.println(message);
+					}
+					
 				}
 
 				inputStreamReader.close();
