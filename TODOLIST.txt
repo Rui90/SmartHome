@@ -1,0 +1,12 @@
+To do List:
+
+- Servidor guarda Access Points.
+- Servidor sabe em que Access Points estamos.
+- Criar contador para simular dia e noite, de 30 em 30 segundos passa de dia para noite. 
+	- Se for de noite, quando entramos na divisão acende luz, senão abre janelas.
+- Criar contdor para simular mau e bom tempo. De 2 em 2 minutos fica mau tempo.
+	- Se estiver mau tempo, casa fecha as janelas e acende luzes das divisões (seja dia ou seja noite).
+- Completar comando da televisão.
+	- Casa guarda todos os números dos canais vistos. Quando entramos na sala liga a televisão no canal mais visto.
+	
+Mais?
