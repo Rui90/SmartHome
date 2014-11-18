@@ -13,6 +13,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -30,13 +31,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
+import android.os.Handler;
 
 public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -45,7 +54,7 @@ public class Home extends FragmentActivity
     WifiScanReceiver wifiReceiver;
     //ListView list;
     String[] wifis;
-
+    private static Handler hm;
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
@@ -71,6 +80,26 @@ public class Home extends FragmentActivity
 
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
+       // MySyncTask asyncTask = new MySyncTask (1,2);
+        //asyncTask.execute(1000);
+        //hm = new Handler();
+        /*hm=new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 0:
+                        Toast.makeText(getApplicationContext(),"Sincronização efectuada com sucesso",Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getApplicationContext(),"Erro na sincronização",Toast.LENGTH_LONG).show();
+                        break;
+                }
+
+            }
+        };*/
+
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
 
@@ -92,6 +121,22 @@ public class Home extends FragmentActivity
 
 
     }
+
+
+    public static Handler GetHandler(){
+        return hm;
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            //CENA PERIODICA A EXECUTAR
+
+            //volta a chamar este handler, dizendo que vai executar ao fim de 3000ms
+            //handler.postDelayed(this, 3000);
+        }
+    };
 
     class RemindTask extends TimerTask {
         public void run() {
@@ -539,14 +584,65 @@ public class Home extends FragmentActivity
         }
     }
 
+    String advice = "";
+
+    class MySyncTask extends AsyncTask<Integer, Integer, String> {
+        @Override
+        protected String doInBackground(Integer... params) {
+            try {
+                Socket s = new Socket("192.168.152.1", 8080);
+                InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
+                BufferedReader reader = new BufferedReader(streamReader);
+
+                String advice = reader.readLine();
+                reader.close();
+                Log.d("msg", advice);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
+            Log.d("msg", "Cool");
+        }
+
+        protected void onPreExecute() {
+            //log.i("start");
+        }
+    }
+
+
     private class SendMessage extends AsyncTask<Void, Void, Void> {
+        private Socket client;
+        ObjectOutputStream toServer = null;
+        ObjectInputStream fromServer = null;
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
 
                 client = new Socket("192.168.0.101", 4444); // connect to the server
+
+                toServer = new ObjectOutputStream(client.getOutputStream());
+                fromServer = new ObjectInputStream(client.getInputStream());
+
+               // if(params[0].request.equals("GET")){
+                 toServer.writeObject("Fuckoff!");
+                try {
+                    if(fromServer.readObject() != null) {
+                        Toast.makeText(getApplicationContext(), "Sim não é null", Toast.LENGTH_LONG).show();
+                        Log.d("abc", "nao sou null, sou fixe!");
+                    }
+
+                }catch(ClassNotFoundException e) {
+
+                }
+                //}
                 printwriter = new PrintWriter(client.getOutputStream(), true);
+
                 printwriter.write(messsage); // write the message to output stream
 
                 printwriter.flush();
