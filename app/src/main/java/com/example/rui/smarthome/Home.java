@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInput;
@@ -42,6 +43,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -122,7 +124,6 @@ public class Home extends FragmentActivity
 
     }
 
-
     public static Handler GetHandler(){
         return hm;
     }
@@ -150,6 +151,8 @@ public class Home extends FragmentActivity
 
         cases(position);
     }
+
+
 
     private void cases(int position) {
         switch(position) {
@@ -583,6 +586,8 @@ public class Home extends FragmentActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+
 
     String advice = "";
 

@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -20,9 +21,13 @@ import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -77,6 +82,8 @@ public class Bath extends Fragment {
             view = inflater.inflate(R.layout.bath_layout_large, container, false);
         }
 
+        receiveMessage();
+
         lightButton();
 
         final SeekBar waterQuantity = (SeekBar) view.findViewById(R.id.seekBar);
@@ -90,13 +97,27 @@ public class Bath extends Fragment {
         waterQuantity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 value.setText(Integer.toString(progress));
                 myApplication.setWCWater(progress);
+                Thread t = new Thread() {
 
-                messsage = "Quantidade de agua no wc: " + Integer.toString(progress);
-                SendMessage sendMessageTask = new SendMessage();
-                sendMessageTask.execute();
+                    public void run() {
+                        try {
+                            Socket s = new Socket("192.168.0.100", 4444);
+                            DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                            dos.writeUTF("QUANTIDADE DE AGUA: " + progress);
+                            dos.flush();
+                            dos.close();
+                            s.close();
+                        } catch (UnknownHostException e) {
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+                };
+                t.start();
             }
 
             @Override
@@ -120,13 +141,27 @@ public class Bath extends Fragment {
         waterTemperature.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 value2.setText(Integer.toString(progress));
                 myApplication.setWCTemp(progress);
+                Thread t = new Thread() {
 
-                messsage = "Temperatura da agua no wc: " + Integer.toString(progress);
-                SendMessage sendMessageTask = new SendMessage();
-                sendMessageTask.execute();
+                    public void run() {
+                        try {
+                            Socket s = new Socket("192.168.0.100", 4444);
+                            DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                            dos.writeUTF("TEMPERATURA DA AGUA: " + progress + " GRAUS");
+                            dos.flush();
+                            dos.close();
+                            s.close();
+                        } catch (UnknownHostException e) {
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+                };
+                t.start();
             }
 
             @Override
@@ -149,13 +184,48 @@ public class Bath extends Fragment {
     }
 
     public void lightButton(){
-        ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         button.setBackgroundColor(Color.WHITE);
-        /*button.setOnTouchListener(new View.OnTouchListener() {
+        button.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                if(x%2==0){
+                                    dos.writeUTF("LUZ DO WC LIGADA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "LUZ LIGADA");
+                                        }
+                                    });
+                                } else {
+                                    dos.writeUTF("LUZ DO WC DESLIGADA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "LUZ DESLIGADA");
+                                        }
+                                    });
+                                }
+                                x++;
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                     button.setBackgroundColor(Color.LTGRAY);
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -164,23 +234,50 @@ public class Bath extends Fragment {
 
                 return true;
             }
-        });*/
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(x%2==0){
-                    messsage = "Ligar luz2";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
-                } else {
-                    messsage = "Desligar luz2";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
-                }
-                x++;
-            }
         });
+
+        /*button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+
+                Thread t = new Thread() {
+
+                    public void run() {
+                    try {
+                        Socket s = new Socket("192.168.0.100", 4444);
+                        DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                        if(x%2==0){
+                            dos.writeUTF("LUZ LIGADA");
+                            view.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showToast(view.getContext(), "LUZ LIGADA");
+                                }
+                            });
+                        } else {
+                            dos.writeUTF("LUZ DESLIGADA");
+                            view.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showToast(view.getContext(), "LUZ DESLIGADA");
+                                }
+                            });
+                        }
+                        x++;
+                        dos.flush();
+                        dos.close();
+                        s.close();
+                    } catch (UnknownHostException e) {
+
+                    } catch (IOException e) {
+
+                    }
+                }
+                };
+                t.start();
+            }
+        });*/
     }
 
     public void newFrag(){
@@ -191,27 +288,58 @@ public class Bath extends Fragment {
                 .commit();
     }
 
-    private class SendMessage extends AsyncTask<Void, Void, Void> {
+    public void receiveMessage(){
+        Thread t = new Thread(){
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
+            public void run(){
+                try{
+                    ServerSocket ss = new ServerSocket(4444);
+                    while(true){
+                        Socket s = ss.accept();
+                        DataInputStream dis = new DataInputStream(s.getInputStream());
+                        final String msg = dis.readUTF();
 
-                client = new Socket("192.168.0.101", 4444); // connect to the server
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-                printwriter.write(messsage); // write the message to output stream
+                        /*getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(), "Hello", Toast.LENGTH_SHORT).show();
+                            }
+                        });*/
 
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
+                       view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast(view.getContext(), msg);
+                            }
+                        });
+                        dis.close();
+                        s.close();
+                    }
+                }
+                catch(IOException e){
 
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                }
             }
-            return null;
+        };
+        t.start();
+    }
+
+    private void showToast(Context ctx, String msg) {
+        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /*public void showToast2(final String toast)
+    {
+        try{
+            getActivity().runOnUiThread(new Runnable() {
+                public void run()
+                {
+                    Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch(NullPointerException e){
+
         }
 
-    }
+    }*/
 }

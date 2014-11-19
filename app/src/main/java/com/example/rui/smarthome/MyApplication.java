@@ -114,6 +114,15 @@ public class MyApplication extends Application {
         this.micro_pos = micro_pos;
     }
 
+    //server
+    private int socket;
+
+    public MyApplication(int socket, String x, String y, String z) {
+        this.socket = socket;
+    }
+
+
+
     public int getKitchen_forno() { return kitchen_forno; }
 
     public void setKitchen_forno(int value) { this.kitchen_forno = value; }
@@ -140,5 +149,13 @@ public class MyApplication extends Application {
 
     public void setMicro_pos(int micro_pos) {
         this.micro_pos = micro_pos;
+    }
+
+    public int getSocket() {
+        return socket;
+    }
+
+    public void setSocket(int socket) {
+        this.socket = socket;
     }
 }

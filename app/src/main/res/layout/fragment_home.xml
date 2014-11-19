@@ -5,50 +5,40 @@
     android:layout_height="match_parent">
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
         android:text="@string/bedroom"
+        android:textSize="22sp"
         android:id="@+id/quarto"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"/>
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
         android:text="@string/dinnerroom"
+        android:textSize="22sp"
         android:id="@+id/sala"
         android:layout_below="@+id/quarto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"/>
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
         android:text="@string/kitchen"
+        android:textSize="22sp"
         android:id="@+id/cozinha"
         android:layout_below="@+id/sala"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
         android:text="@string/bath"
+        android:textSize="22sp"
         android:id="@+id/wc"
         android:layout_below="@+id/cozinha"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="250dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="120dp"
-        android:drawSelectorOnTop="false"
-        android:background="@android:color/background_dark"
-        android:listSelector="@android:color/darker_gray" >
-    </ListView>
 
 </RelativeLayout>

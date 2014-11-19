@@ -25,8 +25,11 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -141,24 +144,90 @@ public class Kitchen extends Fragment {
                 myApplication2.setMicrowave(b);
 
                 if(myApplication2.isMicrowave()) {
-                    messsage = "O microondas acabou de ser ligado!";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    messsage = "MICROONDAS LIGADO";
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                dos.writeUTF(messsage);
+                                view.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(view.getContext(), messsage);
+                                    }
+                                });
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
 
                     microwave_button.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             if(microwave.isChecked()){
-                                messsage = "Microondas ligado no modo: " +
+                                messsage = "MICROONDAS NO MODO: " +
                                         spinner.getSelectedItem().toString();
-                                SendMessage sendMessageTask = new SendMessage();
-                                sendMessageTask.execute();
+                                Thread t = new Thread() {
+
+                                    public void run() {
+                                        try {
+                                            Socket s = new Socket("192.168.0.100", 4444);
+                                            DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                            dos.writeUTF(messsage);
+                                            view.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showToast(view.getContext(), messsage);
+                                                }
+                                            });
+                                            dos.flush();
+                                            dos.close();
+                                            s.close();
+                                        } catch (UnknownHostException e) {
+
+                                        } catch (IOException e) {
+
+                                        }
+                                    }
+                                };
+                                t.start();
                             }
                         }
                      });
                 } else if(!b){
-                    messsage = "O microondas foi desligado!";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    messsage = "MICROONDAS DESLIGADO";
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                dos.writeUTF(messsage);
+                                view.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(view.getContext(), messsage);
+                                    }
+                                });
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                 }
             }
         });
@@ -177,9 +246,31 @@ public class Kitchen extends Fragment {
                 if (myApplication.getForno()) {
                     fornoseek.setEnabled(myApplication.getForno());
 
-                    messsage = "O forno acabou de ser ligado!";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    messsage = "FORNO LIGADO";
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                dos.writeUTF(messsage);
+                                view.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(view.getContext(), messsage);
+                                    }
+                                });
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
 
                     fornoseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -202,9 +293,31 @@ public class Kitchen extends Fragment {
                     forno_button.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             if(forno.isChecked()){
-                                messsage = "Forno ligado com a temperatura: " + value.getText();
-                                SendMessage sendMessageTask = new SendMessage();
-                                sendMessageTask.execute();
+                                messsage = "FORNO COM TEMPERATURA: " + value.getText() + " GRAUS";
+                                Thread t = new Thread() {
+
+                                    public void run() {
+                                        try {
+                                            Socket s = new Socket("192.168.0.100", 4444);
+                                            DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                            dos.writeUTF(messsage);
+                                            view.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showToast(view.getContext(), messsage);
+                                                }
+                                            });
+                                            dos.flush();
+                                            dos.close();
+                                            s.close();
+                                        } catch (UnknownHostException e) {
+
+                                        } catch (IOException e) {
+
+                                        }
+                                    }
+                                };
+                                t.start();
                             }
                         }
                     });
@@ -217,9 +330,31 @@ public class Kitchen extends Fragment {
                     fornoseek.incrementProgressBy(0);
                     value.setText(" ");
 
-                    messsage = "O forno acabou de ser desligado!";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    messsage = "FORNO DESLIGADO";
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                dos.writeUTF(messsage);
+                                view.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(view.getContext(), messsage);
+                                    }
+                                });
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                 }
             }
         });
@@ -233,9 +368,31 @@ public class Kitchen extends Fragment {
                     value.setText(Integer.toString(progress));
                     myApplication.setKitchen_forno(progress);
 
-                    messsage = "Temperatura do forno a: " + Integer.toString(progress);
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    messsage = "TEMPERATURA DO FORNO: " + Integer.toString(progress) + " GRAUS";
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                dos.writeUTF(messsage);
+                                view.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showToast(view.getContext(), messsage);
+                                    }
+                                });
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                 }
 
             }
@@ -308,13 +465,48 @@ public class Kitchen extends Fragment {
     }
 
     public void lightButton(){
-        ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         button.setBackgroundColor(Color.WHITE);
-        /*button.setOnTouchListener(new View.OnTouchListener() {
+        button.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                if(x%2==0){
+                                    dos.writeUTF("LUZ DA COZINHA LIGADA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "LUZ LIGADA");
+                                        }
+                                    });
+                                } else {
+                                    dos.writeUTF("LUZ DA COZINHA DESLIGADA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "LUZ DESLIGADA");
+                                        }
+                                    });
+                                }
+                                x++;
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                     button.setBackgroundColor(Color.LTGRAY);
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -323,58 +515,65 @@ public class Kitchen extends Fragment {
 
                 return true;
             }
-        });*/
+        });
 
-        button.setOnClickListener(new View.OnClickListener() {
+    }
+
+    public void windowButton(){
+        final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
+        button.setBackgroundColor(Color.WHITE);
+        button.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View view) {
-                if(x%2==0){
-                    messsage = "Ligar luz3";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
-                } else {
-                    messsage = "Desligar luz3";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.100", 4444);
+                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                if (y % 2 == 0) {
+                                    dos.writeUTF("JANELA DA COZINHA ABERTA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "JANELA ABERTA");
+                                        }
+                                    });
+                                } else {
+                                    dos.writeUTF("JANELA DA COZINHA FECHADA");
+                                    view.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast(view.getContext(), "JANELA FECHADA");
+                                        }
+                                    });
+                                }
+                                y++;
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
+                    button.setBackgroundColor(Color.LTGRAY);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    button.setBackgroundColor(Color.WHITE);
                 }
-                x++;
+
+                return true;
             }
         });
     }
 
-    public void windowButton(){
-        ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
-        button.setBackgroundColor(Color.WHITE);
-        /*button.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    button.setBackgroundColor(Color.LTGRAY);
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    button.setBackgroundColor(Color.WHITE);
-                }
-
-                return true;
-            }
-        });*/
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(y%2==0){
-                    messsage = "Abrir janela2";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
-                } else {
-                    messsage = "Fechar janela2";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
-                }
-                y++;
-            }
-        });
+    private void showToast(Context ctx, String msg) {
+        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
     }
 
     public void newFrag(){
@@ -385,28 +584,32 @@ public class Kitchen extends Fragment {
                 .commit();
     }
 
-    private class SendMessage extends AsyncTask<Void, Void, Void> {
+    public void receiveMessage(){
+        Thread t = new Thread(){
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
+            public void run(){
+                try{
+                    ServerSocket ss = new ServerSocket(4444);
+                    while(true){
+                        Socket s = ss.accept();
+                        DataInputStream dis = new DataInputStream(s.getInputStream());
+                        final String msg = dis.readUTF();
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast(view.getContext(), msg);
+                            }
+                        });
+                        dis.close();
+                        s.close();
+                    }
+                }
+                catch(IOException e){
 
-                client = new Socket("192.168.0.101", 4444); // connect to the server
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-                printwriter.write(messsage); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                }
             }
-            return null;
-        }
-
+        };
+        t.start();
     }
 
 }
