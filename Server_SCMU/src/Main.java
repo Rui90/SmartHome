@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Main {
 
+	private static boolean day = true; 
 	/*
 	 * private static ServerSocket serverSocket; private static Socket
 	 * clientSocket; private static ObjectInputStream inputStreamReader; private
@@ -13,7 +14,7 @@ public class Main {
 	 * static SendMessage sm;
 	 */
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		Scanner in = new Scanner(System.in);
 
@@ -38,30 +39,41 @@ public class Main {
 		};
 		t.start();
 
+
 		String command = "";
 		while (!command.equals("exit")) {
 			command = in.next();
 			System.out.println(command);
-			if (command.equals("intel")) {
+			final Thread tt = new Thread() {
 
-				Thread tt = new Thread() {
 					public void run() {
-						try {
-							Socket s = new Socket("192.168.0.101", 4444);
-							DataOutputStream dos = new DataOutputStream(
+						while(true) {
+							try {
+								Socket s = new Socket("192.168.0.101", 4444);
+								DataOutputStream dos = new DataOutputStream(
 									(s.getOutputStream()));
-							dos.writeUTF("MENSAGEM DE VOLTA");
-							dos.flush();
-							dos.close();
-							s.close();
+								
+								if(day) {
+									day = false; 
+									dos.writeUTF("É de noite!");
+								} else {
+									day = true; 
+									dos.writeUTF("É de dia!");
+								}
+								dos.flush();
+								dos.close();
+								s.close();
+								Thread.sleep(60000);
 						} catch (IOException e) {
 
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
-				};
-				tt.start();
-
-			} 
+				}
+			};
+			tt.start();
 		}
 
 		in.close();
