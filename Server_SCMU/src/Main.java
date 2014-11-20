@@ -2,10 +2,14 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main {
 
 	private static boolean day = true; 
+	private static boolean goodTime = true;
+	
 	/*
 	 * private static ServerSocket serverSocket; private static Socket
 	 * clientSocket; private static ObjectInputStream inputStreamReader; private
@@ -16,7 +20,8 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		Scanner in = new Scanner(System.in);
+		//Scanner in = new Scanner(System.in);
+		Timer timer = new Timer();
 
 		Thread t = new Thread() {
 
@@ -39,17 +44,65 @@ public class Main {
 		};
 		t.start();
 
+		class dayNight extends TimerTask {
+			public void run() {
+					try {
+						Socket s = new Socket("192.168.0.100", 4444);
+						DataOutputStream dos = new DataOutputStream(
+							(s.getOutputStream()));
+						
+						if(day) {
+							day = false; 
+							dos.writeUTF("É de noite!");
+						} else {
+							day = true; 
+							dos.writeUTF("É de dia!");
+						}
+						dos.flush();
+						dos.close();
+						s.close();
+				} catch (IOException e) {
 
-		String command = "";
-		while (!command.equals("exit")) {
-			command = in.next();
-			System.out.println(command);
+				} 
+			}
+		}
+		
+		class goodTimebadTime extends TimerTask {
+			public void run() {
+					try {
+						Socket s = new Socket("192.168.0.100", 4444);
+						DataOutputStream dos = new DataOutputStream(
+							(s.getOutputStream()));
+						
+						if(goodTime) {
+							goodTime = false; 
+							dos.writeUTF("Está mau tempo!");
+						} else {
+							goodTime = true; 
+							dos.writeUTF("Está bom tempo!");
+						}
+						dos.flush();
+						dos.close();
+						s.close();
+				} catch (IOException e) {
+
+				} 
+			}
+		}
+		 
+		timer.schedule(new dayNight(), 0, 15000);
+		timer.schedule(new goodTimebadTime(), 0, 20000);
+
+		//String command = "";
+		/*while (true) {
+			//command = in.next();
+			//System.out.println(command);
 			final Thread tt = new Thread() {
 
 					public void run() {
 						while(true) {
 							try {
-								Socket s = new Socket("192.168.0.101", 4444);
+								Socket s = new Socket("192.168.0.100", 4444);
 								DataOutputStream dos = new DataOutputStream(
 									(s.getOutputStream()));
 								
@@ -63,20 +116,17 @@ public class Main {
 								dos.flush();
 								dos.close();
 								s.close();
-								Thread.sleep(60000);
+								//Thread.sleep(60000);
 						} catch (IOException e) {
 
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						} 
 					}
 				}
 			};
 			tt.start();
+			Thread.sleep(10000);*/
 		}
 
-		in.close();
 
 	}
 
@@ -126,4 +176,4 @@ public class Main {
 	 * 
 	 * }
 	 */
-}
+//}

@@ -82,6 +82,8 @@ public class Bath extends Fragment {
             view = inflater.inflate(R.layout.bath_layout_large, container, false);
         }
 
+        Toast.makeText(getActivity().getApplicationContext(), "BATH!", Toast.LENGTH_SHORT).show();
+
         receiveMessage();
 
         lightButton();
@@ -104,7 +106,7 @@ public class Bath extends Fragment {
 
                     public void run() {
                         try {
-                            Socket s = new Socket("192.168.0.100", 4444);
+                            Socket s = new Socket("192.168.0.101", 4444);
                             DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                             dos.writeUTF("QUANTIDADE DE AGUA: " + progress);
                             dos.flush();
@@ -148,7 +150,7 @@ public class Bath extends Fragment {
 
                     public void run() {
                         try {
-                            Socket s = new Socket("192.168.0.100", 4444);
+                            Socket s = new Socket("192.168.0.101", 4444);
                             DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                             dos.writeUTF("TEMPERATURA DA AGUA: " + progress + " GRAUS");
                             dos.flush();
@@ -195,7 +197,7 @@ public class Bath extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket("192.168.0.101", 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 if(x%2==0){
                                     dos.writeUTF("LUZ DO WC LIGADA");
@@ -289,6 +291,7 @@ public class Bath extends Fragment {
     }
 
     public void receiveMessage(){
+
         Thread t = new Thread(){
 
             public void run(){
@@ -299,18 +302,13 @@ public class Bath extends Fragment {
                         DataInputStream dis = new DataInputStream(s.getInputStream());
                         final String msg = dis.readUTF();
 
-                        /*getActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(getActivity(), "Hello", Toast.LENGTH_SHORT).show();
-                            }
-                        });*/
-
-                       view.post(new Runnable() {
+                        view.post(new Runnable() {
                             @Override
                             public void run() {
-                                showToast(view.getContext(), msg);
+                                showToast(getActivity().getApplicationContext(), msg);
                             }
                         });
+
                         dis.close();
                         s.close();
                     }
@@ -326,6 +324,8 @@ public class Bath extends Fragment {
     private void showToast(Context ctx, String msg) {
         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
     }
+
+
 
     /*public void showToast2(final String toast)
     {
