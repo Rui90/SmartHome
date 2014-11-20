@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Handler;
 
 public class SendMessage {
 	
@@ -25,6 +26,6 @@ public class SendMessage {
             e.printStackTrace();
         }
         return null;
-    }
+    }	
 	
 }

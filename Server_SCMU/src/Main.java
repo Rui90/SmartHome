@@ -14,7 +14,10 @@ public class Main {
 	private static ArrayList<String> divisoes = new ArrayList<String>(); 
 	private static boolean auto = true; 
 	private static int time = 20000;
-	
+	private static Room room = new Room(false, false, false, false);
+	private static Bedroom bedroom = new Bedroom(false, false, 1); 
+	private static Bath bath = new Bath(false);
+	private static Kitchen kitchen = new Kitchen(false, false); 
 	/*
 	 * private static ServerSocket serverSocket; private static Socket
 	 * clientSocket; private static ObjectInputStream inputStreamReader; private
@@ -59,16 +62,30 @@ public class Main {
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
-						if(day && goodTime) {
-							day = false; 
-							dos.writeUTF("É de noite!");
-							// abrir janelas de todas as divisoes
-						} else if(day && !goodTime){
+						if(!day && goodTime) {
 							day = true; 
-							// close windows
-							// acender luz na divisao corrente! 
+							dos.writeUTF("É de noite!");
+							room.setLight(false);
+							room.setWindow(true);
+							bedroom.setLight(false);
+							bedroom.setWindow(true);
+							kitchen.setLight(false);
+							kitchen.setWindow(true);
+						} else if(!day && !goodTime){
+							day = true; 
 							dos.writeUTF("É de dia!");
-						} else if (!day){
+							room.setWindow(false);	
+							bedroom.setWindow(false);
+							kitchen.setWindow(false);
+							//  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
+						} else {
+							day = false;
+							room.setLight(false);
+							room.setWindow(false);	
+							bedroom.setLight(false);
+							bedroom.setWindow(false);
+							kitchen.setWindow(false);
+							kitchen.setLight(false);
 							// fechar janelas na app
 							// acender luz na divisao corrente
 						}
@@ -89,20 +106,38 @@ public class Main {
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
-						if(day && goodTime) {
-							goodTime = false;
-							time = 15000; 
+						if(!day && !goodTime) {
+							goodTime = true; 
 							dos.writeUTF("É de noite!");
-							// abrir janelas de todas as divisoes
-						} else if(day && !goodTime){
-							goodTime = true;
+							room.setLight(false);
+							room.setWindow(true);
+							bedroom.setLight(false);
+							bedroom.setWindow(true);
+							kitchen.setLight(false);
+							kitchen.setWindow(true);
 							time = 20000; 
-							// close windows
-							// acender luz na divisao corrente! 
+						} else if(!day && goodTime){
+							goodTime = false; 
 							dos.writeUTF("É de dia!");
-						} else if (!day){
+							room.setWindow(false);
+							bedroom.setWindow(false);
+							kitchen.setWindow(false);
+							time = 15000; 
+							//  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
+						} else if (day && goodTime){
+							goodTime = false;
+							room.setLight(false);
+							room.setWindow(false);	
+							bedroom.setLight(false);
+							bedroom.setWindow(false);
+							kitchen.setWindow(false);
+							kitchen.setLight(false);
+							time = 15000; 
 							// fechar janelas na app
 							// acender luz na divisao corrente
+						} else {
+							goodTime = true; 
+							time = 20000; 
 						}
 						dos.flush();
 						dos.close();
@@ -114,7 +149,7 @@ public class Main {
 		}
 		 
 		timer.schedule(new dayNight(), 0, 15000);
-		timer.schedule(new goodTimebadTime(), 0, 20000);
+		timer.schedule(new goodTimebadTime(), 0, time);
 
 		//String command = "";
 		/*while (true) {
