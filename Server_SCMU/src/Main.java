@@ -1,6 +1,8 @@
+import java.awt.List;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,6 +11,9 @@ public class Main {
 
 	private static boolean day = true; 
 	private static boolean goodTime = true;
+	private static ArrayList<String> divisoes = new ArrayList<String>(); 
+	private static boolean auto = true; 
+	private static int time = 20000;
 	
 	/*
 	 * private static ServerSocket serverSocket; private static Socket
@@ -24,7 +29,6 @@ public class Main {
 		Timer timer = new Timer();
 
 		Thread t = new Thread() {
-
 			public void run() {
 				System.out.println("SERVER STARTED");
 				try {
@@ -33,6 +37,10 @@ public class Main {
 						Socket s = ss.accept();
 						DataInputStream dis = new DataInputStream(
 								s.getInputStream());
+						
+						// se modo automatico, auto = true, senão auto = false! 
+						// adicionar os 4 access Points por ordem.
+						
 						System.out.println(dis.readUTF());
 						dis.close();
 						s.close();
@@ -51,13 +59,20 @@ public class Main {
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
-						if(day) {
+						if(day && goodTime) {
 							day = false; 
 							dos.writeUTF("É de noite!");
-						} else {
+							// abrir janelas de todas as divisoes
+						} else if(day && !goodTime){
 							day = true; 
+							// close windows
+							// acender luz na divisao corrente! 
 							dos.writeUTF("É de dia!");
+						} else if (!day){
+							// fechar janelas na app
+							// acender luz na divisao corrente
 						}
+						
 						dos.flush();
 						dos.close();
 						s.close();
@@ -74,12 +89,20 @@ public class Main {
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
-						if(goodTime) {
-							goodTime = false; 
-							dos.writeUTF("Está mau tempo!");
-						} else {
-							goodTime = true; 
-							dos.writeUTF("Está bom tempo!");
+						if(day && goodTime) {
+							goodTime = false;
+							time = 15000; 
+							dos.writeUTF("É de noite!");
+							// abrir janelas de todas as divisoes
+						} else if(day && !goodTime){
+							goodTime = true;
+							time = 20000; 
+							// close windows
+							// acender luz na divisao corrente! 
+							dos.writeUTF("É de dia!");
+						} else if (!day){
+							// fechar janelas na app
+							// acender luz na divisao corrente
 						}
 						dos.flush();
 						dos.close();
