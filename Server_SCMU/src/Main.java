@@ -49,7 +49,7 @@ public class Main {
 					ServerSocket ss = new ServerSocket(4444);
 					while (true) {
 						Socket s = ss.accept();
-						DataInputStream dis = new DataInputStream(
+						ObjectInputStream dis = new ObjectInputStream(
 								s.getInputStream());
 					
 						//cria-se uma nova mensagem
@@ -96,8 +96,8 @@ public class Main {
 		class dayNight extends TimerTask {
 			public void run() {
 					try {
-						Socket s = new Socket("192.168.1.101", 4444);
-						DataOutputStream dos = new DataOutputStream(
+						Socket s = new Socket("192.168.1.103", 4444);
+						ObjectOutputStream dos = new ObjectOutputStream(
 							(s.getOutputStream()));
 						
 						if(!day && goodTime) {
@@ -140,8 +140,8 @@ public class Main {
 		class goodTimebadTime extends TimerTask {
 			public void run() {
 					try {
-						Socket s = new Socket("192.168.1.101", 4444);
-						DataOutputStream dos = new DataOutputStream(
+						Socket s = new Socket("192.168.1.103", 4444);
+						ObjectOutputStream dos = new ObjectOutputStream(
 							(s.getOutputStream()));
 						
 						if(!day && !goodTime) {
