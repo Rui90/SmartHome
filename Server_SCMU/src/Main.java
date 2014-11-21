@@ -18,6 +18,17 @@ public class Main {
 	private static Bedroom bedroom = new Bedroom(false, false, 1); 
 	private static Bath bath = new Bath(false);
 	private static Kitchen kitchen = new Kitchen(false, false); 
+	private static ArrayList<AccessPoint> access = new ArrayList<AccessPoint>(); 
+	
+	
+    private static final int ROOM = 1;
+    private static final int BEDROOM = 2;
+    private static final int BATH = 4;
+    private static final int KITCHEN = 3;
+
+    private static final int WINDOW = 10;
+    private static final int LIGHT = 11;
+	
 	/*
 	 * private static ServerSocket serverSocket; private static Socket
 	 * clientSocket; private static ObjectInputStream inputStreamReader; private
@@ -40,7 +51,34 @@ public class Main {
 						Socket s = ss.accept();
 						DataInputStream dis = new DataInputStream(
 								s.getInputStream());
-						
+					
+						//cria-se uma nova mensagem
+						Mensagem m = new Mensagem(1, 2, true);
+						if(m.getDivisao() == 0) {
+							
+						} else if(m.getDivisao() == ROOM){
+							if(m.getElemencto() == WINDOW){
+								room.setWindow(m.getCondicao());
+							}else if(m.getDivisao() == LIGHT){
+								room.setLight(m.getCondicao());
+							}								
+						}else if(m.getDivisao() == BEDROOM){
+							if(m.getElemencto() == WINDOW){
+								bedroom.setWindow(m.getCondicao());
+							}else if(m.getDivisao() == LIGHT){
+								bedroom.setLight(m.getCondicao());
+							}		
+						}else if(m.getDivisao() == KITCHEN){
+							if(m.getElemencto() == WINDOW){
+								kitchen.setWindow(m.getCondicao());
+							}else if(m.getDivisao() == LIGHT){
+								kitchen.setLight(m.getCondicao());
+							}		
+						}else if(m.getDivisao() == BATH ){
+							if(m.getElemencto() == LIGHT){
+								bath.setLight(m.getCondicao());
+							}								
+						}
 						// se modo automatico, auto = true, senão auto = false! 
 						// adicionar os 4 access Points por ordem.
 						
@@ -58,7 +96,7 @@ public class Main {
 		class dayNight extends TimerTask {
 			public void run() {
 					try {
-						Socket s = new Socket("192.168.0.100", 4444);
+						Socket s = new Socket("192.168.1.101", 4444);
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
@@ -102,7 +140,7 @@ public class Main {
 		class goodTimebadTime extends TimerTask {
 			public void run() {
 					try {
-						Socket s = new Socket("192.168.0.100", 4444);
+						Socket s = new Socket("192.168.1.101", 4444);
 						DataOutputStream dos = new DataOutputStream(
 							(s.getOutputStream()));
 						
