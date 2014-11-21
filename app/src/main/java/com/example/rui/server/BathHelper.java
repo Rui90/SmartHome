@@ -1,9 +1,9 @@
-
-public class Bath {
+package com.example.rui.server;
+public class BathHelper {
 	
 	private boolean light;
 
-	public Bath(boolean light) {
+	public BathHelper(boolean light) {
 		this.light = light; 
 	}
 	

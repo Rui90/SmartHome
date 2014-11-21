@@ -50,6 +50,8 @@ import java.net.UnknownHostException;
 import java.util.*;
 import android.os.Handler;
 
+import com.example.rui.server.*;
+
 public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -350,31 +352,36 @@ public class Home extends FragmentActivity
                                 "Frequency: " + wifiScanList.get(i).frequency +
                                 "\n" + "Distance: " + value + "\n");
                     }
+                    Log.d("cheguei", "sou boss");
 
-                    messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
+                    /*messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
                             + "\n" + "Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(1).getDistance()
                             + "\n" + "Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(2).getDistance()
                             +  "\n" + "Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();
+                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();*/
 
                     Thread t = new Thread() {
 
                         public void run() {
                             try {
+                                Log.d("Tag", "cenas cenas cenas cenas");
                                 Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                                Log.d("Tag", "TA333333G TAGA TAG ATAG TAG GAGA KIASDAD!");
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Log.d("Tag", "TAG TA2222222GA TAG ATAG TAG GAGA KIASDAD!");
                                 Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList());
+                                Log.d("Tag", "TAG TAGA TAG ATAG TAG GAGA KIASDAD!");
                                 dos.writeObject(msg);
                                 dos.flush();
                                 dos.close();
                                 s.close();
                             } catch (UnknownHostException e) {
-
+                                e.printStackTrace();
                             } catch (IOException e) {
-
+                                e.printStackTrace();
                             }
                         }
                     };

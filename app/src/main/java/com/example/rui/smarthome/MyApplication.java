@@ -2,12 +2,15 @@ package com.example.rui.smarthome;
 
 import android.app.Application;
 
+import com.example.rui.server.*;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static final String IP = "192.168.1.102";
+    private static final String IP = "192.168.1.100";
 
     public String getIp() {
         return this.IP;
@@ -16,7 +19,7 @@ public class MyApplication extends Application {
 
     //access points
     private boolean mode = false;
-    private List<AccessPoint> accesspoints = new ArrayList<AccessPoint>();
+    private LinkedList<AccessPoint> accesspoints = new LinkedList<AccessPoint>();
 
 
 
@@ -39,7 +42,7 @@ public class MyApplication extends Application {
         return accesspoints.size();
     }
 
-    public List<AccessPoint> getList(){
+    public  LinkedList<AccessPoint> getList(){
         return accesspoints;
     }
 

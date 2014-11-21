@@ -1,5 +1,6 @@
+package com.example.rui.server;
 
-public class Bedroom {
+public class BedroomHelper {
 	
 	public boolean isLight() {
 		return light;
@@ -22,7 +23,7 @@ public class Bedroom {
 	public int getModo(int modo) {
 		return this.modo; 
 	}
-	public Bedroom(boolean light, boolean window, int modo) {
+	public BedroomHelper(boolean light, boolean window, int modo) {
 		this.light = light;
 		this.modo = modo;
 		this.window = window;

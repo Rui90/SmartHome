@@ -1,5 +1,5 @@
-
-public class Room {
+package com.example.rui.server;
+public class RoomHelper {
 	
 	public boolean isLight() {
 		return light;
@@ -25,8 +25,8 @@ public class Room {
 	public void setWindow(boolean window) {
 		this.window = window;
 	}
-	public Room(boolean light, boolean arcondicionado, boolean tv,
-			boolean window) {
+	public RoomHelper(boolean light, boolean arcondicionado, boolean tv,
+                      boolean window) {
 		this.light = light;
 		this.arcondicionado = arcondicionado;
 		this.tv = tv;

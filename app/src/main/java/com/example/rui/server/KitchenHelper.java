@@ -1,11 +1,12 @@
+package com.example.rui.server;
 
-public class Kitchen {
+public class KitchenHelper {
 	
 	private boolean light;
 	private boolean window;	
 	
-	public Kitchen(boolean light,
-			boolean window) {
+	public KitchenHelper(boolean light,
+                         boolean window) {
 		super();
 		this.light = light;
 		this.window = window;

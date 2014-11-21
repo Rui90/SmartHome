@@ -1,4 +1,10 @@
-public class AccessPoint {
+package com.example.rui.server;
+
+import java.io.Serializable;
+
+public class AccessPoint  implements Serializable {
+	
+    private static final long serialVersionUID = 1L;
 
     private String scanResult;
     private double distance;
