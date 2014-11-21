@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static final String IP = "192.168.1.100";
+    private static final String IP = "192.168.1.102";
 
     public String getIp() {
         return this.IP;
@@ -17,6 +17,8 @@ public class MyApplication extends Application {
     //access points
     private boolean mode = false;
     private List<AccessPoint> accesspoints = new ArrayList<AccessPoint>();
+
+
 
     public void setMode(boolean b) {
         this.mode = b;
@@ -37,8 +39,12 @@ public class MyApplication extends Application {
         return accesspoints.size();
     }
 
+    public List<AccessPoint> getList(){
+        return accesspoints;
+    }
 
-   // ROOM
+
+    // ROOM
     private boolean roomACState;
     private int roomACValue;
     private List<Perfil> perfis = new ArrayList<Perfil>();
@@ -61,7 +67,7 @@ public class MyApplication extends Application {
     }
 
     public Perfil getPerfil(int pos){
-       return perfis.get(pos);
+        return perfis.get(pos);
     }
 
     public List<Perfil> getPerfis() {

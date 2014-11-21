@@ -28,6 +28,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -136,7 +138,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 view.post(new Runnable() {
                                     @Override
@@ -169,7 +171,7 @@ public class Room extends Fragment {
                                 public void run() {
                                     try {
                                         Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                        DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                         dos.writeUTF(messsage);
                                         dos.flush();
                                         dos.close();
@@ -208,7 +210,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 view.post(new Runnable() {
                                     @Override
@@ -246,7 +248,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 dos.flush();
                                 dos.close();
@@ -298,7 +300,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(x%2==0){
                                     dos.writeUTF("LUZ DA SALA LIGADA");
                                     view.post(new Runnable() {
@@ -352,7 +354,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(y%2==0){
                                     dos.writeUTF("JANELA DA SALA ABERTA");
                                     view.post(new Runnable() {
@@ -407,7 +409,7 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(z%2==0){
                                     dos.writeUTF("TV DA SALA LIGADA");
                                     view.post(new Runnable() {
@@ -469,7 +471,7 @@ public class Room extends Fragment {
                     ServerSocket ss = new ServerSocket(4444);
                     while(true){
                         Socket s = ss.accept();
-                        DataInputStream dis = new DataInputStream(s.getInputStream());
+                        ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
                         final String msg = dis.readUTF();
                         view.post(new Runnable() {
                             @Override

@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInput;
@@ -82,7 +83,7 @@ public class Home extends FragmentActivity
 
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
-       // MySyncTask asyncTask = new MySyncTask (1,2);
+        // MySyncTask asyncTask = new MySyncTask (1,2);
         //asyncTask.execute(1000);
         //hm = new Handler();
         /*hm=new Handler()
@@ -141,8 +142,8 @@ public class Home extends FragmentActivity
 
     class RemindTask extends TimerTask {
         public void run() {
-                wifiReceiver = new WifiScanReceiver();
-                mainWifiObj.startScan();
+            wifiReceiver = new WifiScanReceiver();
+            mainWifiObj.startScan();
         }
     }
 
@@ -214,7 +215,7 @@ public class Home extends FragmentActivity
                 break;
             case 3:
                 mTitle = getString(R.string.kitchen);
-            break;
+                break;
             case 4:
                 mTitle = getString(R.string.bath);
                 break;
@@ -303,7 +304,7 @@ public class Home extends FragmentActivity
         @SuppressLint("UseValueOf")
         public void onReceive(Context c, Intent intent) {
             if ( ((MyApplication) getApplication()).getMode()) {
-             //   Log.d("entrei", "mode: " + mode);
+                //   Log.d("entrei", "mode: " + mode);
                 List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
                 wifis = new String[wifiScanList.size()];
 
@@ -312,7 +313,7 @@ public class Home extends FragmentActivity
                 int break_aux = 0; // uma variavel que vai fazer com que nao se tenha que percorrer toda a lista de wifi... sempre que encontrarmos na wifiScanList um accessPoint igual a
                 // uma das nossas guardadas, aumenta, quando chegar as 4 é porque ja comparamos com todos e nao vale a pena continuar
                 if (((MyApplication) getApplication()).getSize() == 4) {
-                   // Log.d("entrei", "mode2: " + mode);
+                    // Log.d("entrei", "mode2: " + mode);
                     minDist = ((MyApplication) getApplication()).getAccessPoint(0).getDistance();
                     for (int i = 0; i < wifiScanList.size() && break_aux < 4; i++) {
                         for (int j = 0; j < ((MyApplication) getApplication()).getSize(); j++) {
@@ -322,7 +323,7 @@ public class Home extends FragmentActivity
                                         wifiScanList.get(i).frequency);
                                 double AccessPointDist = ((MyApplication) getApplication()).getAccessPoint(j).getDistance();
                                 if (AccessPointDist < minDist) {
-                                  //  Log.d("entrei", "mode3: " + mode);
+                                    //  Log.d("entrei", "mode3: " + mode);
                                     minDist = AccessPointDist;
                                     if (newDist < minDist) {
                                         Log.d("entrei", "nunca ca entro e nao sei porque!");
@@ -352,16 +353,36 @@ public class Home extends FragmentActivity
 
                     messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
-                            + "-Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
+                            + "\n" + "Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(1).getDistance()
-                            + "-Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
+                            + "\n" + "Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(2).getDistance()
-                            +  "-Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
+                            +  "\n" + "Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();
 
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList());
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
+
                     //Log.d("tag", messsage);
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    /*SendMessage sendMessageTask = new SendMessage();
+                    sendMessageTask.execute();*/
                 }
             }
         }
@@ -574,7 +595,7 @@ public class Home extends FragmentActivity
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
             return rootView;
         }
@@ -589,7 +610,7 @@ public class Home extends FragmentActivity
 
 
 
-    String advice = "";
+    /*String advice = "";
 
     class MySyncTask extends AsyncTask<Integer, Integer, String> {
         @Override
@@ -617,10 +638,10 @@ public class Home extends FragmentActivity
         protected void onPreExecute() {
             //log.i("start");
         }
-    }
+    }*/
 
 
-    private class SendMessage extends AsyncTask<Void, Void, Void> {
+    /*private class SendMessage extends AsyncTask<Void, Void, Void> {
         private Socket client;
         ObjectOutputStream toServer = null;
         ObjectInputStream fromServer = null;
@@ -629,7 +650,7 @@ public class Home extends FragmentActivity
         protected Void doInBackground(Void... params) {
             try {
 
-                client = new Socket("192.168.152.1", 4444); // connect to the server
+                client = new Socket("192.168.1.102", 4444); // connect to the server
 
                 toServer = new ObjectOutputStream(client.getOutputStream());
                 fromServer = new ObjectInputStream(client.getInputStream());
@@ -662,6 +683,6 @@ public class Home extends FragmentActivity
             return null;
         }
 
-    }
+    }*/
 
 }
