@@ -135,7 +135,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 view.post(new Runnable() {
@@ -168,7 +168,7 @@ public class Room extends Fragment {
 
                                 public void run() {
                                     try {
-                                        Socket s = new Socket("192.168.0.100", 4444);
+                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                         DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                         dos.writeUTF(messsage);
                                         dos.flush();
@@ -207,7 +207,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 view.post(new Runnable() {
@@ -245,7 +245,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 dos.writeUTF(messsage);
                                 dos.flush();
@@ -297,7 +297,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 if(x%2==0){
                                     dos.writeUTF("LUZ DA SALA LIGADA");
@@ -351,7 +351,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 if(y%2==0){
                                     dos.writeUTF("JANELA DA SALA ABERTA");
@@ -406,7 +406,7 @@ public class Room extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
                                 if(z%2==0){
                                     dos.writeUTF("TV DA SALA LIGADA");

@@ -7,6 +7,11 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
+    private static final String IP = "192.168.152.1";
+
+    public String getIp() {
+        return this.IP;
+    }
     public MyApplication() {}
 
     //access points

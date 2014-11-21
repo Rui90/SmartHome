@@ -334,7 +334,7 @@ public class Home extends FragmentActivity
                             }
                         }
                     }
-                    cases(aux);
+                    cases(aux+1);
                 }
 
                 if (wifiScanList.size() >= 4 && ((MyApplication) getApplication()).getSize() == 0) {
@@ -629,7 +629,7 @@ public class Home extends FragmentActivity
         protected Void doInBackground(Void... params) {
             try {
 
-                client = new Socket("192.168.0.101", 4444); // connect to the server
+                client = new Socket("192.168.152.1", 4444); // connect to the server
 
                 toServer = new ObjectOutputStream(client.getOutputStream());
                 fromServer = new ObjectInputStream(client.getInputStream());
