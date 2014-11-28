@@ -23,6 +23,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
+import com.example.rui.server.Mensagem;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -45,6 +47,8 @@ public class Bath extends Fragment {
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
+    private static final int BATH = 4;
+    private static final int LIGHT = 11;
 
     private static MyApplication myApplication = new MyApplication(0);
 
@@ -199,10 +203,11 @@ public class Bath extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.101", 4444);
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(x%2==0){
-                                    dos.writeUTF("LUZ DO WC LIGADA");
+                                    Mensagem msg = new Mensagem(BATH, LIGHT, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -210,7 +215,8 @@ public class Bath extends Fragment {
                                         }
                                     });
                                 } else {
-                                    dos.writeUTF("LUZ DO WC DESLIGADA");
+                                    Mensagem msg = new Mensagem(BATH, LIGHT, false);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {

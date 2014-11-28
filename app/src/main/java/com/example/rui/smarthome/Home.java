@@ -158,6 +158,7 @@ public class Home extends FragmentActivity
 
 
     private void cases(int position) {
+        final int pos = position;
         switch(position) {
             case 0: {
                 Fragment fragment = new HomeView();
@@ -202,6 +203,26 @@ public class Home extends FragmentActivity
                 break;
             }
         }
+
+        Thread t = new Thread() {
+
+            public void run() {
+                try {
+                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                    Mensagem msg = new Mensagem(pos);
+                    dos.writeObject(msg);
+                    dos.flush();
+                    dos.close();
+                    s.close();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
     }
 
     public void onSectionAttached(int number) {
@@ -328,10 +349,8 @@ public class Home extends FragmentActivity
                                     //  Log.d("entrei", "mode3: " + mode);
                                     minDist = AccessPointDist;
                                     if (newDist < minDist) {
-                                        Log.d("entrei", "nunca ca entro e nao sei porque!");
                                         minDist = newDist;
                                         aux = i;
-                                        Log.d("entrei", "valor aux: " + aux + " valor de minDist: " + minDist);
                                     }
                                 }
                             }
@@ -367,13 +386,9 @@ public class Home extends FragmentActivity
 
                         public void run() {
                             try {
-                                Log.d("Tag", "cenas cenas cenas cenas");
                                 Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
-                                Log.d("Tag", "TA333333G TAGA TAG ATAG TAG GAGA KIASDAD!");
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Log.d("Tag", "TAG TA2222222GA TAG ATAG TAG GAGA KIASDAD!");
                                 Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList());
-                                Log.d("Tag", "TAG TAGA TAG ATAG TAG GAGA KIASDAD!");
                                 dos.writeObject(msg);
                                 dos.flush();
                                 dos.close();

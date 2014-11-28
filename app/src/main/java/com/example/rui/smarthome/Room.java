@@ -23,6 +23,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rui.server.Mensagem;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -59,7 +61,10 @@ public class Room extends Fragment {
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
     private Switch arcondicionadoOnOff;
+    private static final int ROOM = 1;
 
+    private static final int WINDOW = 10;
+    private static final int LIGHT = 11;
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -302,7 +307,8 @@ public class Room extends Fragment {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(x%2==0){
-                                    dos.writeUTF("LUZ DA SALA LIGADA");
+                                    Mensagem msg = new Mensagem(ROOM, LIGHT, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -310,7 +316,8 @@ public class Room extends Fragment {
                                         }
                                     });
                                 } else {
-                                    dos.writeUTF("LUZ DA SALA DESLIGADA");
+                                    Mensagem msg = new Mensagem(ROOM, LIGHT, false);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -354,9 +361,11 @@ public class Room extends Fragment {
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                               // ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(y%2==0){
-                                    dos.writeUTF("JANELA DA SALA ABERTA");
+                                    Mensagem msg = new Mensagem(ROOM, WINDOW, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -364,7 +373,8 @@ public class Room extends Fragment {
                                         }
                                     });
                                 } else {
-                                    dos.writeUTF("JANELA DA SALA FECHADA");
+                                    Mensagem msg = new Mensagem(ROOM, WINDOW, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {

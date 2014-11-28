@@ -27,7 +27,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rui.server.Mensagem;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -45,6 +48,11 @@ public class Bedroom extends Fragment {
     private Socket client;
     private PrintWriter printwriter;
     private String messsage;
+
+    private static final int BEDROOM = 2;
+
+    private static final int WINDOW = 10;
+    private static final int LIGHT = 11;
 
     private int x, y = 0;
 
@@ -381,13 +389,46 @@ public class Bedroom extends Fragment {
             @Override
             public void onClick(View view) {
                 if(x%2==0){
-                    messsage = "Ligar luz4";
+                    Thread t = new Thread() {
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem(BEDROOM, LIGHT, true);
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    t.start();
+                    /*messsage = "Ligar luz4";
                     SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    sendMessageTask.execute();*/
                 } else {
-                    messsage = "Desligar luz4";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    Thread t = new Thread() {
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem(BEDROOM, LIGHT, false);
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    t.start();
                 }
                 x++;
             }
@@ -398,32 +439,47 @@ public class Bedroom extends Fragment {
         ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
 
         button.setBackgroundColor(Color.WHITE);
-        /*button.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    button.setBackgroundColor(Color.LTGRAY);
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    button.setBackgroundColor(Color.WHITE);
-                }
-
-                return true;
-            }
-        });*/
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(y%2==0){
-                    messsage = "Abrir janela3";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    Thread t = new Thread() {
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem(BEDROOM, WINDOW, true);
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    t.start();
                 } else {
-                    messsage = "Fechar janela3";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();
+                    Thread t = new Thread() {
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem(BEDROOM, WINDOW, false);
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    t.start();
                 }
                 y++;
             }

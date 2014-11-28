@@ -27,11 +27,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rui.server.Mensagem;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -62,6 +65,10 @@ public class Kitchen extends Fragment {
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
+    private static final int KITCHEN = 3;
+
+    private static final int WINDOW = 10;
+    private static final int LIGHT = 11;
 
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -476,10 +483,11 @@ public class Kitchen extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if(x%2==0){
-                                    dos.writeUTF("LUZ DA COZINHA LIGADA");
+                                    Mensagem msg = new Mensagem(KITCHEN, LIGHT, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -487,6 +495,8 @@ public class Kitchen extends Fragment {
                                         }
                                     });
                                 } else {
+                                    Mensagem msg = new Mensagem(KITCHEN, LIGHT, false);
+                                    dos.writeObject(msg);
                                     dos.writeUTF("LUZ DA COZINHA DESLIGADA");
                                     view.post(new Runnable() {
                                         @Override
@@ -531,10 +541,11 @@ public class Kitchen extends Fragment {
 
                         public void run() {
                             try {
-                                Socket s = new Socket("192.168.0.100", 4444);
-                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 if (y % 2 == 0) {
-                                    dos.writeUTF("JANELA DA COZINHA ABERTA");
+                                    Mensagem msg = new Mensagem(KITCHEN, WINDOW, true);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -542,7 +553,8 @@ public class Kitchen extends Fragment {
                                         }
                                     });
                                 } else {
-                                    dos.writeUTF("JANELA DA COZINHA FECHADA");
+                                    Mensagem msg = new Mensagem(KITCHEN, WINDOW, false);
+                                    dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
