@@ -31,8 +31,12 @@ public class Perfil {
         this.name_perfil = perfil;
     }
 
-    public void setValue(boolean value) {
-        this.window_perfil = value;
+    public void setWindow_perfil(boolean window_perfil) {
+        this.window_perfil = window_perfil;
+    }
+
+    public void setLight_perfil(boolean value){
+        this.light_perfil = value;
     }
 
     public void light(boolean onOff){

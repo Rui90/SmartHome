@@ -187,12 +187,11 @@ public class Bedroom extends Fragment {
 
                     final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                     final Switch window = (Switch) dialog.findViewById(R.id.window);
-                    final TextView value = (TextView) dialog.findViewById(R.id.valueLight);
+                    final Switch light  = (Switch) dialog.findViewById(R.id.lightSwitch);
 
                     if (prof != null) {
                         name.setText(prof.getName_perfil());
                         window.setChecked(prof.getLight_Perfil());
-                        value.setText(String.valueOf(prof.getValue()));
                     }
 
                     apagar.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +205,7 @@ public class Bedroom extends Fragment {
                             }
 
                             for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
-                                list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis()getPerfil(i).getName_perfil());
+                                list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
                             }
                             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                                     android.R.layout.simple_spinner_item, list);
@@ -227,24 +226,20 @@ public class Bedroom extends Fragment {
                         public void onClick(View v) {
                             String name_perfil = name.getText().toString();
                             boolean window_perfil = window.isChecked();
+                            boolean light_perfil = light.isChecked();
                             int valor = 0;
-                            if (!value.getText().toString().equals("")) {
-                                valor = Integer.parseInt(value.getText().toString());
-                            }
+
                             List<String> list = new ArrayList<String>();
-                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-                                if (((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil().equals(prof.getName_perfil())) {
-                                    ((MyApplication) getActivity().getApplication()).getPerfil(i).setNamePerfil(name_perfil);
-                                    ((MyApplication) getActivity().getApplication()).getPerfil(i).setValue(valor);
-                                    ((MyApplication) getActivity().getApplication()).getPerfil(i).light(window_perfil);
+                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                                if (((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(prof.getName_perfil())) {
+                                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).setNamePerfil(name_perfil);
+                                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).setWindow_perfil(window_perfil);
+                                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).setLight_perfil(light_perfil);
                                 }
                             }
 
-                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-
-                                Log.d("tag", "size: " + list.size() + " MyApp Size: " +
-                                        ((MyApplication) getActivity().getApplication()).getPerfisSize());
-                                list.add(((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil());
+                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                                list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
                             }
 
                             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
@@ -254,13 +249,25 @@ public class Bedroom extends Fragment {
 
                             dialog.hide();
 
-                            if (window_perfil) {
-                                messsage = "Modo \"" + name_perfil + "\" criado com janela aberta e intensidade da luz a " + valor;
-                            } else {
-                                messsage = "Modo \"" + name_perfil + "\" criado com janela fechada e intensidade da luz a " + valor;
-                            }
-                            SendMessage sendMessageTask = new SendMessage();
-                            sendMessageTask.execute();
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(true);
+                                        Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
+                                        dos.writeObject(msg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+
+                                    } catch (IOException e) {
+
+                                    }
+                                }
+                            };
                         }
 
                     });
@@ -338,14 +345,25 @@ public class Bedroom extends Fragment {
                         spinner.setAdapter(dataAdapter);
                         //Closes the dialog
                         dialog.hide();
+                        Thread t = new Thread() {
 
-                        if(window_perfil){
-                            messsage = "Modo \"" + name_perfil + "\" criado com janela aberta e intensidade da luz a " + valor;
-                        } else {
-                            messsage = "Modo \"" + name_perfil + "\" criado com janela fechada e intensidade da luz a " + valor;
-                        }
-                        SendMessage sendMessageTask = new SendMessage();
-                        sendMessageTask.execute();
+                            public void run() {
+                                try {
+                                    Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(true);
+                                    Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
+                                    dos.writeObject(msg);
+                                    dos.flush();
+                                    dos.close();
+                                    s.close();
+                                } catch (UnknownHostException e) {
+
+                                } catch (IOException e) {
+
+                                }
+                            }
+                        };
                     }
 
                 });
@@ -362,69 +380,40 @@ public class Bedroom extends Fragment {
 
     public void lightButton(){
         ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
-
         button.setBackgroundColor(Color.WHITE);
-        /*button.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    button.setBackgroundColor(Color.LTGRAY);
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    button.setBackgroundColor(Color.WHITE);
-                }
-
-                return true;
-            }
-        });*/
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(x%2==0){
-                    Thread t = new Thread() {
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem(BEDROOM, LIGHT, true);
+                Thread t = new Thread() {
+
+                    public void run() {
+                        try {
+                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                            ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                            if(!((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(true);
+                                Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
                                 dos.writeObject(msg);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    t.start();
-                    /*messsage = "Ligar luz4";
-                    SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();*/
-                } else {
-                    Thread t = new Thread() {
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem(BEDROOM, LIGHT, false);
+                                Toast.makeText(getActivity().getApplicationContext(), "LUZ LIGADA!", Toast.LENGTH_LONG).show();
+                            } else {
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(false);
+                                Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
                                 dos.writeObject(msg);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                Toast.makeText(getActivity().getApplicationContext(), "LUZ DESLIGADA!", Toast.LENGTH_LONG).show();
                             }
+                            x++;
+                            dos.flush();
+                            dos.close();
+                            s.close();
+                        } catch (UnknownHostException e) {
+
+                        } catch (IOException e) {
+
                         }
-                    };
-                    t.start();
-                }
-                x++;
+                    }
+                };
             }
         });
     }
@@ -436,46 +425,34 @@ public class Bedroom extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(y%2==0){
-                    Thread t = new Thread() {
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem(BEDROOM, WINDOW, true);
+                Thread t = new Thread() {
+
+                    public void run() {
+                        try {
+                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                            ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                            if(!((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()){
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setWindow(true);
+                                Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
                                 dos.writeObject(msg);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    t.start();
-                } else {
-                    Thread t = new Thread() {
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem(BEDROOM, WINDOW, false);
+                                Toast.makeText(getActivity().getApplicationContext(), "JANELA ABERTA!", Toast.LENGTH_LONG).show();
+                            } else {
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setWindow(false);
+                                Mensagem msg = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
                                 dos.writeObject(msg);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                Toast.makeText(getActivity().getApplicationContext(), "JANELA FECHADA!", Toast.LENGTH_LONG).show();
                             }
+                            x++;
+                            dos.flush();
+                            dos.close();
+                            s.close();
+                        } catch (UnknownHostException e) {
+
+                        } catch (IOException e) {
+
                         }
-                    };
-                    t.start();
-                }
-                y++;
+                    }
+                };
             }
         });
     }
@@ -505,28 +482,5 @@ public class Bedroom extends Fragment {
         return null;
     }
 
-    private class SendMessage extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                client = new Socket("192.168.0.101", 4444); // connect to the server
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-                printwriter.write(messsage); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }
 
 }
