@@ -167,6 +167,7 @@ public class Bath extends Fragment {
                             Socket s = new Socket("192.168.0.101", 4444);
                             Mensagem m = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                             ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                            dos.writeObject(m);
                             dos.flush();
                             dos.close();
                             s.close();

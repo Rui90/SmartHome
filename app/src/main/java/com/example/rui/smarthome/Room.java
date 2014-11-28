@@ -306,8 +306,9 @@ public class Room extends Fragment {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                if(x%2==0){
-                                    Mensagem msg = new Mensagem(ROOM, LIGHT, true);
+                                if(!((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setLight(true);
+                                    Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
@@ -316,7 +317,8 @@ public class Room extends Fragment {
                                         }
                                     });
                                 } else {
-                                    Mensagem msg = new Mensagem(ROOM, LIGHT, false);
+                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setLight(false);
+                                    Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
@@ -363,8 +365,9 @@ public class Room extends Fragment {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                // ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                if(y%2==0){
-                                    Mensagem msg = new Mensagem(ROOM, WINDOW, true);
+                                if(!((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setWindow(true);
+                                    Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
@@ -373,7 +376,8 @@ public class Room extends Fragment {
                                         }
                                     });
                                 } else {
-                                    Mensagem msg = new Mensagem(ROOM, WINDOW, true);
+                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setLight(false);
+                                    Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override

@@ -92,6 +92,9 @@ public class MyApplication extends Application {
     }
 
     //WC
+    public RoomHelper getRoomHelper() {
+        return this.roomHelper;
+    }
 
     private BathHelper bathHelper;
 
@@ -108,6 +111,8 @@ public class MyApplication extends Application {
     public MyApplication(BedroomHelper bedroomHelper) {
         this.bedroomHelper = bedroomHelper;
     }
+
+    public BedroomHelper getBedroomHelper() { return this.bedroomHelper; }
 
 
     private KitchenHelper kitchenHelper;
