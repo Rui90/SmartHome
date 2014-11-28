@@ -11,12 +11,16 @@ public class Mensagem  implements Serializable {
    private static final long serialVersionUID = 1L;
     
    private int divisao;
-   private int elementoAfectado;
-   private boolean condicao;
-   private LinkedList<AccessPoint> points;
-   private Object o;
-   private int currentDiv;
-   private boolean isAuto = false;
+     private int elementoAfectado;
+    private boolean condicao;
+    private LinkedList<AccessPoint> points;
+    private Object o;
+    private int currentDiv;
+    private boolean isAuto = false;
+    private BedroomHelper bedroom;
+    private BathHelper bath;
+    private KitchenHelper kitchen;
+    private RoomHelper room;
 
    public Mensagem(boolean isAuto) {
       this.divisao = 0;
@@ -34,10 +38,30 @@ public class Mensagem  implements Serializable {
         this.divisao = currentDiv;
     }
 
+    public Mensagem(int currentDiv, RoomHelper room) {
+        this.currentDiv = currentDiv;
+        this.room = room;
+    }
+    public Mensagem(int currentDiv, BedroomHelper room) {
+        this.currentDiv = currentDiv;
+        this.bedroom = room;
+    }
+    public Mensagem(int currentDiv, BathHelper room) {
+        this.currentDiv = currentDiv;
+        this.bath = room;
+    }
+    public Mensagem(int currentDiv, KitchenHelper room) {
+        this.currentDiv = currentDiv;
+        this.kitchen = room;
+    }
     public Mensagem(LinkedList<AccessPoint> points){
         this.divisao = 0;
         this.points = points;
 
+    }
+
+    public BathHelper getBathHelper() {
+        return this.bath;
     }
 
    public boolean getAuto() {

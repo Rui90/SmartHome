@@ -15,7 +15,7 @@ public class Main {
 	private static int time = 20000;
 	private static RoomHelper room = new RoomHelper(false, false, false, false);
 	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1);
-	private static BathHelper bath = new BathHelper(false);
+	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
 	private static final String IP = "192.168.1.101";
@@ -61,7 +61,32 @@ public class Main {
                             if (m.getDivisao() == 0) {
                                 access = m.getPoints();
                                 auto = m.getAuto();
+                                for(int i = 0; i <= 4; i++) {
+                                    if(i == 1) {
+                                        Mensagem toSendMsg = new Mensagem(ROOM, room);
+                                        ObjectOutputStream toSend = new ObjectOutputStream(
+                                                s.getOutputStream());
+                                        toSend.writeObject(toSendMsg);
+                                    }else if(i == 2) {
+                                        Mensagem toSendMsg = new Mensagem(BEDROOM, bedroom);
+                                        ObjectOutputStream toSend = new ObjectOutputStream(
+                                                s.getOutputStream());
+                                        toSend.writeObject(toSendMsg);
+                                    }else if(i == 3){
+                                        Mensagem toSendMsg = new Mensagem(KITCHEN, kitchen);
+                                        ObjectOutputStream toSend = new ObjectOutputStream(
+                                                s.getOutputStream());
+                                        toSend.writeObject(toSendMsg);
+
+                                    }else if(i == 4){
+                                        Mensagem toSendMsg = new Mensagem(BATH, bath);
+                                        ObjectOutputStream toSend = new ObjectOutputStream(
+                                                s.getOutputStream());
+                                        toSend.writeObject(toSendMsg);
+                                    }
+                                }
                             } else if (m.getDivisao() == ROOM) {
+
                                 if (m.getElemento() == WINDOW) {
                                     room.setWindow(m.getCondicao());
                                 } else if (m.getDivisao() == LIGHT) {
@@ -80,10 +105,10 @@ public class Main {
                                     kitchen.setLight(m.getCondicao());
                                 }
                             } else if (m.getDivisao() == BATH) {
-                                if (m.getElemento() == LIGHT) {
-                                    bath.setLight(m.getCondicao());
-                                }
-                            } else if (m.getDivisao() == m.getDiv()) {
+                                bath.setTemperature(m.getBathHelper().getTemperature());
+                                bath.setLight(m.getBathHelper().isLight());
+                                bath.setQuantity(m.getBathHelper().getQuantity());
+                            } else if (m.getDivisao() == m.getDiv() && auto) {
                                 current_point = m.getDiv();
                                 if (!goodTime || !day) {
                                     if (current_point == ROOM) {
@@ -97,6 +122,7 @@ public class Main {
                                     }
                                 }
                             }
+
                             // se modo automatico, auto = true, sen�o auto = false!
                             // adicionar os 4 access Points por ordem.
 
