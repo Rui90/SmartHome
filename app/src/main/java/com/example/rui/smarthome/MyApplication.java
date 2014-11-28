@@ -21,8 +21,6 @@ public class MyApplication extends Application {
     private boolean mode = false;
     private LinkedList<AccessPoint> accesspoints = new LinkedList<AccessPoint>();
 
-
-
     public void setMode(boolean b) {
         this.mode = b;
     }

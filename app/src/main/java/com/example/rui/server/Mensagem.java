@@ -16,17 +16,33 @@ public class Mensagem  implements Serializable {
    private LinkedList<AccessPoint> points;
    private Object o;
    private int currentDiv;
+   private boolean isAuto = false;
 
-   public Mensagem(int Divisao, int ElementoAfectado, boolean condicao ) {
+   public Mensagem(boolean isAuto) {
+      this.divisao = 0;
+      this.isAuto = isAuto;
+   }
+
+    public Mensagem(int Divisao, int ElementoAfectado, boolean condicao ) {
         this.divisao = Divisao;
         this.elementoAfectado = ElementoAfectado;
         this.condicao = condicao;
-    }
-    
+   }
+
    public Mensagem(int currentDiv) {
     	this.currentDiv = currentDiv;
         this.divisao = currentDiv;
     }
+
+    public Mensagem(LinkedList<AccessPoint> points){
+        this.divisao = 0;
+        this.points = points;
+
+    }
+
+   public boolean getAuto() {
+       return this.isAuto;
+   }
     
    public int getDivisao() {
     	return this.divisao; 
@@ -39,6 +55,7 @@ public class Mensagem  implements Serializable {
    public void setDiv(int div){
         this.currentDiv = div;
     }
+
    public int getElemento() {
     	return this.elementoAfectado; 
     }
@@ -51,9 +68,5 @@ public class Mensagem  implements Serializable {
     	return this.points; 
     }
     
-    public Mensagem(LinkedList<AccessPoint> points){
-        this.divisao = 0;
-        this.points = points;
 
-    }
 }

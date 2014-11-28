@@ -1,5 +1,5 @@
 package com.example.rui.server;
-public class BathHelper {
+public class BathHelper{
 	
 	private boolean light;
 

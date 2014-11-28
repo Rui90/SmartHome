@@ -449,8 +449,28 @@ public class Home extends FragmentActivity
                         case R.id.manualRadio: {
                             ((MyApplication) getActivity().getApplication()).setMode(false);
                             Toast.makeText(getActivity().getApplicationContext(), "false", Toast.LENGTH_LONG).show();
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem msg = new Mensagem(false);
+                                        dos.writeObject(msg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
+
                             Fragment fragment = new HomeView();
-                            //int position = mNavigationDrawerFragment.getListView().getSelectedItemPosition();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
@@ -461,6 +481,27 @@ public class Home extends FragmentActivity
                             ((MyApplication) getActivity().getApplication()).setMode(true);
                             Fragment fragment = new HomeView();
                             Toast.makeText(getActivity().getApplicationContext(), "true", Toast.LENGTH_LONG).show();
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem msg = new Mensagem(true);
+                                        dos.writeObject(msg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
+
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)

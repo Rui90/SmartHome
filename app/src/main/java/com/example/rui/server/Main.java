@@ -11,8 +11,7 @@ public class Main {
 
 	private static boolean day = true; 
 	private static boolean goodTime = true;
-	private static ArrayList<String> divisoes = new ArrayList<String>(); 
-	private static boolean auto = true; 
+	private static boolean auto = true;
 	private static int time = 20000;
 	private static RoomHelper room = new RoomHelper(false, false, false, false);
 	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1);
@@ -41,164 +40,176 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		//Scanner in = new Scanner(System.in);
-		Timer timer = new Timer();
+        //Scanner in = new Scanner(System.in);
+        Timer timer = new Timer();
+        Thread t = new Thread() {
 
-		Thread t = new Thread() {
-			public void run() {
-				System.out.println("SERVER STARTED");
-				try {
-					ServerSocket ss = new ServerSocket(4444);
-					while (true) {
-						Socket s = ss.accept();
-						ObjectInputStream dis = new ObjectInputStream(
-								s.getInputStream());
-					
-						//cria-se uma nova mensagem
-						Mensagem m = (Mensagem) dis.readObject();
-                        if(m != null){
-                            System.out.println(m.getDivisao());
+            public void run() {
+                System.out.println("SERVER STARTED");
+                try {
+                        ServerSocket ss = new ServerSocket(4444);
+                        while (true) {
+                            Socket s = ss.accept();
+                            ObjectInputStream dis = new ObjectInputStream(
+                                    s.getInputStream());
+
+                            //cria-se uma nova mensagem
+                            Mensagem m = (Mensagem) dis.readObject();
+                            if (m != null) {
+                                System.out.println(m.getDivisao());
+                            }
+                            if (m.getDivisao() == 0) {
+                                access = m.getPoints();
+                                auto = m.getAuto();
+                            } else if (m.getDivisao() == ROOM) {
+                                if (m.getElemento() == WINDOW) {
+                                    room.setWindow(m.getCondicao());
+                                } else if (m.getDivisao() == LIGHT) {
+                                    room.setLight(m.getCondicao());
+                                }
+                            } else if (m.getDivisao() == BEDROOM) {
+                                if (m.getElemento() == WINDOW) {
+                                    bedroom.setWindow(m.getCondicao());
+                                } else if (m.getDivisao() == LIGHT) {
+                                    bedroom.setLight(m.getCondicao());
+                                }
+                            } else if (m.getDivisao() == KITCHEN) {
+                                if (m.getElemento() == WINDOW) {
+                                    kitchen.setWindow(m.getCondicao());
+                                } else if (m.getDivisao() == LIGHT) {
+                                    kitchen.setLight(m.getCondicao());
+                                }
+                            } else if (m.getDivisao() == BATH) {
+                                if (m.getElemento() == LIGHT) {
+                                    bath.setLight(m.getCondicao());
+                                }
+                            } else if (m.getDivisao() == m.getDiv()) {
+                                current_point = m.getDiv();
+                                if (!goodTime || !day) {
+                                    if (current_point == ROOM) {
+                                        room.setLight(true);
+                                    } else if (current_point == BEDROOM) {
+                                        bedroom.setLight(true);
+                                    } else if (current_point == KITCHEN) {
+                                        room.setLight(true);
+                                    } else if (current_point == BATH) {
+                                        room.setLight(true);
+                                    }
+                                }
+                            }
+                            // se modo automatico, auto = true, sen�o auto = false!
+                            // adicionar os 4 access Points por ordem.
+
+                            dis.close();
+                            s.close();
                         }
-						if(m.getDivisao() == 0) {
-                            access = m.getPoints();
-							
-						} else if(m.getDivisao() == ROOM){
-							if(m.getElemento() == WINDOW){
-								room.setWindow(m.getCondicao());
-							}else if(m.getDivisao() == LIGHT){
-								room.setLight(m.getCondicao());
-							}								
-						}else if(m.getDivisao() == BEDROOM){
-							if(m.getElemento() == WINDOW){
-								bedroom.setWindow(m.getCondicao());
-							}else if(m.getDivisao() == LIGHT){
-								bedroom.setLight(m.getCondicao());
-							}		
-						}else if(m.getDivisao() == KITCHEN){
-							if(m.getElemento() == WINDOW){
-								kitchen.setWindow(m.getCondicao());
-							}else if(m.getDivisao() == LIGHT){
-								kitchen.setLight(m.getCondicao());
-							}		
-						}else if(m.getDivisao() == BATH ){
-							if(m.getElemento() == LIGHT){
-								bath.setLight(m.getCondicao());
-							}								
-						}else if(m.getDivisao() == m.getDiv()){
-                            current_point = m.getDiv();
-                        }
-						// se modo automatico, auto = true, sen�o auto = false! 
-						// adicionar os 4 access Points por ordem.
+                    } catch (IOException e) {
+                        e.printStackTrace();
 
-						dis.close();
-						s.close();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            };
+            t.start();
+        if (auto) {
+            class dayNight extends TimerTask {
+                public void run() {
+                    try {
+                        Socket s = new Socket(IP, 4444);
+                        ObjectOutputStream dos = new ObjectOutputStream(
+                                (s.getOutputStream()));
 
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		};
-		t.start();
-
-		class dayNight extends TimerTask {
-			public void run() {
-					try {
-						Socket s = new Socket(IP, 4444);
-						ObjectOutputStream dos = new ObjectOutputStream(
-							(s.getOutputStream()));
-						
-						if(!day && goodTime) {
-							day = true; 
-							dos.writeUTF("� de noite!");
-							room.setLight(false);
-							room.setWindow(true);
-							bedroom.setLight(false);
-							bedroom.setWindow(true);
-                            kitchen.setLight(false);
-							kitchen.setWindow(true);
-						} else if(!day && !goodTime){
-							day = true; 
-							dos.writeUTF("� de dia!");
-							room.setWindow(false);	
-							bedroom.setWindow(false);
-                            kitchen.setWindow(false);
-							//  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
-						} else {
-							day = false;
-							room.setLight(false);
-							room.setWindow(false);	
-							bedroom.setLight(false);
-							bedroom.setWindow(false);
-                            kitchen.setWindow(false);
-                            kitchen.setLight(false);
-							// fechar janelas na app
-							// acender luz na divisao corrente
-						}
-						
-						dos.flush();
-						dos.close();
-						s.close();
-				} catch (IOException e) {
-
-				} 
-			}
-		}
-		
-		class goodTimebadTime extends TimerTask {
-			public void run() {
-					try {
-						Socket s = new Socket(IP, 4444);
-						ObjectOutputStream dos = new ObjectOutputStream(
-							(s.getOutputStream()));
-						
-						if(!day && !goodTime) {
-							goodTime = true; 
-							dos.writeUTF("� de noite!");
-							room.setLight(false);
-							room.setWindow(true);
-							bedroom.setLight(false);
-							bedroom.setWindow(true);
+                        if (!day && goodTime) {
+                            day = true;
+                            dos.writeUTF("Boa noite!");
+                            room.setLight(false);
+                            room.setWindow(true);
+                            bedroom.setLight(false);
+                            bedroom.setWindow(true);
                             kitchen.setLight(false);
                             kitchen.setWindow(true);
-							time = 20000; 
-						} else if(!day && goodTime){
-							goodTime = false; 
-							dos.writeUTF("� de dia!");
-							room.setWindow(false);
-							bedroom.setWindow(false);
+                        } else if (!day && !goodTime) {
+                            day = true;
+                            dos.writeUTF("Bom Dia!");
+                            room.setWindow(false);
+                            bedroom.setWindow(false);
                             kitchen.setWindow(false);
-							time = 15000; 
-							//  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
-						} else if (day && goodTime){
-							goodTime = false;
-							room.setLight(false);
-							room.setWindow(false);	
-							bedroom.setLight(false);
-							bedroom.setWindow(false);
+                            //  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
+                        } else {
+                            day = false;
+                            room.setLight(false);
+                            room.setWindow(false);
+                            bedroom.setLight(false);
+                            bedroom.setWindow(false);
                             kitchen.setWindow(false);
                             kitchen.setLight(false);
-							time = 15000; 
-							// fechar janelas na app
-							// acender luz na divisao corrente
-						} else {
-							goodTime = true; 
-							time = 20000; 
-						}
-						dos.flush();
-						dos.close();
-						s.close();
-				} catch (IOException e) {
+                            // fechar janelas na app
+                            // acender luz na divisao corrente
+                        }
 
-				} 
-			}
-		}
-		 
-		timer.schedule(new dayNight(), 0, 15000);
-		timer.schedule(new goodTimebadTime(), 0, time);
+                        dos.flush();
+                        dos.close();
+                        s.close();
+                    } catch (IOException e) {
 
-		}
-	}
+                    }
+                }
+            }
+
+            class goodTimebadTime extends TimerTask {
+                public void run() {
+                    try {
+                        Socket s = new Socket(IP, 4444);
+                        ObjectOutputStream dos = new ObjectOutputStream(
+                                (s.getOutputStream()));
+
+                        if (!day && !goodTime) {
+                            goodTime = true;
+                            dos.writeUTF("Bom tempo, aproveite o dia para ir lá fora!");
+                            room.setLight(false);
+                            room.setWindow(true);
+                            bedroom.setLight(false);
+                            bedroom.setWindow(true);
+                            kitchen.setLight(false);
+                            kitchen.setWindow(true);
+                            time = 20000;
+                        } else if (!day && goodTime) {
+                            goodTime = false;
+                            dos.writeUTF("Chegou a tempestade!");
+                            room.setWindow(false);
+                            bedroom.setWindow(false);
+                            kitchen.setWindow(false);
+                            time = 15000;
+                            //  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
+                        } else if (day && goodTime) {
+                            goodTime = false;
+                            room.setLight(false);
+                            room.setWindow(false);
+                            bedroom.setLight(false);
+                            bedroom.setWindow(false);
+                            kitchen.setWindow(false);
+                            kitchen.setLight(false);
+                            time = 15000;
+                            // fechar janelas na app
+                            // acender luz na divisao corrente
+                        } else {
+                            goodTime = true;
+                            time = 20000;
+                        }
+                        dos.flush();
+                        dos.close();
+                        s.close();
+                    } catch (IOException e) {
+
+                    }
+                }
+            }
+
+            timer.schedule(new dayNight(), 0, 15000);
+            timer.schedule(new goodTimebadTime(), 0, time);
+
+        }
+    }
+}
