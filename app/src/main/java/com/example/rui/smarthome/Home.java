@@ -105,6 +105,10 @@ public class Home extends FragmentActivity
             }
         };*/
 
+        ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
+        ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
+        ((MyApplication) getApplication()).getBathHelper().setLight(false);
+
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
 

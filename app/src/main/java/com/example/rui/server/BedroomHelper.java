@@ -1,7 +1,22 @@
 package com.example.rui.server;
 
+import java.util.LinkedList;
+
 public class BedroomHelper {
-	
+
+
+    private boolean light;
+    private boolean window;
+    private int modo;
+    private LinkedList<Perfil> perfis;
+
+    public BedroomHelper(boolean light, boolean window, int modo, LinkedList<Perfil> perfis) {
+        this.light = light;
+        this.modo = modo;
+        this.window = window;
+        this.perfis = perfis;
+    }
+
     public boolean isLight() {
         return light;
     }
@@ -23,14 +38,13 @@ public class BedroomHelper {
     public int getModo(int modo) {
         return this.modo;
     }
-    public BedroomHelper(boolean light, boolean window, int modo) {
-        this.light = light;
-        this.modo = modo;
-        this.window = window;
+
+    public void setPerfis(LinkedList<Perfil> perfis) {
+        this.perfis = perfis;
     }
 
-private boolean light;
-private boolean window;
-private int modo;
+    public LinkedList<Perfil> getPerfis() {
+        return this.perfis;
+    }
 
 }

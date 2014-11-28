@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rui.server.Mensagem;
+import com.example.rui.server.Perfil;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -109,15 +109,9 @@ public class Bedroom extends Fragment {
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
 
         list = new ArrayList<String>();
-        for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-            list.add(((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil());
+        for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+            list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
         }
-
-
-
-        Toast.makeText(getActivity().getApplicationContext(), "List size: " + list.size() + " MyApp Size: " +
-                        ((MyApplication) getActivity().getApplication()).getPerfisSize(),
-                Toast.LENGTH_LONG).show();
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_item, list);
@@ -145,7 +139,28 @@ public class Bedroom extends Fragment {
 
             public void onClick(View v) {
                 if(list.size() > 0) {
-                    String selected = spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
+                    final String selected = spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
+                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().setModo(spinner.getSelectedItemPosition());
+
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket("192.168.0.101", 4444);
+                                Mensagem m = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                dos.writeObject(m);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
                     Toast.makeText(getActivity().getApplicationContext(), "Selecionei: " + selected, Toast.LENGTH_LONG).show();
                 }
             }
@@ -172,49 +187,26 @@ public class Bedroom extends Fragment {
 
                     final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                     final Switch window = (Switch) dialog.findViewById(R.id.window);
-                    final SeekBar intensity = (SeekBar) dialog.findViewById(R.id.seekBar);
                     final TextView value = (TextView) dialog.findViewById(R.id.valueLight);
-                    intensity.setMax(100);
-                    intensity.setLeft(0);
-                    intensity.incrementProgressBy(1);
-                    intensity.setProgress(0);
 
                     if (prof != null) {
                         name.setText(prof.getName_perfil());
                         window.setChecked(prof.getLight_Perfil());
-                        intensity.incrementProgressBy(prof.getValue());
                         value.setText(String.valueOf(prof.getValue()));
                     }
-
-                    intensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            value.setText(Integer.toString(progress));
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                        }
-
-                    });
 
                     apagar.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             List<String> list = new ArrayList<String>();
-                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-                                if (((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil().equals(prof.getName_perfil())) {
-                                    ((MyApplication) getActivity().getApplication()).removePerfil(i);
+                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                                if (((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(prof.getName_perfil())) {
+                                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().remove(i);
                                     break;
                                 }
                             }
 
-                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-                                list.add(((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil());
+                            for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                                list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis()getPerfil(i).getName_perfil());
                             }
                             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                                     android.R.layout.simple_spinner_item, list);
@@ -291,6 +283,7 @@ public class Bedroom extends Fragment {
 
                 final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                 final Switch window = (Switch) dialog.findViewById(R.id.window);
+                final Switch lightSwitch = (Switch) dialog.findViewById(R.id.lightSwitch);
                 final SeekBar intensity = (SeekBar) dialog.findViewById(R.id.seekBar);
                 intensity.setMax(100);
                 intensity.setLeft(0);
@@ -325,17 +318,18 @@ public class Bedroom extends Fragment {
                     public void onClick(View v) {
                         String name_perfil = name.getText().toString();
                         boolean window_perfil = window.isChecked();
+                        boolean light_perfil = lightSwitch.isChecked();
                         int valor = 0;
                         if(!value.getText().toString().equals("")) {
                             valor = Integer.parseInt(value.getText().toString());
                         }
-                        ((MyApplication) getActivity().getApplication()).addPerfil(new Perfil(name_perfil, window_perfil, valor));
+                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().add(new Perfil(name_perfil, light_perfil, window_perfil));
                         list = new ArrayList<String>();
-                        for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-                            list.add(((MyApplication) getActivity().getApplication()).getPerfil(i).getName_perfil());
+                        for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                            list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
                         }
                         Toast.makeText(getActivity().getApplicationContext(), "List size: " + list.size() + " MyApp Size: " +
-                                        ((MyApplication) getActivity().getApplication()).getPerfisSize(),
+                                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(),
                                 Toast.LENGTH_LONG).show();
 
                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
@@ -502,8 +496,8 @@ public class Bedroom extends Fragment {
      * @return
      */
     private Perfil getProfileByName(String name) {
-        for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getPerfisSize(); i++) {
-            Perfil pr = ((MyApplication) getActivity().getApplication()).getPerfil(i);
+        for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+            Perfil pr = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
             if (pr.getName_perfil().compareTo(name) == 0) {
                 return pr;
             }
