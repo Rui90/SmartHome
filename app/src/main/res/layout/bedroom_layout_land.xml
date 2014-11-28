@@ -41,4 +41,22 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activar Modo"
+        android:id="@+id/buttonSet"
+        android:layout_toStartOf="@+id/createprofile"
+        android:layout_alignBottom="@+id/createprofile"
+        android:layout_toLeftOf="@+id/createprofile" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar Modo"
+        android:id="@+id/editMode"
+        android:layout_toEndOf="@+id/createprofile"
+        android:layout_alignBottom="@+id/createprofile"
+        android:layout_toRightOf="@+id/createprofile" />
+
 </RelativeLayout>

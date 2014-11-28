@@ -65,11 +65,8 @@
         android:layout_height="80dp"
         android:text="Set"
         android:id="@+id/mode"
-        android:layout_alignBottom="@+id/spinnerKitchen"
-        android:layout_alignRight="@+id/spinnerKitchen"
-        android:layout_alignEnd="@+id/spinnerKitchen"
-        android:layout_marginLeft="80dp"
-        android:layout_marginStart="80dp" />
+        android:layout_marginLeft="490dp"
+        android:layout_marginTop="120dp" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -120,7 +117,7 @@
         android:text="Set"
         android:id="@+id/set2"
         android:layout_below="@+id/seekBar3"
-        android:layout_marginLeft="500dp"
-        android:layout_marginStart="80dp" />
+        android:layout_marginLeft="490dp"
+        android:layout_marginStart="80dp"/>
 
 </RelativeLayout>

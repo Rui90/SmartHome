@@ -535,7 +535,7 @@ public class Home extends FragmentActivity
             final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             // Inflate the layout for this fragment
 
-            if((width>720 && height > 1100)){
+            if((width>720 && height > 1100) || (height>720 && width > 1100)){
                 screen_Size = "large";
             }
 

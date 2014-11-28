@@ -11,7 +11,7 @@
         android:id="@+id/lampada"
         android:src="@drawable/lampada2"
         android:layout_marginTop="150dp"
-        android:layout_marginLeft="40dp" />
+        android:layout_marginLeft="30dp" />
 
     <ImageButton
         android:layout_width="250dp"
@@ -19,7 +19,7 @@
         android:id="@+id/imageButton2"
         android:src="@drawable/janela2"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="10dp"
         android:layout_toEndOf="@id/lampada"
         android:layout_toRightOf="@id/lampada" />
 
@@ -28,7 +28,7 @@
         android:layout_height="80dp"
         android:id="@+id/spinner"
         android:layout_below="@+id/lampada"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_marginLeft="110dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -41,7 +41,7 @@
         android:id="@+id/createprofile"
         android:layout_below="@+id/spinner"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="30dp"/>
 
     <Button
         android:layout_width="wrap_content"

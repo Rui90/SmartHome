@@ -9,9 +9,9 @@
         android:layout_height="240dp"
         android:id="@+id/lampada"
         android:src="@drawable/lampada2"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="35dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="40dp" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -29,8 +29,8 @@
         android:layout_height="150dp"
         android:id="@+id/imageButton2"
         android:src="@drawable/janela2"
-        android:layout_marginLeft="340dp"
-        android:layout_marginTop="95dp"/>
+        android:layout_marginLeft="325dp"
+        android:layout_marginTop="85dp"/>
 
     <SeekBar
         android:layout_width="400dp"
@@ -45,8 +45,8 @@
         android:layout_height="190dp"
         android:id="@+id/tvButton"
         android:src="@drawable/telev2"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="660dp" />
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="640dp" />
 
     <TextView
         android:layout_width="wrap_content"

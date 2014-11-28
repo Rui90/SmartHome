@@ -10,7 +10,7 @@
         android:id="@+id/lampada"
         android:src="@drawable/lampada2"
         android:layout_marginTop="80dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="30dp"
         android:layout_alignParentTop="true" />
 
     <ImageButton
@@ -19,7 +19,7 @@
         android:id="@+id/imageButton2"
         android:src="@drawable/janela2"
         android:layout_alignTop="@+id/lampada"
-        android:layout_marginLeft="310dp"
+        android:layout_marginLeft="290dp"
         android:layout_marginTop="50dp"/>
 
     <Switch
@@ -59,7 +59,7 @@
         android:layout_alignTop="@+id/textView3"
         android:layout_toRightOf="@+id/chronometer"
         android:layout_toEndOf="@+id/chronometer"
-        android:layout_marginLeft="21dp" />
+        android:layout_marginLeft="21dp"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -78,7 +78,7 @@
         android:id="@+id/forno"
         android:checked="false"
         android:layout_marginTop="600dp"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
         android:text="Set"
         android:id="@+id/set2"
         android:layout_toRightOf="@+id/forno"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="135dp"
         android:layout_marginTop="670dp"/>
 
 </RelativeLayout>
