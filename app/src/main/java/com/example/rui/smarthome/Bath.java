@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
+import com.example.rui.server.BathHelper;
 import com.example.rui.server.Mensagem;
 
 import java.io.DataInputStream;
@@ -44,13 +45,11 @@ public class Bath extends Fragment {
     int x = 0;
     private String screen_Size = "medium";
 
-    private Socket client;
+  /*  private Socket client;
     private PrintWriter printwriter;
-    private String messsage;
-    private static final int BATH = 4;
-    private static final int LIGHT = 11;
+    private String messsage;*/
 
-    private static MyApplication myApplication = new MyApplication(0);
+    private static final int BATH = 4;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class Bath extends Fragment {
         int width = size.x;
         int height = size.y;
 
-        if((width>720 && height > 1100)){
+        if((width>720 && height > 1100) || (height>720 && width > 1100)){
             screen_Size = "large";
         }
 
@@ -97,24 +96,34 @@ public class Bath extends Fragment {
         final SeekBar waterQuantity = (SeekBar) view.findViewById(R.id.seekBar);
         waterQuantity.setMax(100);
         waterQuantity.setLeft(0);
-        waterQuantity.incrementProgressBy(myApplication.getWCWater());
+        waterQuantity.incrementProgressBy(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity());
         //waterQuantity.setProgress(0);
         final TextView value = (TextView) view.findViewById(R.id.textView);
-        value.setText(Integer.toString(myApplication.getWCWater()));
+        value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity()));
 
         waterQuantity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 value.setText(Integer.toString(progress));
-                myApplication.setWCWater(progress);
+                ((MyApplication) getActivity().getApplication()).getBathHelper().setQuantity(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
                 Thread t = new Thread() {
 
                     public void run() {
                         try {
                             Socket s = new Socket("192.168.0.101", 4444);
+                            Mensagem m = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                             ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                            dos.writeUTF("QUANTIDADE DE AGUA: " + progress);
+                            dos.writeObject(m);
                             dos.flush();
                             dos.close();
                             s.close();
@@ -127,38 +136,37 @@ public class Bath extends Fragment {
                 };
                 t.start();
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-
         });
 
         final SeekBar waterTemperature = (SeekBar) view.findViewById(R.id.seekBar2);
         waterTemperature.setMax(45);
         waterTemperature.setLeft(5);
-        waterTemperature.incrementProgressBy(myApplication.getWCTemp());
+        waterTemperature.incrementProgressBy(((MyApplication) getActivity().getApplication()).getBathHelper().getTemperature());
         //waterTemperature.setProgress(0);
         final TextView value2 = (TextView) view.findViewById(R.id.textView2);
-        value2.setText(Integer.toString(myApplication.getWCTemp()));
+        value2.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getBathHelper().getTemperature()));
 
         waterTemperature.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 value2.setText(Integer.toString(progress));
-                myApplication.setWCTemp(progress);
+                ((MyApplication) getActivity().getApplication()).getBathHelper().setTemperature(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
                 Thread t = new Thread() {
 
                     public void run() {
                         try {
                             Socket s = new Socket("192.168.0.101", 4444);
+                            Mensagem m = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                             ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                            dos.writeUTF("TEMPERATURA DA AGUA: " + progress + " GRAUS");
                             dos.flush();
                             dos.close();
                             s.close();
@@ -170,14 +178,6 @@ public class Bath extends Fragment {
                     }
                 };
                 t.start();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
             }
 
         });
@@ -205,8 +205,9 @@ public class Bath extends Fragment {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                if(x%2==0){
-                                    Mensagem msg = new Mensagem(BATH, LIGHT, true);
+                                if(!((MyApplication) getActivity().getApplication()).getBathHelper().isLight()){
+                                    ((MyApplication) getActivity().getApplication()).getBathHelper().setLight(true);
+                                    Mensagem msg = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
@@ -215,7 +216,8 @@ public class Bath extends Fragment {
                                         }
                                     });
                                 } else {
-                                    Mensagem msg = new Mensagem(BATH, LIGHT, false);
+                                    ((MyApplication) getActivity().getApplication()).getBathHelper().setLight(false);
+                                    Mensagem msg = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override

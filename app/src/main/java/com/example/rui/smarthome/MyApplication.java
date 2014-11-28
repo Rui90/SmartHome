@@ -92,23 +92,34 @@ public class MyApplication extends Application {
     }
 
     //WC
-    private int wc_water;
-    private int wc_temp;
-    public MyApplication(int value) {
-        this.wc_water = value;
+
+    private BathHelper bathHelper;
+
+    public MyApplication(BathHelper bathHelper) {
+        this.bathHelper = bathHelper;
     }
 
-    public MyApplication(int value, String x) {
-        this.wc_temp = value;
+    public BathHelper getBathHelper() {
+        return this.bathHelper;
     }
 
-    public int getWCWater() { return wc_water; }
+    private BedroomHelper bedroomHelper;
 
-    public void setWCWater(int value) { this.wc_water = value; }
+    public MyApplication(BedroomHelper bedroomHelper) {
+        this.bedroomHelper = bedroomHelper;
+    }
 
-    public int getWCTemp() { return wc_temp; }
 
-    public void setWCTemp(int value) { this.wc_temp = value; }
+    private KitchenHelper kitchenHelper;
+
+    public MyApplication(KitchenHelper kitchenHelper) {
+        this.kitchenHelper = kitchenHelper;
+    }
+    private RoomHelper roomHelper;
+
+    public MyApplication(RoomHelper roomHelper) {
+        this.roomHelper = roomHelper;
+    }
 
     //kitchen
     private int kitchen_forno;
