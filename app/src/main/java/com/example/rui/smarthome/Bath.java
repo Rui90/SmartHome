@@ -87,8 +87,6 @@ public class Bath extends Fragment {
             view = inflater.inflate(R.layout.bath_layout_large, container, false);
         }
 
-        Toast.makeText(getActivity().getApplicationContext(), "BATH!", Toast.LENGTH_SHORT).show();
-
         receiveMessage();
 
         lightButton();

@@ -3,13 +3,19 @@ package com.example.rui.server;
 public class KitchenHelper {
 	
 	private boolean light;
-	private boolean window;	
+	private boolean window;
+    private boolean microwave;
+    private boolean forno;
+    private int tempForno;
 	
 	public KitchenHelper(boolean light,
-                         boolean window) {
+                         boolean window, boolean microwave, boolean forno, int tempForno) {
 		super();
 		this.light = light;
 		this.window = window;
+        this.microwave = microwave;
+        this.forno = forno;
+        this.tempForno = tempForno;
 	}
 	
 	public boolean isLight() {
@@ -25,5 +31,22 @@ public class KitchenHelper {
 	public void setWindow(boolean window) {
 		this.window = window;
 	}
+
+    public boolean isMicrowave() {
+        return microwave;
+    }
+    public void setMicrowave(boolean microwave) {
+        this.microwave = microwave;
+    }
+
+    public boolean isForno() {
+        return window;
+    }
+    public void setForno(boolean forno) {
+        this.forno = forno;
+    }
+
+    public void setTempForno(int tempForno) { this.tempForno = tempForno; }
+    public int getTempForno() { return tempForno; }
 
 }

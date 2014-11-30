@@ -25,17 +25,26 @@ public class RoomHelper {
 	public void setWindow(boolean window) {
 		this.window = window;
 	}
+    public int getTemperatureArCond() {
+        return temperatureArCond;
+    }
+    public void setTemperatureArCond(int quantity) {
+        this.temperatureArCond = quantity;
+    }
+
 	public RoomHelper(boolean light, boolean arcondicionado, boolean tv,
-                      boolean window) {
+                      boolean window, int temperatureArCond) {
 		this.light = light;
 		this.arcondicionado = arcondicionado;
 		this.tv = tv;
 		this.window = window;
+        this.temperatureArCond = temperatureArCond;
 	}
 	
 	private boolean light;
 	private boolean arcondicionado;
 	private boolean tv; 
-	private boolean window;		
+	private boolean window;
+    private int temperatureArCond;
 
 }

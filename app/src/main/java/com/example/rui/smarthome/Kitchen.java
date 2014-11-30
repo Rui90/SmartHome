@@ -58,9 +58,6 @@ public class Kitchen extends Fragment {
     private PrintWriter printwriter;
     private String messsage;
 
-    private static MyApplication myApplication = new MyApplication(0, false, "");
-    private static MyApplication myApplication2 = new MyApplication(false, 0, "", "");
-
     private static ServerSocket serverSocket;
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;
@@ -109,6 +106,8 @@ public class Kitchen extends Fragment {
             view = inflater.inflate(R.layout.kitchen_layout_large, container, false);
         }
 
+        receiveMessage();
+
         lightButton();
 
         windowButton();
@@ -125,14 +124,14 @@ public class Kitchen extends Fragment {
         //final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
 
-        microwave.setChecked(myApplication2.isMicrowave());
+        microwave.setChecked(((MyApplication) getActivity().getApplication()).getKitchenHelper().isMicrowave());
 
         fornoseek.setMax(250);
         fornoseek.setLeft(0);
-        fornoseek.incrementProgressBy(myApplication.getKitchen_forno());
-        value.setText(Integer.toString(myApplication.getKitchen_forno()));
-        forno.setChecked(myApplication.getForno());
-        fornoseek.setEnabled(myApplication.getForno());
+        fornoseek.incrementProgressBy(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno());
+        value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno()));
+        forno.setChecked(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
+        fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
 
         List<String> list = new ArrayList<String>();
         list.add("Descongelar");
@@ -148,9 +147,9 @@ public class Kitchen extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                myApplication2.setMicrowave(b);
+                ((MyApplication) getActivity().getApplication()).getKitchenHelper().setMicrowave(b);
 
-                if(myApplication2.isMicrowave()) {
+                if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isMicrowave()) {
                     messsage = "MICROONDAS LIGADO";
                     Thread t = new Thread() {
 
@@ -245,13 +244,13 @@ public class Kitchen extends Fragment {
 
                 fornoseek.setMax(250);
                 fornoseek.incrementProgressBy(10);
-                fornoseek.setProgress(myApplication.getKitchen_forno());
-                fornoseek.setEnabled(myApplication.getForno());
-                myApplication.setForno(b);
+                fornoseek.setProgress(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno());
+                fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
+                ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(b);
                 //fornoseek.setLeft(0);
 
-                if (myApplication.getForno()) {
-                    fornoseek.setEnabled(myApplication.getForno());
+                if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
+                    fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
 
                     messsage = "FORNO LIGADO";
                     Thread t = new Thread() {
@@ -284,7 +283,7 @@ public class Kitchen extends Fragment {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                             value.setText(Integer.toString(progress));
-                            myApplication.setKitchen_forno(progress);
+                            ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
                         }
 
                         @Override
@@ -329,8 +328,8 @@ public class Kitchen extends Fragment {
                         }
                     });
                 } else {
-                    myApplication.setForno(false);
-                    myApplication.setKitchen_forno(0);
+                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(false);
+                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(0);
                     fornoseek.setProgress(0);
                     fornoseek.setMax(0);
                     fornoseek.setLeft(0);
@@ -371,9 +370,9 @@ public class Kitchen extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                if(myApplication.getForno()){
+                if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()){
                     value.setText(Integer.toString(progress));
-                    myApplication.setKitchen_forno(progress);
+                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
 
                     messsage = "TEMPERATURA DO FORNO: " + Integer.toString(progress) + " GRAUS";
                     Thread t = new Thread() {
