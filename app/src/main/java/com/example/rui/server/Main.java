@@ -13,10 +13,10 @@ public class Main {
 	private static boolean goodTime = true;
 	private static boolean auto = true;
 	private static int time = 20000;
-	private static RoomHelper room = new RoomHelper(false, false, false, false);
+	private static RoomHelper room = new RoomHelper(false, false, false, false, 0);
 	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1);
 	private static BathHelper bath = new BathHelper(false, 0, 0);
-	private static KitchenHelper kitchen = new KitchenHelper(false, false);
+	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
 	private static final String IP = "192.168.1.101";
     private static int current_point = 0;
