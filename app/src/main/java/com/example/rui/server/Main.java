@@ -14,7 +14,7 @@ public class Main {
 	private static boolean auto = true;
 	private static int time = 20000;
 	private static RoomHelper room = new RoomHelper(false, false, false, false, 0);
-	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1);
+	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1, new LinkedList<Perfil>());
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
