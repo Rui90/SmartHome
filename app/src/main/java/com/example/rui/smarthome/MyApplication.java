@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static final String IP = "192.168.1.100";
+    private static final String IP = "192.168.1.2";
 
     public String getIp() {
         return this.IP;
@@ -60,6 +60,16 @@ public class MyApplication extends Application {
     public BathHelper getBathHelper() {
         return this.bathHelper;
     }
+
+    // SETS
+
+    public void setBathHelper(BathHelper bathHelper) { this.bathHelper = bathHelper; }
+
+    public void setRoomHelper(RoomHelper roomHelper) { this.roomHelper = roomHelper; }
+
+    public void setBedroomHelper(BedroomHelper bedroomHelper) { this.bedroomHelper = bedroomHelper; }
+
+    public void setKitchenHelper(KitchenHelper kitchenHelper) { this.kitchenHelper = kitchenHelper; }
 
     private BedroomHelper bedroomHelper;
 

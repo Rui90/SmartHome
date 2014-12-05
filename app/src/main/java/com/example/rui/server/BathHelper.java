@@ -1,9 +1,14 @@
 package com.example.rui.server;
-public class BathHelper{
+
+import java.io.Serializable;
+
+public class BathHelper implements Serializable {
 	
 	private boolean light;
     private int quantity;
     private int temperature;
+
+    private static final long serialVersionUID = 1L;
 
 	public BathHelper(boolean light, int quantity, int temperature) {
 		this.light = light;

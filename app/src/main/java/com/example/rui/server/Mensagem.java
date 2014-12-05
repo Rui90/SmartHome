@@ -1,5 +1,7 @@
 package com.example.rui.server;
 
+import com.example.rui.smarthome.Kitchen;
+
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class Mensagem  implements Serializable {
     private String connected;
 
    public Mensagem(boolean isAuto) {
-      this.divisao = 0;
+      this.divisao = 41;
       this.isAuto = isAuto;
    }
 
@@ -58,18 +60,22 @@ public class Mensagem  implements Serializable {
 
     public Mensagem(int currentDiv, RoomHelper room) {
         this.currentDiv = currentDiv;
+        this.divisao = currentDiv;
         this.room = room;
     }
     public Mensagem(int currentDiv, BedroomHelper room) {
         this.currentDiv = currentDiv;
+        this.divisao = currentDiv;
         this.bedroom = room;
     }
     public Mensagem(int currentDiv, BathHelper room) {
         this.currentDiv = currentDiv;
+        this.divisao = currentDiv;
         this.bath = room;
     }
     public Mensagem(int currentDiv, KitchenHelper room) {
         this.currentDiv = currentDiv;
+        this.divisao = currentDiv;
         this.kitchen = room;
     }
     public Mensagem(LinkedList<AccessPoint> points){
@@ -80,6 +86,18 @@ public class Mensagem  implements Serializable {
 
     public BathHelper getBathHelper() {
         return this.bath;
+    }
+
+    public RoomHelper getRoomHelper() {
+        return this.room;
+    }
+
+    public KitchenHelper getKitchenHelper() {
+        return this.kitchen;
+    }
+
+    public BedroomHelper getBedroomHelper() {
+        return this.bedroom;
     }
 
    public boolean getAuto() {

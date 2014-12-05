@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 
 public class PerfisQuarto {
 
-    public static ArrayList<Perfil> ReadXML(Context context){
+    /*public static ArrayList<Perfil> ReadXML(Context context){
         ArrayList<Perfil> profiles = new ArrayList<Perfil>();
         Document doc = null;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -153,7 +153,7 @@ public class PerfisQuarto {
             tfe.printStackTrace();
         }
 
-    }
+    }*/
 
 
 }

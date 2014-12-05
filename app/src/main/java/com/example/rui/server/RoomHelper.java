@@ -1,5 +1,10 @@
 package com.example.rui.server;
-public class RoomHelper {
+
+import java.io.Serializable;
+
+public class RoomHelper implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 	
 	public boolean isLight() {
 		return light;

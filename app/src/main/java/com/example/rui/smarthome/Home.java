@@ -76,6 +76,10 @@ public class Home extends FragmentActivity
      */
     private CharSequence mTitle;
 
+    private static String getIp() {
+        return "192.168.1.2";
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,19 +114,30 @@ public class Home extends FragmentActivity
 
             public void run() {
                 try {
-                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                    Log.d("g", "ENTREIIIIIIIIIIIIIIII");
+                    Socket s = new Socket(getIp(), 4444);
+                    Log.d("g", "SOCKETTTTTTTTTTTTTTTTTTTTTTTTTTTT");
                     ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                    ObjectInputStream dis = new ObjectInputStream(
-                            s.getInputStream());
-
-                    //cria-se uma nova mensagem
-                    Mensagem m = (Mensagem) dis.readObject();
                     Mensagem msg = new Mensagem("Cliente ligado!");
                     dos.writeObject(msg);
+
                     dos.flush();
                     dos.close();
+
+                    Log.d("g", "DIS");
+                    Socket s2 = new Socket(getIp(), 4444);
+                    ObjectInputStream dis = new ObjectInputStream(s2.getInputStream());
+                    Log.d("g", "OBJECTOUTPUTSTREAMMMMMMM");
+                    //cria-se uma nova mensagem
+                    Mensagem m = (Mensagem) dis.readObject();
+
+                    Log.d("g", "AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+
                     if(m != null){
-                        System.out.print(m);
+                        ((MyApplication) getApplication()).setBathHelper(m.getBathHelper());
+                        ((MyApplication) getApplication()).setRoomHelper(m.getRoomHelper());
+                        ((MyApplication) getApplication()).setKitchenHelper(m.getKitchenHelper());
+                        ((MyApplication) getApplication()).setBedroomHelper(m.getBedroomHelper());
                     }
                     s.close();
                 } catch (UnknownHostException e) {
@@ -138,9 +153,41 @@ public class Home extends FragmentActivity
         };
         t.start();
 
-        ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
-        ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
-        ((MyApplication) getApplication()).getBathHelper().setLight(false);
+//        Thread tt = new Thread() {
+//
+//            public void run() {
+//                try {
+//                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+//                    ObjectInputStream dis = new ObjectInputStream(
+//                            s.getInputStream());
+//
+//                    //cria-se uma nova mensagem
+//                    Mensagem m = (Mensagem) dis.readObject();
+//                    Mensagem msg = new Mensagem("Cliente ligado!");
+//
+//
+//                    dis.flush();
+//                    dis.close();
+//                    if(m != null){
+//                        System.out.print(m);
+//                    }
+//                    s.close();
+//                } catch (UnknownHostException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                catch (ClassNotFoundException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        tt.start();
+//
+//        ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
+//        ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
+//        ((MyApplication) getApplication()).getBathHelper().setLight(false);
 
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
@@ -408,7 +455,7 @@ public class Home extends FragmentActivity
                                 "Frequency: " + wifiScanList.get(i).frequency +
                                 "\n" + "Distance: " + value + "\n");
                     }
-                    Log.d("cheguei", "sou boss");
+                    //Log.d("cheguei", "sou boss");
 
                     /*messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
                             + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
@@ -423,7 +470,7 @@ public class Home extends FragmentActivity
 
                         public void run() {
                             try {
-                                Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                                Socket s = new Socket(getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList());
                                 dos.writeObject(msg);
@@ -491,7 +538,7 @@ public class Home extends FragmentActivity
 
                                 public void run() {
                                     try {
-                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                        Socket s = new Socket(getIp(), 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                         Mensagem msg = new Mensagem(false);
                                         dos.writeObject(msg);
@@ -523,7 +570,7 @@ public class Home extends FragmentActivity
 
                                 public void run() {
                                     try {
-                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                        Socket s = new Socket(getIp(), 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                         Mensagem msg = new Mensagem(true);
                                         dos.writeObject(msg);

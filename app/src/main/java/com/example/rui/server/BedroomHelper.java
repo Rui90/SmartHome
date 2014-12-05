@@ -1,14 +1,16 @@
 package com.example.rui.server;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class BedroomHelper {
-
+public class BedroomHelper implements Serializable {
 
     private boolean light;
     private boolean window;
     private int modo;
     private LinkedList<Perfil> perfis;
+
+    private static final long serialVersionUID = 1L;
 
     public BedroomHelper(boolean light, boolean window, int modo, LinkedList<Perfil> perfis) {
         this.light = light;

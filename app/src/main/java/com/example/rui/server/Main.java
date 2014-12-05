@@ -18,7 +18,7 @@ public class Main {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.1.101";
+	private static final String IP = "192.168.1.4";
     private static int current_point = 0;
 	
 	
@@ -45,74 +45,92 @@ public class Main {
         Thread t = new Thread() {
 
             public void run() {
-                System.out.println("SERVER STARTED");
+                System.out.println(" --- SERVER STARTED --- ");
                 try {
                         ServerSocket ss = new ServerSocket(4444);
                         while (true) {
                             Socket s = ss.accept();
                             ObjectInputStream dis = new ObjectInputStream(
                                     s.getInputStream());
+                            System.out.print("tou todo fodido, tou todo frito");
 
                             //cria-se uma nova mensagem
                             Mensagem m = (Mensagem) dis.readObject();
                             if (m != null) {
-                                System.out.println(m.getDivisao());
-                            }
-                            if (m.getDivisao() == 40) {
-                                System.out.print("Cliente chegou");
-                                Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
-                                ObjectOutputStream toSend = new ObjectOutputStream(
-                                        s.getOutputStream());
-                                toSend.writeObject(toSendMsg);
-                                toSend.flush();
-                                toSend.close();
-                            }else if(m.getDivisao() == 0){
-                                access = m.getPoints();
-                                auto = m.getAuto();
-                            } else if (m.getDivisao() == ROOM) {
+                                System.out.print(m.getDivisao());
+                                if (m.getDivisao() == 40) {
+                                    System.out.print("Cliente chegou. \n");
+                                    Socket s2 = ss.accept();
+                                    Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                    ObjectOutputStream toSend = new ObjectOutputStream(
+                                            s2.getOutputStream());
+//                                    Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+//                                    ObjectOutputStream toSend = new ObjectOutputStream(
+//                                            s.getOutputStream());
+                                    toSend.writeObject(toSendMsg);
+                                    toSend.flush();
+                                    toSend.close();
+                                    s2.close();
+                                } else if (m.getDivisao() == 41) {
+                                    access = m.getPoints();
+                                    auto = m.getAuto();
+                                    if(auto){
+                                        System.out.print("Modo automático. \n");
+                                    } else {
+                                        System.out.print("Modo manual. \n");
+                                    }
+                                } else if (m.getDivisao() == ROOM) {
+                                    System.out.print("ENTREI NA SALA");
 
-                                if (m.getElemento() == WINDOW) {
-                                    room.setWindow(m.getCondicao());
-                                } else if (m.getDivisao() == LIGHT) {
-                                    room.setLight(m.getCondicao());
-                                }
-                            } else if (m.getDivisao() == BEDROOM) {
-                                if (m.getElemento() == WINDOW) {
-                                    bedroom.setWindow(m.getCondicao());
-                                } else if (m.getDivisao() == LIGHT) {
-                                    bedroom.setLight(m.getCondicao());
-                                }
-                            } else if (m.getDivisao() == KITCHEN) {
-                                if (m.getElemento() == WINDOW) {
-                                    kitchen.setWindow(m.getCondicao());
-                                } else if (m.getDivisao() == LIGHT) {
-                                    kitchen.setLight(m.getCondicao());
-                                }
-                            } else if (m.getDivisao() == BATH) {
-                                bath.setTemperature(m.getBathHelper().getTemperature());
-                                bath.setLight(m.getBathHelper().isLight());
-                                bath.setQuantity(m.getBathHelper().getQuantity());
-                            } else if (m.getDivisao() == m.getDiv() && auto) {
-                                current_point = m.getDiv();
-                                if (!goodTime || !day) {
-                                    if (current_point == ROOM) {
-                                        room.setLight(true);
-                                    } else if (current_point == BEDROOM) {
-                                        bedroom.setLight(true);
-                                    } else if (current_point == KITCHEN) {
-                                        room.setLight(true);
-                                    } else if (current_point == BATH) {
-                                        room.setLight(true);
+                                    if (m.getElemento() == WINDOW) {
+                                        room.setWindow(m.getCondicao());
+                                        if(m.getCondicao()){
+                                            System.out.print("Janela da sala aberta.");
+                                        } else {
+                                            System.out.print("Janela da sala fechada.");
+                                        }
+                                    } else if (m.getDivisao() == LIGHT) {
+                                        room.setLight(m.getCondicao());
+                                    }
+                                } else if (m.getDivisao() == BEDROOM) {
+                                    if (m.getElemento() == WINDOW) {
+                                        bedroom.setWindow(m.getCondicao());
+                                    } else if (m.getDivisao() == LIGHT) {
+                                        bedroom.setLight(m.getCondicao());
+                                    }
+                                } else if (m.getDivisao() == KITCHEN) {
+                                    if (m.getElemento() == WINDOW) {
+                                        kitchen.setWindow(m.getCondicao());
+                                    } else if (m.getDivisao() == LIGHT) {
+                                        kitchen.setLight(m.getCondicao());
+                                    }
+                                } else if (m.getDivisao() == BATH) {
+                                    bath.setTemperature(m.getBathHelper().getTemperature());
+                                    bath.setLight(m.getBathHelper().isLight());
+                                    bath.setQuantity(m.getBathHelper().getQuantity());
+                                } else if (m.getDivisao() == m.getDiv() && auto) {
+                                    current_point = m.getDiv();
+                                    if (!goodTime || !day) {
+                                        if (current_point == ROOM) {
+                                            room.setLight(true);
+                                        } else if (current_point == BEDROOM) {
+                                            bedroom.setLight(true);
+                                        } else if (current_point == KITCHEN) {
+                                            room.setLight(true);
+                                        } else if (current_point == BATH) {
+                                            room.setLight(true);
+                                        }
                                     }
                                 }
+
+                                // se modo automatico, auto = true, sen�o auto = false!
+                                // adicionar os 4 access Points por ordem.
                             }
-
-                            // se modo automatico, auto = true, sen�o auto = false!
-                            // adicionar os 4 access Points por ordem.
-
                             dis.close();
                             s.close();
                         }
+                    } catch(EOFException e) {
+                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
 
@@ -120,6 +138,7 @@ public class Main {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
+
                 }
             };
             t.start();

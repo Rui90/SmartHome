@@ -1,12 +1,16 @@
 package com.example.rui.server;
 
-public class KitchenHelper {
+import java.io.Serializable;
+
+public class KitchenHelper implements Serializable {
 	
 	private boolean light;
 	private boolean window;
     private boolean microwave;
     private boolean forno;
     private int tempForno;
+
+    private static final long serialVersionUID = 1L;
 	
 	public KitchenHelper(boolean light,
                          boolean window, boolean microwave, boolean forno, int tempForno) {
