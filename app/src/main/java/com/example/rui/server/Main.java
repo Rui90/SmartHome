@@ -59,11 +59,13 @@ public class Main {
                                 System.out.println(m.getDivisao());
                             }
                             if (m.getDivisao() == 40) {
+                                System.out.print("Cliente chegou");
                                 Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
                                 ObjectOutputStream toSend = new ObjectOutputStream(
                                         s.getOutputStream());
                                 toSend.writeObject(toSendMsg);
-
+                                toSend.flush();
+                                toSend.close();
                             }else if(m.getDivisao() == 0){
                                 access = m.getPoints();
                                 auto = m.getAuto();
