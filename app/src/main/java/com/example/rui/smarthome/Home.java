@@ -105,6 +105,39 @@ public class Home extends FragmentActivity
             }
         };*/
 
+
+        Thread t = new Thread() {
+
+            public void run() {
+                try {
+                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
+                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                    ObjectInputStream dis = new ObjectInputStream(
+                            s.getInputStream());
+
+                    //cria-se uma nova mensagem
+                    Mensagem m = (Mensagem) dis.readObject();
+                    Mensagem msg = new Mensagem("Cliente ligado!");
+                    dos.writeObject(msg);
+                    dos.flush();
+                    dos.close();
+                    if(m != null){
+                        System.out.print(m);
+                    }
+                    s.close();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+
         ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
         ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
         ((MyApplication) getApplication()).getBathHelper().setLight(false);

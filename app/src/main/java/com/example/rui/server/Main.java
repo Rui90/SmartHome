@@ -58,33 +58,15 @@ public class Main {
                             if (m != null) {
                                 System.out.println(m.getDivisao());
                             }
-                            if (m.getDivisao() == 0) {
+                            if (m.getDivisao() == 40) {
+                                Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                ObjectOutputStream toSend = new ObjectOutputStream(
+                                        s.getOutputStream());
+                                toSend.writeObject(toSendMsg);
+
+                            }else if(m.getDivisao() == 0){
                                 access = m.getPoints();
                                 auto = m.getAuto();
-                                for(int i = 0; i <= 4; i++) {
-                                    if(i == 1) {
-                                        Mensagem toSendMsg = new Mensagem(ROOM, room);
-                                        ObjectOutputStream toSend = new ObjectOutputStream(
-                                                s.getOutputStream());
-                                        toSend.writeObject(toSendMsg);
-                                    }else if(i == 2) {
-                                        Mensagem toSendMsg = new Mensagem(BEDROOM, bedroom);
-                                        ObjectOutputStream toSend = new ObjectOutputStream(
-                                                s.getOutputStream());
-                                        toSend.writeObject(toSendMsg);
-                                    }else if(i == 3){
-                                        Mensagem toSendMsg = new Mensagem(KITCHEN, kitchen);
-                                        ObjectOutputStream toSend = new ObjectOutputStream(
-                                                s.getOutputStream());
-                                        toSend.writeObject(toSendMsg);
-
-                                    }else if(i == 4){
-                                        Mensagem toSendMsg = new Mensagem(BATH, bath);
-                                        ObjectOutputStream toSend = new ObjectOutputStream(
-                                                s.getOutputStream());
-                                        toSend.writeObject(toSendMsg);
-                                    }
-                                }
                             } else if (m.getDivisao() == ROOM) {
 
                                 if (m.getElemento() == WINDOW) {

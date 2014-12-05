@@ -8,6 +8,11 @@ import java.util.LinkedList;
 
 public class Mensagem  implements Serializable {
 
+    private static final int ROOM = 1;
+    private static final int BEDROOM = 2;
+    private static final int BATH = 4;
+    private static final int KITCHEN = 3;
+
    private static final long serialVersionUID = 1L;
     
    private int divisao;
@@ -21,10 +26,23 @@ public class Mensagem  implements Serializable {
     private BathHelper bath;
     private KitchenHelper kitchen;
     private RoomHelper room;
+    private String connected;
 
    public Mensagem(boolean isAuto) {
       this.divisao = 0;
       this.isAuto = isAuto;
+   }
+
+   public Mensagem(RoomHelper room, BedroomHelper bedroom, KitchenHelper kitchen, BathHelper bath){
+       this.bedroom = bedroom;
+       this.room = room;
+       this.kitchen = kitchen;
+       this.bath = bath;
+   }
+
+   public Mensagem(String connected) {
+       this.connected = connected;
+       this.divisao = 40;
    }
 
     public Mensagem(int Divisao, int ElementoAfectado, boolean condicao ) {
