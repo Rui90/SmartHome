@@ -89,27 +89,6 @@ public class Home extends FragmentActivity
 
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
-        // MySyncTask asyncTask = new MySyncTask (1,2);
-        //asyncTask.execute(1000);
-        //hm = new Handler();
-        /*hm=new Handler()
-        {
-            public void handleMessage(Message msg)
-            {
-                switch(msg.what)
-                {
-                    case 0:
-                        Toast.makeText(getApplicationContext(),"Sincronização efectuada com sucesso",Toast.LENGTH_LONG).show();
-                        break;
-                    case 1:
-                        Toast.makeText(getApplicationContext(),"Erro na sincronização",Toast.LENGTH_LONG).show();
-                        break;
-                }
-
-            }
-        };*/
-
-
         Thread t = new Thread() {
 
             public void run() {
@@ -532,7 +511,6 @@ public class Home extends FragmentActivity
                     switch (buttonID) {
                         case R.id.manualRadio: {
                             ((MyApplication) getActivity().getApplication()).setMode(false);
-                            Toast.makeText(getActivity().getApplicationContext(), "false", Toast.LENGTH_LONG).show();
 
                             Thread t = new Thread() {
 
@@ -564,8 +542,6 @@ public class Home extends FragmentActivity
                         case R.id.modoauto: {
                             ((MyApplication) getActivity().getApplication()).setMode(true);
                             Fragment fragment = new HomeView();
-                            Toast.makeText(getActivity().getApplicationContext(), "true", Toast.LENGTH_LONG).show();
-
                             Thread t = new Thread() {
 
                                 public void run() {

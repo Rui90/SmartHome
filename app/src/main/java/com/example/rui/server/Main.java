@@ -11,7 +11,7 @@ public class Main {
 
 	private static boolean day = true; 
 	private static boolean goodTime = true;
-	private static boolean auto = true;
+	private static boolean auto = false;
 	private static int time = 20000;
 	private static RoomHelper room = new RoomHelper(false, false, false, false, 0);
 	private static BedroomHelper bedroom = new BedroomHelper(false, false, 1, new LinkedList<Perfil>());
