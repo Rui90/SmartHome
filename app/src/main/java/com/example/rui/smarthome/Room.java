@@ -47,19 +47,15 @@ public class Room extends Fragment {
     //Camera cam = Camera.open();
     View view;
     //final Camera.Parameters p = cam.getParameters();
-    int x = 0;
-    int y = 0;
-    int z = 0;
+
     private String screen_Size = "medium";
 
     private Socket client;
     private PrintWriter printwriter;
-    private String messsage;
     private static ServerSocket serverSocket;
     private static Socket clientSocket;
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
-    private Switch arcondicionadoOnOff;
     private static final int ROOM = 1;
 
     private static final int WINDOW = 10;
@@ -112,7 +108,7 @@ public class Room extends Fragment {
 
         tvButton();
 
-        arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
         arcondicionado.setMax(40);
@@ -135,7 +131,6 @@ public class Room extends Fragment {
 
                 if(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
                     arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
-                    messsage = "ARCONDICIONADO LIGADO";
 
                     Thread t = new Thread() {
 
@@ -242,7 +237,6 @@ public class Room extends Fragment {
                     arcondicionado.incrementProgressBy(0);
                     value.setText(" ");
 
-                    messsage = "ARCONDICIONADO DESLIGADO";
                     Thread t = new Thread() {
 
                         public void run() {
@@ -284,51 +278,6 @@ public class Room extends Fragment {
                 }
             }
         });
-
-        /*arcondicionado.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                if(myApplication.getRoomACState()){
-                    value.setText(Integer.toString(progress));
-                    myApplication.setRoomACValue(progress);
-
-                    messsage = "TEMPERATURA DO ARCONDICIONADO NA SALA: " + Integer.toString(progress) + " GRAUS";
-                    Thread t = new Thread() {
-
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                dos.writeUTF(messsage);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-
-                            } catch (IOException e) {
-
-                            }
-                        }
-                    };
-                    t.start();
-                }
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-
-        });*/
-
-
-
 
         return view;
     }
@@ -374,7 +323,6 @@ public class Room extends Fragment {
                                         }
                                     });
                                 }
-                                x++;
                                 dos.flush();
                                 dos.close();
                                 s.close();
@@ -433,7 +381,6 @@ public class Room extends Fragment {
                                         }
                                     });
                                 }
-                                y++;
                                 dos.flush();
                                 dos.close();
                                 s.close();
@@ -492,7 +439,6 @@ public class Room extends Fragment {
                                         }
                                     });
                                 }
-                                z++;
                                 dos.flush();
                                 dos.close();
                                 s.close();
