@@ -1,13 +1,17 @@
 package com.example.rui.server;
 
+import java.io.Serializable;
+
 /**
  * Created by Rui on 13/10/2014.
  */
-public class Perfil {
+public class Perfil implements Serializable {
 
     private String name_perfil;
     private boolean light_perfil;
     private boolean window_perfil;
+
+    private static final long serialVersionUID = 1L;
 
     public Perfil (String name_perfil, boolean light_perfil, boolean window_perfil) {
         this.name_perfil = name_perfil;
@@ -23,7 +27,7 @@ public class Perfil {
         return this.light_perfil;
     }
 
-    public boolean getValue() {
+    public boolean getWindow_perfil() {
         return this.window_perfil;
     }
 

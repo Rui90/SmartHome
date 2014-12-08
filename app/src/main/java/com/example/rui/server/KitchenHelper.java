@@ -44,7 +44,7 @@ public class KitchenHelper implements Serializable {
     }
 
     public boolean isForno() {
-        return window;
+        return forno;
     }
     public void setForno(boolean forno) {
         this.forno = forno;

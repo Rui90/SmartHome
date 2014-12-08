@@ -1,8 +1,8 @@
 package com.example.rui.server;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,7 +18,7 @@ public class Main {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.1.4";
+	private static final String IP = "192.168.0.100";
     private static int current_point = 0;
 	
 	
@@ -52,12 +52,11 @@ public class Main {
                             Socket s = ss.accept();
                             ObjectInputStream dis = new ObjectInputStream(
                                     s.getInputStream());
-                            System.out.print("tou todo fodido, tou todo frito");
 
                             //cria-se uma nova mensagem
                             Mensagem m = (Mensagem) dis.readObject();
                             if (m != null) {
-                                System.out.print(m.getDivisao());
+                                //System.out.print(m.getDivisao()+"\n");
                                 if (m.getDivisao() == 40) {
                                     System.out.print("Cliente chegou. \n");
                                     Socket s2 = ss.accept();
@@ -80,9 +79,53 @@ public class Main {
                                         System.out.print("Modo manual. \n");
                                     }
                                 } else if (m.getDivisao() == ROOM) {
-                                    System.out.print("ENTREI NA SALA");
 
-                                    if (m.getElemento() == WINDOW) {
+                                    RoomHelper aux = m.getRoomHelper();
+
+                                    if(room.isLight() != aux.isLight()){
+                                        if(room.isLight()){
+                                            System.out.print("Luz da sala desligada!\n");
+                                        }else {
+                                            System.out.print("Luz da sala ligada!\n");
+                                        }
+                                        room.setLight(aux.isLight());
+                                    }
+
+                                    if(room.isWindow() != aux.isWindow()){
+                                        if(room.isWindow()){
+                                            System.out.print("Janela da sala fechada!\n");
+                                        }else {
+                                            System.out.print("Janela da sala aberta!\n");
+                                        }
+                                        room.setWindow(aux.isWindow());
+                                    }
+
+                                    if(room.isTv() != aux.isTv()){
+                                        if(room.isTv()){
+                                            System.out.print("Televisao da sala desligada!\n");
+                                        }else {
+                                            System.out.print("Televisao da sala ligada!\n");
+                                        }
+                                        room.setTv(aux.isTv());
+                                    }
+
+                                    if(room.isArcondicionado() != aux.isArcondicionado()){
+                                        if(room.isArcondicionado()){
+                                            System.out.print("Ar condicionado desligado!\n");
+                                        }else {
+                                            System.out.print("Ar condicionado ligado!\n");
+                                        }
+                                        room.setArcondicionado(aux.isArcondicionado());
+                                    }
+
+                                    if(room.getTemperatureArCond() != aux.getTemperatureArCond()){
+                                        System.out.print("Temperatura do ar condicionado a: "+aux.getTemperatureArCond()+"graus\n");
+                                        room.setTemperatureArCond(aux.getTemperatureArCond());
+                                    }
+
+                                    room = m.getRoomHelper();
+
+                                    /*if (m.getElemento() == WINDOW) {
                                         room.setWindow(m.getCondicao());
                                         if(m.getCondicao()){
                                             System.out.print("Janela da sala aberta.");
@@ -91,23 +134,131 @@ public class Main {
                                         }
                                     } else if (m.getDivisao() == LIGHT) {
                                         room.setLight(m.getCondicao());
-                                    }
+                                    }*/
                                 } else if (m.getDivisao() == BEDROOM) {
-                                    if (m.getElemento() == WINDOW) {
-                                        bedroom.setWindow(m.getCondicao());
-                                    } else if (m.getDivisao() == LIGHT) {
-                                        bedroom.setLight(m.getCondicao());
+
+                                    BedroomHelper aux = m.getBedroomHelper();
+
+                                    if(bedroom.isLight() != aux.isLight()){
+                                        if(bedroom.isLight()){
+                                            System.out.print("Luz do quarto desligada!\n");
+                                        }else {
+                                            System.out.print("Luz da quarto ligada!\n");
+                                        }
+                                        bedroom.setLight(aux.isLight());
                                     }
+
+                                    if(bedroom.isWindow() != aux.isWindow()){
+                                        if(bedroom.isWindow()){
+                                            System.out.print("Janela do quarto fechada!\n");
+                                        }else {
+                                            System.out.print("Janela do quarto aberta!\n");
+                                        }
+                                        bedroom.setWindow(aux.isWindow());
+                                    }
+
+                                    if(bedroom.getPerfis().size() != aux.getPerfis().size()){
+                                        //System.out.print("Lista de Modos:\n");
+                                        for(int i=0; i < aux.getPerfis().size(); i++){
+                                            Perfil p = aux.getPerfis().get(i);
+                                            if(p.getWindow_perfil() && p.getLight_Perfil()){
+//                                                System.out.print("Modo " + i + ": " + p.getName_perfil()
+//                                                        + " com janela aberta e luz ligada.\n");
+                                                aux.setWindow(true);
+                                                aux.setLight(true);
+                                            } else if(!p.getLight_Perfil() && p.getWindow_perfil()) {
+//                                                System.out.print("Modo " + i + ": " + p.getName_perfil()
+//                                                        + " com janela aberta e luz desligada.\n");
+                                                aux.setWindow(true);
+                                            } else if(p.getLight_Perfil() && !p.getWindow_perfil()){
+//                                                System.out.print("Modo " + i + ": " + p.getName_perfil()
+//                                                        + " com janela fechada e luz ligada.\n");
+                                                aux.setLight(true);
+                                            } else {
+//                                                System.out.print("Modo " + i + ": " + p.getName_perfil()
+//                                                        + " com janela fechada e luz desligada.\n");
+                                                aux.setWindow(false);
+                                                aux.setLight(false);
+                                            }
+                                        }
+                                        //System.out.print("\n");
+                                        bedroom.setPerfis(aux.getPerfis());
+                                    }
+
+                                    bedroom = m.getBedroomHelper();
+
                                 } else if (m.getDivisao() == KITCHEN) {
-                                    if (m.getElemento() == WINDOW) {
-                                        kitchen.setWindow(m.getCondicao());
-                                    } else if (m.getDivisao() == LIGHT) {
-                                        kitchen.setLight(m.getCondicao());
+
+                                    KitchenHelper aux = m.getKitchenHelper();
+
+                                    if(kitchen.isLight() != aux.isLight()){
+                                        if(kitchen.isLight()){
+                                            System.out.print("Luz da cozinha desligada!\n");
+                                        }else {
+                                            System.out.print("Luz da cozinha ligada!\n");
+                                        }
+                                        kitchen.setLight(aux.isLight());
                                     }
+
+                                    if(kitchen.isWindow() != aux.isWindow()){
+                                        if(kitchen.isWindow()){
+                                            System.out.print("Janela da cozinha fechada!\n");
+                                        }else {
+                                            System.out.print("Janela da cozinha aberta!\n");
+                                        }
+                                        kitchen.setWindow(aux.isWindow());
+                                    }
+
+                                    if(kitchen.isMicrowave() != aux.isMicrowave()){
+                                        if(kitchen.isMicrowave()){
+                                            System.out.print("Microondas desligado!\n");
+                                        }else {
+                                            System.out.print("Microondas ligado!\n");
+                                        }
+                                        kitchen.setMicrowave(aux.isMicrowave());
+                                    }
+
+                                    if(kitchen.isForno() != aux.isForno()){
+                                        if(kitchen.isForno()){
+                                            System.out.print("Forno desligado!\n");
+                                        }else {
+                                            System.out.print("Forno ligado!\n");
+                                        }
+                                        kitchen.setForno(aux.isForno());
+                                    }
+
+                                    if(kitchen.getTempForno() != aux.getTempForno()){
+                                        System.out.print("Temperatura do forno a: "+aux.getTempForno()+"graus\n");
+                                        kitchen.setTempForno(aux.getTempForno());
+                                    }
+
+                                    kitchen = m.getKitchenHelper();
+
                                 } else if (m.getDivisao() == BATH) {
-                                    bath.setTemperature(m.getBathHelper().getTemperature());
-                                    bath.setLight(m.getBathHelper().isLight());
-                                    bath.setQuantity(m.getBathHelper().getQuantity());
+
+                                    BathHelper aux = m.getBathHelper();
+
+                                    if(bath.isLight() != aux.isLight()){
+                                        if(bath.isLight()){
+                                            System.out.print("Luz do wc desligada!\n");
+                                        }else {
+                                            System.out.print("Luz do wc ligada!\n");
+                                        }
+                                        bath.setLight(aux.isLight());
+                                    }
+
+                                    if(bath.getQuantity() != aux.getQuantity()){
+                                        System.out.print("Quantidade de água da banheira a: "+aux.getQuantity()+"%\n");
+                                        bath.setQuantity(aux.getQuantity());
+                                    }
+
+                                    if(bath.getTemperature() != aux.getTemperature()){
+                                        System.out.print("Temperatura de água da banheira a: "+aux.getTemperature()+"graus\n");
+                                        bath.setTemperature(aux.getTemperature());
+                                    }
+
+                                    bath = m.getBathHelper();
+
                                 } else if (m.getDivisao() == m.getDiv() && auto) {
                                     current_point = m.getDiv();
                                     if (!goodTime || !day) {

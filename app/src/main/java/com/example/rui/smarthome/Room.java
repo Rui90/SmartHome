@@ -44,9 +44,7 @@ import static android.widget.Toast.makeText;
  */
 public class Room extends Fragment {
 
-    //Camera cam = Camera.open();
     View view;
-    //final Camera.Parameters p = cam.getParameters();
 
     private String screen_Size = "medium";
 
@@ -109,14 +107,17 @@ public class Room extends Fragment {
         tvButton();
 
         final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
+
         arcondicionado.setMax(40);
         arcondicionado.setLeft(0);
         arcondicionado.incrementProgressBy(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond());
-        value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond()));
-        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
+
+        //arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
+        value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond()));
 
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -131,6 +132,7 @@ public class Room extends Fragment {
 
                 if(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
                     arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
+                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setArcondicionado(true);
 
                     Thread t = new Thread() {
 
@@ -138,14 +140,14 @@ public class Room extends Fragment {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                if(!((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
+                                if(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
                                     ((MyApplication) getActivity().getApplication()).getRoomHelper().setArcondicionado(true);
                                     Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "AR CONDICIONADO LIGADO");
+                                            showToast(view.getContext(), "Ar condicionado ligado!");
                                         }
                                     });
                                 } else {
@@ -155,7 +157,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "AR CONDICIONADO DESLIGADO");
+                                            showToast(view.getContext(), "Ar condicionado desligado!");
                                         }
                                     });
                                 }
@@ -177,27 +179,7 @@ public class Room extends Fragment {
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                             value.setText(Integer.toString(progress));
                             ((MyApplication) getActivity().getApplication()).getRoomHelper().setTemperatureArCond(progress);
-                            /*myApplication.setRoomACValue(progress);
-
-                            messsage = "TEMPERATURA DO AR CONDICIONADO NA SALA: " + Integer.toString(progress);
-                            Thread t = new Thread() {
-
-                                public void run() {
-                                    try {
-                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                        dos.writeUTF(messsage);
-                                        dos.flush();
-                                        dos.close();
-                                        s.close();
-                                    } catch (UnknownHostException e) {
-
-                                    } catch (IOException e) {
-
-                                    }
-                                }
-                            };
-                            t.start();*/
+                            Log.d("g", ""+((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond());
                         }
 
                         @Override
@@ -210,7 +192,7 @@ public class Room extends Fragment {
 
                                 public void run() {
                                     try {
-                                        Socket s = new Socket("192.168.0.101", 4444);
+                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                         Mensagem m = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                         dos.writeObject(m);
@@ -243,14 +225,14 @@ public class Room extends Fragment {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                if(!((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
+                                if(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado()){
                                     ((MyApplication) getActivity().getApplication()).getRoomHelper().setArcondicionado(true);
                                     Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "AR CONDICIONADO LIGADO");
+                                            showToast(view.getContext(), "Ar condicionado ligado");
                                         }
                                     });
                                 } else {
@@ -260,7 +242,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "AR CONDICIONADO DESLIGADO");
+                                            showToast(view.getContext(), "Ar condicionado desligado");
                                         }
                                     });
                                 }
@@ -309,7 +291,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "LUZ LIGADA");
+                                            showToast(view.getContext(), "Luz ligada");
                                         }
                                     });
                                 } else {
@@ -319,7 +301,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "LUZ DESLIGADA");
+                                            showToast(view.getContext(), "Luz desligada");
                                         }
                                     });
                                 }
@@ -367,17 +349,17 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "JANELA ABERTA");
+                                            showToast(view.getContext(), "Janela aberta");
                                         }
                                     });
                                 } else {
-                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setLight(false);
+                                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setWindow(false);
                                     Mensagem msg = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
                                     dos.writeObject(msg);
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "JANELA FECHADA");
+                                            showToast(view.getContext(), "Janela fechada");
                                         }
                                     });
                                 }
@@ -425,7 +407,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "TV LIGADA");
+                                            showToast(view.getContext(), "Tv ligada");
                                         }
                                     });
                                 } else {
@@ -435,7 +417,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "TV DESLIGADA");
+                                            showToast(view.getContext(), "Tv desligad");
                                         }
                                     });
                                 }

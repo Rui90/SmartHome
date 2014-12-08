@@ -36,16 +36,15 @@
         android:layout_below="@+id/Nome"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp" />
+        android:layout_marginTop="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar"
         android:id="@+id/save"
-        android:layout_below="@+id/valueLight"
-        android:layout_toRightOf="@+id/valueLight"
-        android:layout_toEndOf="@+id/valueLight" />
+        android:layout_below="@+id/lightSwitch"
+        android:layout_marginTop="35dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -56,12 +55,22 @@
         android:layout_toRightOf="@+id/save"
         android:layout_toEndOf="@+id/save" />
 
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarp"
+        android:layout_below="@+id/lightSwitch"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/valueLight"
-        android:layout_below="@+id/window" />
+        android:layout_toRightOf="@+id/seekBarp"
+        android:layout_toEndOf="@+id/seekBarp"
+        android:layout_below="@+id/window"
+        android:layout_marginTop="30dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -79,8 +88,9 @@
         android:text="Luz"
         android:id="@+id/lightSwitch"
         android:checked="false"
-        android:layout_alignTop="@+id/window"
-        android:layout_toRightOf="@+id/cancel"
-        android:layout_toEndOf="@+id/cancel" />
+        android:layout_below="@+id/window"
+        android:layout_marginTop="5dp"/>
+
+
 
 </RelativeLayout>

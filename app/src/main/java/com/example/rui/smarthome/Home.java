@@ -77,7 +77,7 @@ public class Home extends FragmentActivity
     private CharSequence mTitle;
 
     private static String getIp() {
-        return "192.168.1.2";
+        return "192.168.0.100";
     }
 
     @Override

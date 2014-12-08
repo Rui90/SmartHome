@@ -139,16 +139,4 @@
         android:layout_alignLeft="@+id/seekBar3"
         android:layout_alignStart="@+id/seekBar3" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set"
-        android:id="@+id/set2"
-        android:layout_alignBottom="@+id/seekBar3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/seekBar3"
-        android:layout_toEndOf="@+id/seekBar3" />
-
 </RelativeLayout>

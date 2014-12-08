@@ -33,8 +33,8 @@ public class RoomHelper implements Serializable {
     public int getTemperatureArCond() {
         return temperatureArCond;
     }
-    public void setTemperatureArCond(int quantity) {
-        this.temperatureArCond = quantity;
+    public void setTemperatureArCond(int temperatureArCond) {
+        this.temperatureArCond = temperatureArCond;
     }
 
 	public RoomHelper(boolean light, boolean arcondicionado, boolean tv,

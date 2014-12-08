@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static final String IP = "192.168.1.2";
+    private static final String IP = "192.168.0.100";
 
     public String getIp() {
         return this.IP;

@@ -118,7 +118,7 @@ public class Bath extends Fragment {
 
                     public void run() {
                         try {
-                            Socket s = new Socket("192.168.0.101", 4444);
+                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                             Mensagem m = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                             ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                             dos.writeObject(m);
@@ -162,7 +162,7 @@ public class Bath extends Fragment {
 
                     public void run() {
                         try {
-                            Socket s = new Socket("192.168.0.101", 4444);
+                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                             Mensagem m = new Mensagem(BATH, ((MyApplication) getActivity().getApplication()).getBathHelper());
                             ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                             dos.writeObject(m);
@@ -211,7 +211,7 @@ public class Bath extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "LUZ LIGADA");
+                                            showToast(view.getContext(), "Luz ligada");
                                         }
                                     });
                                 } else {
@@ -221,7 +221,7 @@ public class Bath extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "LUZ DESLIGADA");
+                                            showToast(view.getContext(), "Luz desligada");
                                         }
                                     });
                                 }

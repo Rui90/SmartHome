@@ -109,14 +109,4 @@
         android:layout_alignLeft="@+id/seekBar3"
         android:layout_alignStart="@+id/seekBar3" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:text="Set"
-        android:id="@+id/set2"
-        android:layout_toRightOf="@+id/forno"
-        android:layout_marginLeft="135dp"
-        android:layout_marginTop="670dp"/>
-
 </RelativeLayout>
