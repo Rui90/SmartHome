@@ -37,7 +37,7 @@ public class BedroomHelper implements Serializable {
         this.modo = modo;
     }
 
-    public int getModo(int modo) {
+    public int getModo() {
         return this.modo;
     }
 

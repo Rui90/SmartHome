@@ -17,8 +17,8 @@ public class Mensagem  implements Serializable {
 
    private static final long serialVersionUID = 1L;
     
-   private int divisao;
-     private int elementoAfectado;
+    private int divisao;
+    private int elementoAfectado;
     private boolean condicao;
     private LinkedList<AccessPoint> points;
     private Object o;

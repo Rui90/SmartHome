@@ -313,29 +313,6 @@ public class Bedroom extends Fragment {
                 final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                 final Switch window = (Switch) dialog.findViewById(R.id.window);
                 final Switch lightSwitch = (Switch) dialog.findViewById(R.id.lightSwitch);
-                final SeekBar intensity = (SeekBar) dialog.findViewById(R.id.seekBarp);
-                intensity.setMax(100);
-                intensity.setLeft(0);
-                intensity.incrementProgressBy(1);
-                intensity.setProgress(0);
-                final TextView value = (TextView) dialog.findViewById(R.id.valueLight);
-
-                intensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        value.setText(Integer.toString(progress));
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                    }
-
-                });
 
                 cancelBtn.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
@@ -349,10 +326,6 @@ public class Bedroom extends Fragment {
                         String name_perfil = name.getText().toString();
                         boolean window_perfil = window.isChecked();
                         boolean light_perfil = lightSwitch.isChecked();
-                        int valor = 0;
-                        if(!value.getText().toString().equals("")) {
-                            valor = Integer.parseInt(value.getText().toString());
-                        }
                         ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().add(new Perfil(name_perfil, light_perfil, window_perfil));
                         list = new ArrayList<String>();
                         for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {

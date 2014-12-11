@@ -132,42 +132,6 @@ public class Home extends FragmentActivity
         };
         t.start();
 
-//        Thread tt = new Thread() {
-//
-//            public void run() {
-//                try {
-//                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
-//                    ObjectInputStream dis = new ObjectInputStream(
-//                            s.getInputStream());
-//
-//                    //cria-se uma nova mensagem
-//                    Mensagem m = (Mensagem) dis.readObject();
-//                    Mensagem msg = new Mensagem("Cliente ligado!");
-//
-//
-//                    dis.flush();
-//                    dis.close();
-//                    if(m != null){
-//                        System.out.print(m);
-//                    }
-//                    s.close();
-//                } catch (UnknownHostException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                catch (ClassNotFoundException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        tt.start();
-//
-//        ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
-//        ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
-//        ((MyApplication) getApplication()).getBathHelper().setLight(false);
-
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
 
@@ -434,16 +398,6 @@ public class Home extends FragmentActivity
                                 "Frequency: " + wifiScanList.get(i).frequency +
                                 "\n" + "Distance: " + value + "\n");
                     }
-                    //Log.d("cheguei", "sou boss");
-
-                    /*messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
-                            + "\n" + "Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(1).getDistance()
-                            + "\n" + "Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(2).getDistance()
-                            +  "\n" + "Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();*/
 
                     Thread t = new Thread() {
 
@@ -465,9 +419,6 @@ public class Home extends FragmentActivity
                     };
                     t.start();
 
-                    //Log.d("tag", messsage);
-                    /*SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();*/
                 }
             }
         }
@@ -541,7 +492,7 @@ public class Home extends FragmentActivity
                         }
                         case R.id.modoauto: {
                             ((MyApplication) getActivity().getApplication()).setMode(true);
-                            Fragment fragment = new HomeView();
+                            //
                             Thread t = new Thread() {
 
                                 public void run() {
@@ -562,6 +513,7 @@ public class Home extends FragmentActivity
                             };
                             t.start();
 
+                            Fragment fragment = new HomeView();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
@@ -730,82 +682,4 @@ public class Home extends FragmentActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-
-
-    /*String advice = "";
-
-    class MySyncTask extends AsyncTask<Integer, Integer, String> {
-        @Override
-        protected String doInBackground(Integer... params) {
-            try {
-                Socket s = new Socket("192.168.152.1", 8080);
-                InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
-                BufferedReader reader = new BufferedReader(streamReader);
-
-                String advice = reader.readLine();
-                reader.close();
-                Log.d("msg", advice);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String result) {
-            Log.d("msg", "Cool");
-        }
-
-        protected void onPreExecute() {
-            //log.i("start");
-        }
-    }*/
-
-
-    /*private class SendMessage extends AsyncTask<Void, Void, Void> {
-        private Socket client;
-        ObjectOutputStream toServer = null;
-        ObjectInputStream fromServer = null;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                client = new Socket("192.168.1.102", 4444); // connect to the server
-
-                toServer = new ObjectOutputStream(client.getOutputStream());
-                fromServer = new ObjectInputStream(client.getInputStream());
-
-               // if(params[0].request.equals("GET")){
-                 toServer.writeObject("Fuckoff!");
-                try {
-                    if(fromServer.readObject() != null) {
-                        Toast.makeText(getApplicationContext(), "Sim não é null", Toast.LENGTH_LONG).show();
-                        Log.d("abc", "nao sou null, sou fixe!");
-                    }
-
-                }catch(ClassNotFoundException e) {
-
-                }
-                //}
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-
-                printwriter.write(messsage); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }*/
-
 }

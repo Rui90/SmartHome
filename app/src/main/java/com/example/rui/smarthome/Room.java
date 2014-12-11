@@ -417,7 +417,7 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "Tv desligad");
+                                            showToast(view.getContext(), "Tv desligada");
                                         }
                                     });
                                 }
