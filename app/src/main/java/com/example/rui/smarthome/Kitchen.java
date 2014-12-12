@@ -191,9 +191,6 @@ public class Kitchen extends Fragment {
                 t.start();
             }
         });
-
-
-        if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
             fornoseek.setMax(250);
             fornoseek.incrementProgressBy(10);
             fornoseek.setProgress(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno());
@@ -204,8 +201,10 @@ public class Kitchen extends Fragment {
 
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    value.setText(Integer.toString(progress));
-                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
+                    if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
+                        value.setText(Integer.toString(progress));
+                        ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
+                    }
                 }
 
                 @Override
@@ -214,29 +213,31 @@ public class Kitchen extends Fragment {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    Thread t = new Thread() {
+                    if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
+                        Thread t = new Thread() {
 
-                        public void run() {
-                            try {
-                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-                                Mensagem m = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                dos.writeObject(m);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
+                            public void run() {
+                                try {
+                                    Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                    Mensagem m = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
+                                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                    dos.writeObject(m);
+                                    dos.flush();
+                                    dos.close();
+                                    s.close();
+                                } catch (UnknownHostException e) {
 
-                            } catch (IOException e) {
+                                } catch (IOException e) {
 
+                                }
                             }
-                        }
-                    };
-                    t.start();
+                        };
+                        t.start();
+                    }
                 }
 
             });
-        }
+
         forno.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
