@@ -29,6 +29,9 @@ public class Mensagem  implements Serializable {
     private KitchenHelper kitchen;
     private RoomHelper room;
     private String connected;
+    private String ponto;
+    private double old;
+    private double newP;
 
    public Mensagem(boolean isAuto) {
       this.divisao = 41;
@@ -52,6 +55,14 @@ public class Mensagem  implements Serializable {
         this.elementoAfectado = ElementoAfectado;
         this.condicao = condicao;
    }
+
+    public Mensagem(String ponto, double old, double newP){
+        this.ponto = ponto;
+        this.old = old;
+        this.newP = newP;
+        this.divisao = 46;
+        //this.isAuto = true;
+    }
 
    public Mensagem(int currentDiv) {
     	this.currentDiv = currentDiv;
@@ -79,9 +90,9 @@ public class Mensagem  implements Serializable {
         this.kitchen = room;
     }
     public Mensagem(LinkedList<AccessPoint> points){
-        this.divisao = 0;
+        this.divisao = 45;
         this.points = points;
-
+        this.isAuto = true;
     }
 
     public BathHelper getBathHelper() {
@@ -128,5 +139,13 @@ public class Mensagem  implements Serializable {
     	return this.points; 
     }
     
-
+    public String getPonto(){
+        return ponto;
+    }
+    public double getOld(){
+        return old;
+    }
+    public double getNewP(){
+        return newP;
+    }
 }

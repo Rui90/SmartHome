@@ -64,6 +64,8 @@ public class Home extends FragmentActivity
     private PrintWriter printwriter;
     private String messsage;
 
+    private static final String POINT = "d4:6e:5c:1c:fb:5b";
+
     Timer timer = new Timer();
 
     /**
@@ -77,7 +79,7 @@ public class Home extends FragmentActivity
     private CharSequence mTitle;
 
     private static String getIp() {
-        return "192.168.0.100";
+        return "192.168.1.100";
     }
 
     @Override
@@ -391,59 +393,42 @@ public class Home extends FragmentActivity
         public void onReceive(Context c, Intent intent) {
             if ( ((MyApplication) getApplication()).getMode()) {
                 //   Log.d("entrei", "mode: " + mode);
-                List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
-                wifis = new String[wifiScanList.size()];
+                final List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
+                double dist = 0.0;
 
-                double minDist;
-                int aux = 0; // é uma variavel que vai tratr d mudança de página
-                int break_aux = 0; // uma variavel que vai fazer com que nao se tenha que percorrer toda a lista de wifi... sempre que encontrarmos na wifiScanList um accessPoint igual a
-                // uma das nossas guardadas, aumenta, quando chegar as 4 é porque ja comparamos com todos e nao vale a pena continuar
-                if (((MyApplication) getApplication()).getSize() == 4) {
-                    // Log.d("entrei", "mode2: " + mode);
-                    minDist = ((MyApplication) getApplication()).getAccessPoint(0).getDistance();
-                    for (int i = 0; i < wifiScanList.size() && break_aux < 4; i++) {
-                        for (int j = 0; j < ((MyApplication) getApplication()).getSize(); j++) {
-                            if (wifiScanList.get(i).BSSID.equals(((MyApplication) getApplication()).getAccessPoint(j).getScanResult())) {
-                                break_aux++;
-                                double newDist = calculateDistance(wifiScanList.get(i).level,
-                                        wifiScanList.get(i).frequency);
-                                double AccessPointDist = ((MyApplication) getApplication()).getAccessPoint(j).getDistance();
-                                if (AccessPointDist < minDist) {
-                                    //  Log.d("entrei", "mode3: " + mode);
-                                    minDist = AccessPointDist;
-                                    if (newDist < minDist) {
-                                        minDist = newDist;
-                                        aux = i;
-                                    }
-                                }
-                            }
+                if(((MyApplication) getApplication()).getSize()==0) {
+                    for (int i = 0; i < wifiScanList.size(); i++) {
+                        // ver se encontrei o ponto
+                        if (wifiScanList.get(i).BSSID.equals(POINT)) {
+                            dist = calculateDistance(wifiScanList.get(i).level, wifiScanList.get(i).frequency);
+                            AccessPoint ponto = new AccessPoint(wifiScanList.get(i).BSSID, dist);
+                            ((MyApplication) getApplication()).addAccessPoints(ponto);
+                            Log.d("g", "ENCONTREI O PONTO com dist: " + dist);
                         }
                     }
-                    cases(aux+1);
                 }
 
-                if (wifiScanList.size() >= 4 && ((MyApplication) getApplication()).getSize() == 0) {
-                    for (int i = 0; i < 4; i++) {
-                        double value = calculateDistance(wifiScanList.get(i).level,
-                                wifiScanList.get(i).frequency);
-                        AccessPoint ponto = new AccessPoint(wifiScanList.get(i).BSSID, value);
-                        ((MyApplication) getApplication()).addAccessPoints(ponto);
+                if(((MyApplication) getApplication()).getSize()==1){
 
-                        wifis[i] = ((wifiScanList.get(i)).BSSID + "\n" +
-                                "Level: " + wifiScanList.get(i).level + "\n" +
-                                "Frequency: " + wifiScanList.get(i).frequency +
-                                "\n" + "Distance: " + value + "\n");
+                    final double newDist = calculateDistance(wifiScanList.get(0).level, wifiScanList.get(0).frequency);
+                    Log.d("s", "ANTIGA DIST A: " + dist + "   NOVA DIST A: " + newDist +"\n");
+
+                    double dif = newDist - dist;
+                    if(dif < 0){
+                        dif = 0;
                     }
-                    //Log.d("cheguei", "sou boss");
 
-                    /*messsage = "Ponto 1: " + ((MyApplication) getApplication()).getAccessPoint(0).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(0).getDistance()
-                            + "\n" + "Ponto 2: " + ((MyApplication) getApplication()).getAccessPoint(1).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(1).getDistance()
-                            + "\n" + "Ponto 3: " + ((MyApplication) getApplication()).getAccessPoint(2).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(2).getDistance()
-                            +  "\n" + "Ponto 4: " + ((MyApplication) getApplication()).getAccessPoint(3).getScanResult()
-                            + "   Distancia: " + ((MyApplication) getApplication()).getAccessPoint(3).getDistance();*/
+                    if(dif >= 0 && dif <= 10){
+                        cases(1);
+                    } else if(dif > 10 && dif <= 20) {
+                        cases(2);
+                    } else if(dif > 30 && dif <= 40) {
+                        cases(3);
+                    } else if(dif > 40 && dif <= 50){
+                        cases(4);
+                    } else {
+                        cases(0);
+                    }
 
                     Thread t = new Thread() {
 
@@ -451,7 +436,8 @@ public class Home extends FragmentActivity
                             try {
                                 Socket s = new Socket(getIp(), 4444);
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList());
+                                Mensagem msg = new Mensagem(((MyApplication) getApplication()).getList().get(0).getScanResult() ,
+                                        ((MyApplication) getApplication()).getList().get(0).getDistance() , newDist);
                                 dos.writeObject(msg);
                                 dos.flush();
                                 dos.close();
@@ -464,10 +450,6 @@ public class Home extends FragmentActivity
                         }
                     };
                     t.start();
-
-                    //Log.d("tag", messsage);
-                    /*SendMessage sendMessageTask = new SendMessage();
-                    sendMessageTask.execute();*/
                 }
             }
         }
