@@ -90,14 +90,14 @@ public class Bath extends Fragment {
         final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
 
         if(screen_Size.equals("medium")){
-            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getBathHelper().isLight()){
                 button.setImageResource(R.drawable.lampada11);
             }else {
                 button.setImageResource(R.drawable.lampada1);
             }
 
         }else if(screen_Size.equals("large")) {
-            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getBathHelper().isLight()){
                 button.setImageResource(R.drawable.lampada22);
             }else {
                 button.setImageResource(R.drawable.lampada2);
