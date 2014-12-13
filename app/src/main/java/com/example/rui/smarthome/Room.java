@@ -589,7 +589,7 @@ public class Room extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-        boolean run = false;
+        //boolean run = false;
         Thread t = new Thread(){
             public void run(){
                 try{
@@ -613,6 +613,11 @@ public class Room extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getRoomHelper().isWindow() + " e LUZ: "
                                         + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();
+                                Fragment fragment = new Room();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.container, fragment)
+                                        .commit();
                             }
                         });
                         dis.close();
@@ -626,7 +631,8 @@ public class Room extends Fragment {
                 }
             }
         };
-        if(!run) {
+        t.start();
+       /* if(!run) {
             run = true;
             t.start();
         }
@@ -636,7 +642,7 @@ public class Room extends Fragment {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-        }
+        }*/
 
     }
 

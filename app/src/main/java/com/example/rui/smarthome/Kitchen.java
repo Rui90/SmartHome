@@ -583,7 +583,7 @@ public class Kitchen extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-        boolean finished = false;
+       // boolean finished = false;
         Thread t = new Thread(){
 
             public void run(){
@@ -612,6 +612,11 @@ public class Kitchen extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getKitchenHelper().isWindow() + " e LUZ: "
                                         + m.getKitchenHelper().isLight(), Toast.LENGTH_LONG).show();
+                                Fragment fragment = new Kitchen();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.container, fragment)
+                                        .commit();
                             }
                         });
 
@@ -637,6 +642,7 @@ public class Kitchen extends Fragment {
                 }
             }
         };
+        t.start();/*
         if(!finished){
             finished = true;
             t.start();
@@ -647,7 +653,7 @@ public class Kitchen extends Fragment {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-        }
+        }*/
     }
 
 }

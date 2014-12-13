@@ -288,7 +288,7 @@ public class Bath extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-        boolean finished = false;
+       // boolean finished = false;
         Thread t = new Thread(){
 
             public void run(){
@@ -316,6 +316,11 @@ public class Bath extends Fragment {
                             public void run() {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "LUZ: " + m.getBathHelper().isLight(), Toast.LENGTH_LONG).show();
+                                Fragment fragment = new Kitchen();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.container, fragment)
+                                        .commit();
                             }
                         });
 
@@ -335,7 +340,8 @@ public class Bath extends Fragment {
                 }
             }
         };
-        if(!finished){
+        t.start();
+       /* if(!finished){
             finished = true;
             t.start();
         }
@@ -345,7 +351,7 @@ public class Bath extends Fragment {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-        }
+        }*/
     }
 
 }
