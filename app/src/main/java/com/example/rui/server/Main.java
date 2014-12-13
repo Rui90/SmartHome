@@ -25,7 +25,7 @@ public class Main implements Serializable {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.0.100";
+	private static final String IP = "192.168.1.103";
     private static int current_point = 0;
 
     private static boolean man = false;
@@ -62,9 +62,10 @@ public class Main implements Serializable {
                 System.out.println(" --- SERVER STARTED --- ");
 
                 try {
+                        Socket s = null;
                         // ss = new ServerSocket(4444);
                         while (true) {
-                            Socket s = ss.accept();
+                            s = ss.accept();
                             ObjectInputStream dis = null;
                             try{
                                 dis = new ObjectInputStream(s.getInputStream());

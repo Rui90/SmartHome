@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
@@ -31,6 +32,7 @@ import android.view.WindowManager;
 
 import android.widget.Button;
 
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 
 import android.widget.Toast;
@@ -57,12 +59,11 @@ public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     WifiManager mainWifiObj;
-    WifiScanReceiver wifiReceiver;
+    static WifiScanReceiver wifiReceiver;
     private static Handler hm;
 
-    //private static final String POINT = "d4:6e:5c:1c:fb:5b";
-    private static final String POINT = "e8:94:f6:43:2f:c0";
-
+    private static final String POINT = "d4:6e:5c:1c:fb:5b";
+    //private static final String POINT = "e8:94:f6:43:2f:c0";
 
     Timer timer = new Timer();
 
@@ -77,7 +78,7 @@ public class Home extends FragmentActivity
     private CharSequence mTitle;
 
     private static String getIp() {
-        return "192.168.0.101";
+        return "192.168.1.100";
     }
 
     @Override
@@ -365,6 +366,7 @@ public class Home extends FragmentActivity
         finish();
     }
 
+    @Override
     protected void onPause() {
         try{
             unregisterReceiver(wifiReceiver);
@@ -435,13 +437,13 @@ public class Home extends FragmentActivity
                         dif = 0;
                     }
 
-                    if(dif >= 0 && dif <= 20){
+                    if(dif >= 0 && dif <= 6){
                         cases(1);
-                    } else if(dif > 20 && dif <= 40) {
+                    } else if(dif > 6 && dif <= 12) {
                         cases(2);
-                    } else if(dif > 40 && dif <= 60) {
+                    } else if(dif > 12 && dif <= 18) {
                         cases(3);
-                    } else if(dif > 60 && dif <= 80){
+                    } else if(dif > 18 && dif <= 24){
                         cases(4);
                     } else {
                         cases(0);
@@ -477,12 +479,14 @@ public class Home extends FragmentActivity
         return Math.pow(10.0, exp);
     }
 
-    public static class ModeSelect extends  Fragment {
+    public class ModeSelect extends  Fragment {
 
         private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 
         View view;
         private String screen_Size = "medium";
+
+        //MediaPlayer mp = MediaPlayer.create(this, );
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -504,7 +508,9 @@ public class Home extends FragmentActivity
                 view = inflater.inflate(R.layout.mainfragment, container, false);
             }
 
-            startVoiceRecognitionActivity();
+            if(!((MyApplication) getActivity().getApplication()).getFirst()){
+                startVoiceRecognitionActivity();
+            }
             //Toast.makeText(getActivity(), "Que modo deseja?", Toast.LENGTH_LONG).show();
 
             final RadioGroup radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
@@ -579,10 +585,11 @@ public class Home extends FragmentActivity
         }
 
         private void startVoiceRecognitionActivity() {
+            ((MyApplication) getActivity().getApplication()).setFirst(true);
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Escolha Modo Manual ou Automático");
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
         }
 
@@ -655,9 +662,21 @@ public class Home extends FragmentActivity
 
             super.onActivityResult(requestCode, resultCode, data);
         }
+
+//        @Override
+//        public void onPause() {
+//            try{
+//                unregisterReceiver(wifiReceiver);
+//                super.onPause();
+//            } catch(Exception e){
+//
+//            }
+//        }
+
+
     }
 
-    public static class HomeView extends Fragment {
+    public class HomeView extends Fragment {
 
         private static final int VOICE_RECOGNITION_REQUEST_CODE = 1235;
 
@@ -708,13 +727,16 @@ public class Home extends FragmentActivity
                 view = inflater.inflate(R.layout.home_large, container, false);
             }
 
-            startVoiceRecognitionActivity();
+            if(!((MyApplication) getActivity().getApplication()).getSecond()){
+                startVoiceRecognitionActivity();
+            }
 
             //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
-            Button quarto = (Button) view.findViewById((R.id.quarto));
-            Button sala = (Button) view.findViewById((R.id.sala));
-            Button cozinha = (Button) view.findViewById((R.id.cozinha));
-            Button wc = (Button) view.findViewById((R.id.wc));
+            final ImageButton quarto = (ImageButton) view.findViewById(R.id.quarto);
+            //Button quarto = (Button) view.findViewById((R.id.quarto));
+            final ImageButton sala = (ImageButton) view.findViewById((R.id.sala));
+            final ImageButton cozinha = (ImageButton) view.findViewById((R.id.cozinha));
+            final ImageButton wc = (ImageButton) view.findViewById((R.id.wc));
 
             getActivity().getActionBar().setTitle("Home");
 
@@ -762,6 +784,7 @@ public class Home extends FragmentActivity
         }
 
         private void startVoiceRecognitionActivity() {
+            ((MyApplication) getActivity().getApplication()).setSecond(true);
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -809,6 +832,16 @@ public class Home extends FragmentActivity
 
             super.onActivityResult(requestCode, resultCode, data);
         }
+
+//        @Override
+//        public void onPause() {
+//            try{
+//                unregisterReceiver(wifiReceiver);
+//                super.onPause();
+//            } catch(Exception e){
+//
+//            }
+//        }
 
         @Override
         public void onConfigurationChanged(Configuration newConfig) {

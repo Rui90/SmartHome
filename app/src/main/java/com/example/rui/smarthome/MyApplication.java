@@ -10,7 +10,26 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    private static final String IP = "192.168.0.101";
+    private static final String IP = "192.168.1.100";
+
+    private boolean first = false;
+    private boolean second = false;
+
+    public void setFirst(boolean value){
+        this.first = value;
+    }
+
+    public boolean getFirst(){
+        return first;
+    }
+
+    public void setSecond(boolean value){
+        this.second = value;
+    }
+
+    public boolean getSecond(){
+        return second;
+    }
 
     public String getIp() {
         return this.IP;

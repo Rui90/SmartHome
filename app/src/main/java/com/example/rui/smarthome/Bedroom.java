@@ -116,8 +116,10 @@ public class Bedroom extends Fragment {
 
         list = new ArrayList<String>();
         //Log.d("b", "SIZE: "+((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size());
-        for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
-            list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
+        if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis() != null){
+            for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
+            }
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
@@ -335,10 +337,10 @@ public class Bedroom extends Fragment {
                         String name_perfil = name.getText().toString();
                         boolean window_perfil = window.isChecked();
                         boolean light_perfil = lightSwitch.isChecked();
-                        int valor = 0;
-                        if(!value.getText().toString().equals("")) {
-                            valor = Integer.parseInt(value.getText().toString());
-                        }
+//                        int valor = 0;
+//                        if(!value.getText().toString().equals("")) {
+//                            valor = Integer.parseInt(value.getText().toString());
+//                        }
                         ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().add(new Perfil(name_perfil, light_perfil, window_perfil));
                         list = new ArrayList<String>();
                         for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {

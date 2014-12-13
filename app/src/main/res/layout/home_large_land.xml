@@ -4,40 +4,46 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/quarto"
+        android:src="@drawable/bedroom"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="225dp"
-        android:layout_width="250dp"
-        android:layout_height="180dp"
-        android:textSize="35sp"
-        android:text="@string/bedroom"
-        android:id="@+id/quarto" />
+        android:background="@color/white"/>
 
-    <Button
+    <ImageButton
         android:layout_marginTop="60dp"
         android:layout_width="250dp"
         android:layout_height="180dp"
-        android:textSize="35dp"
-        android:text="@string/dinnerroom"
         android:id="@+id/sala"
-        android:layout_toRightOf="@id/quarto" />
+        android:src="@drawable/sala"
+        android:layout_toRightOf="@id/quarto"
+        android:background="@color/white"
+        android:layout_marginLeft="40dp"/>
 
-    <Button
+
+    <ImageButton
         android:layout_marginLeft="225dp"
-        android:layout_width="250dp"
-        android:layout_height="180dp"
-        android:textSize="35dp"
-        android:text="@string/kitchen"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:id="@+id/cozinha"
-        android:layout_below="@id/quarto" />
-
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="180dp"
-        android:textSize="35dp"
-        android:text="@string/bath"
-        android:id="@+id/wc"
+        android:src="@drawable/cozinha"
+        android:layout_below="@id/sala"
         android:layout_toRightOf="@id/cozinha"
-        android:layout_below="@id/sala" />
+        android:layout_marginTop="20dp"
+        android:background="@color/white"/>
+
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/wc"
+        android:src="@drawable/pipe"
+        android:layout_below="@id/sala"
+        android:layout_toRightOf="@id/cozinha"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:layout_marginLeft="70dp"/>
 
 </RelativeLayout>
