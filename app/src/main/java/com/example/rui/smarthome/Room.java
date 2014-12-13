@@ -98,6 +98,7 @@ public class Room extends Fragment {
         final TextView value = (TextView) view.findViewById(R.id.textView2);
         final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
         final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
 
         if(screen_Size.equals("medium")){
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
@@ -106,9 +107,14 @@ public class Room extends Fragment {
                 tvbutton.setImageResource(R.drawable.telev11);
             }
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
-                button.setImageResource(R.drawable.lampada1);
-            }else {
                 button.setImageResource(R.drawable.lampada11);
+            }else {
+                button.setImageResource(R.drawable.lampada1);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button2.setImageResource(R.drawable.janela11);
+            }else {
+                button2.setImageResource(R.drawable.janela1);
             }
         }else if(screen_Size.equals("large")) {
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
@@ -117,10 +123,16 @@ public class Room extends Fragment {
                 tvbutton.setImageResource(R.drawable.telev22);
             }
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
-                button.setImageResource(R.drawable.lampada2);
-            }else {
                 button.setImageResource(R.drawable.lampada22);
+            }else {
+                button.setImageResource(R.drawable.lampada2);
             }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button2.setImageResource(R.drawable.janela22);
+            }else {
+                button2.setImageResource(R.drawable.janela2);
+            }
+
         }
 
 
@@ -436,6 +448,11 @@ public class Room extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.janela1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.janela2);
+                                            }
                                         }
                                     });
                                 } else {
@@ -446,6 +463,11 @@ public class Room extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela fechada");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.janela11);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.janela22);
+                                            }
                                         }
                                     });
                                 }
