@@ -336,7 +336,8 @@ public class Main implements Serializable {
                                     }
 
 
-                                } else if (m.getDivisao() == m.getDiv() && auto) {
+                                }
+                                if (m.getDivisao() == m.getDiv() && auto) {
                                     current_point = m.getDiv();
                                     if (!goodTime || !day) {
                                         if (current_point == ROOM) {

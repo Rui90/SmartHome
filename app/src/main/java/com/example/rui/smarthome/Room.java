@@ -50,17 +50,9 @@ public class Room extends Fragment {
     View view;
 
     private String screen_Size = "medium";
-
-    private Socket client;
-    private PrintWriter printwriter;
-    private static ServerSocket serverSocket;
-    private static Socket clientSocket;
-    private static InputStreamReader inputStreamReader;
-    private static BufferedReader bufferedReader;
     private static final int ROOM = 1;
 
-    private static final int WINDOW = 10;
-    private static final int LIGHT = 11;
+
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,6 +104,21 @@ public class Room extends Fragment {
         arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
+        final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
+
+        if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+            if(screen_Size.equals("medium")){
+                tvbutton.setImageResource(R.drawable.telev1);
+            }else if(screen_Size.equals("large")){
+                tvbutton.setImageResource(R.drawable.telev2);
+            }
+        }else {
+            if(screen_Size.equals("medium")){
+                tvbutton.setImageResource(R.drawable.telev11);
+            }else if(screen_Size.equals("large")){
+                tvbutton.setImageResource(R.drawable.telev22);
+            }
+        }
 
         arcondicionado.setMax(40);
         arcondicionado.setLeft(0);
@@ -449,6 +456,11 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                tvbutton.setImageResource(R.drawable.telev1);
+                                            }else if(screen_Size.equals("large")){
+                                                tvbutton.setImageResource(R.drawable.telev2);
+                                            }
                                             showToast(view.getContext(), "Tv ligada");
                                         }
                                     });
@@ -459,7 +471,12 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showToast(view.getContext(), "Tv desligad");
+                                            showToast(view.getContext(), "Tv desligada");
+                                            if(screen_Size.equals("medium")){
+                                                tvbutton.setImageResource(R.drawable.telev11);
+                                            }else if(screen_Size.equals("large")){
+                                                tvbutton.setImageResource(R.drawable.telev22);
+                                            }
                                         }
                                     });
                                 }
