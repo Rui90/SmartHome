@@ -111,10 +111,14 @@ public class Room extends Fragment {
             }else {
                 button.setImageResource(R.drawable.lampada1);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button2.setImageResource(R.drawable.janela11);
-            }else {
-                button2.setImageResource(R.drawable.janela1);
+            if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.roomnight1);
+                else
+                    button.setImageResource(R.drawable.janela11);
+            }
+            else{
+                button.setImageResource(R.drawable.janela1);
             }
         }else if(screen_Size.equals("large")) {
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
@@ -127,10 +131,14 @@ public class Room extends Fragment {
             }else {
                 button.setImageResource(R.drawable.lampada2);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button2.setImageResource(R.drawable.janela22);
-            }else {
-                button2.setImageResource(R.drawable.janela2);
+            if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.roomnight2);
+                else
+                    button.setImageResource(R.drawable.janela22);
+            }
+            else{
+                button.setImageResource(R.drawable.janela2);
             }
 
         }
@@ -449,9 +457,15 @@ public class Room extends Fragment {
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
                                             if(screen_Size.equals("medium")){
-                                                button.setImageResource(R.drawable.janela11);
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.roomnight1);
+                                                else
+                                                    button.setImageResource(R.drawable.janela11);
                                             }else if(screen_Size.equals("large")){
-                                                button.setImageResource(R.drawable.janela22);
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.roomnight2);
+                                                else
+                                                    button.setImageResource(R.drawable.janela22);
                                             }
                                         }
                                     });
@@ -583,15 +597,12 @@ public class Room extends Fragment {
                     while(true){
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
-                        //Log.d("o", "TOU A ESPERA");
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
                             ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
-                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
-
-                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
 
                         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -605,14 +616,13 @@ public class Room extends Fragment {
                             }
                         });
 
-//                        view.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showToast(view.getContext(), msg);
-//                            }
-//                        });
                         dis.close();
                         s.close();
+                        Fragment fragment = new Room();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
                     }
                 }
                 catch(IOException e){
@@ -625,27 +635,4 @@ public class Room extends Fragment {
         t.start();
     }
 
-    /*private class SendMessage extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                client = new Socket("192.168.0.101", 4444); // connect to the server
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-                printwriter.write(messsage); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }*/
 }

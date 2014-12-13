@@ -87,6 +87,24 @@ public class Bath extends Fragment {
 
         receiveMessage(getActivity());
 
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+
+        if(screen_Size.equals("medium")){
+            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                button.setImageResource(R.drawable.lampada11);
+            }else {
+                button.setImageResource(R.drawable.lampada1);
+            }
+
+        }else if(screen_Size.equals("large")) {
+            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                button.setImageResource(R.drawable.lampada22);
+            }else {
+                button.setImageResource(R.drawable.lampada2);
+            }
+
+        }
+
         lightButton();
 
         final SeekBar waterQuantity = (SeekBar) view.findViewById(R.id.seekBar);
@@ -209,6 +227,11 @@ public class Bath extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada11);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada22);
+                                            }
                                             showToast(view.getContext(), "Luz ligada");
                                         }
                                     });
@@ -219,6 +242,11 @@ public class Bath extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada2);
+                                            }
                                             showToast(view.getContext(), "Luz desligada");
                                         }
                                     });
@@ -273,6 +301,7 @@ public class Bath extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
                         //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
@@ -292,6 +321,11 @@ public class Bath extends Fragment {
 
                         dis.close();
                         s.close();
+                        Fragment fragment = new Bath();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
                     }
                 }
                 catch(IOException e){

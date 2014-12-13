@@ -470,7 +470,7 @@ public class Main implements Serializable {
                                     try {
                                         Socket s = new Socket(IP, 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath, true);
                                         //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
                                         dos.writeObject(toSendMsg);
                                         dos.flush();
@@ -509,7 +509,7 @@ public class Main implements Serializable {
                                     try {
                                         Socket s = new Socket(IP, 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath, false);
                                         //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
                                         dos.writeObject(toSendMsg);
                                         dos.flush();
@@ -549,7 +549,7 @@ public class Main implements Serializable {
                                     try {
                                         Socket s = new Socket(IP, 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath, false);
                                         //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
                                         dos.writeObject(toSendMsg);
                                         dos.flush();
@@ -589,7 +589,7 @@ public class Main implements Serializable {
                                     try {
                                         Socket s = new Socket(IP, 4444);
                                         ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath, true);
                                         //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
                                         dos.writeObject(toSendMsg);
                                         dos.flush();

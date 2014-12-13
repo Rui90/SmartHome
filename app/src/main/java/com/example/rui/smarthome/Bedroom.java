@@ -106,28 +106,35 @@ public class Bedroom extends Fragment {
         ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
 
         if(screen_Size.equals("medium")){
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
                 light.setImageResource(R.drawable.lampada11);
             }else {
                 light.setImageResource(R.drawable.lampada1);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button.setImageResource(R.drawable.windowroom1);
-            }else {
+            if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.bednight1);
+                else
+                    button.setImageResource(R.drawable.windowroom1);
+            }
+            else{
                 button.setImageResource(R.drawable.janela1);
             }
         }else if(screen_Size.equals("large")) {
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
                 light.setImageResource(R.drawable.lampada22);
             }else {
                 light.setImageResource(R.drawable.lampada2);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button.setImageResource(R.drawable.windowroom2);
-            }else {
-                button.setImageResource(R.drawable.janela2);
+            if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.bednight2);
+                else
+                    button.setImageResource(R.drawable.windowroom2);
             }
-
+            else{
+                 button.setImageResource(R.drawable.janela2);
+            }
         }
 
         receiveMessage(getActivity());
@@ -524,9 +531,15 @@ public class Bedroom extends Fragment {
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
                                             if(screen_Size.equals("medium")){
-                                                button.setImageResource(R.drawable.windowroom1);
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.bednight1);
+                                                else
+                                                    button.setImageResource(R.drawable.windowroom1);
                                             }else if(screen_Size.equals("large")){
-                                                button.setImageResource(R.drawable.windowroom2);
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.bednight2);
+                                                else
+                                                    button.setImageResource(R.drawable.windowroom2);
                                             }
                                         }
                                     });
@@ -612,11 +625,10 @@ public class Bedroom extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
-                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
 
-                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
 
                         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -629,15 +641,13 @@ public class Bedroom extends Fragment {
                                         + m.getBedroomHelper().isLight(), Toast.LENGTH_LONG).show();
                             }
                         });
-
-//                        view.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showToast(view.getContext(), msg);
-//                            }
-//                        });
                         dis.close();
                         s.close();
+                        Fragment fragment = new Bedroom();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
                     }
                 }
                 catch(IOException e){

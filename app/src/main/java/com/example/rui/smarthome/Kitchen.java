@@ -126,26 +126,37 @@ public class Kitchen extends Fragment {
         final TextView value = (TextView) view.findViewById(R.id.textView2);
 
         if(screen_Size.equals("medium")){
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
                 button.setImageResource(R.drawable.lampada11);
             }else {
                 button.setImageResource(R.drawable.lampada1);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button2.setImageResource(R.drawable.janelakitchen1);
-            }else {
-                button2.setImageResource(R.drawable.janela1);
+
+            if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.kitchennight1);
+                else
+                    button.setImageResource(R.drawable.janelakitchen1);
             }
+            else{
+                button.setImageResource(R.drawable.janela1);
+            }
+
         }else if(screen_Size.equals("large")) {
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+            if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
                 button.setImageResource(R.drawable.lampada22);
             }else {
                 button.setImageResource(R.drawable.lampada2);
             }
-            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
-                button2.setImageResource(R.drawable.kitchen2);
-            }else {
-                button2.setImageResource(R.drawable.janela2);
+
+            if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
+                if (((MyApplication) getActivity().getApplication()).getIsNight())
+                    button.setImageResource(R.drawable.kitchennight2);
+                else
+                    button.setImageResource(R.drawable.kitchen2);
+            }
+            else{
+                button.setImageResource(R.drawable.janela2);
             }
 
         }
@@ -507,8 +518,14 @@ public class Kitchen extends Fragment {
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
                                             if(screen_Size.equals("medium")){
-                                                button.setImageResource(R.drawable.janelakitchen1);
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.kitchennight1);
+                                                else
+                                                    button.setImageResource(R.drawable.janelakitchen1);
                                             }else if(screen_Size.equals("large")){
+                                                if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                    button.setImageResource(R.drawable.kitchennight2);
+                                                else
                                                 button.setImageResource(R.drawable.kitchen2);
                                             }
                                         }
@@ -524,6 +541,7 @@ public class Kitchen extends Fragment {
                                             if(screen_Size.equals("medium")){
                                                 button.setImageResource(R.drawable.janela1);
                                             }else if(screen_Size.equals("large")){
+
                                                 button.setImageResource(R.drawable.janela2);
                                             }
                                         }
@@ -578,6 +596,7 @@ public class Kitchen extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
                             ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
                         //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
@@ -604,6 +623,11 @@ public class Kitchen extends Fragment {
 //                        });
                         dis.close();
                         s.close();
+                        Fragment fragment = new Kitchen();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
                     }
                 }
                 catch(IOException e){

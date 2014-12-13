@@ -15,6 +15,15 @@ public class MyApplication extends Application {
     private boolean first = false;
     private boolean second = false;
     private int currentPoint;
+    private boolean isNight = false;
+
+    public void setIsNight(boolean b){
+        this.isNight  = b;
+    }
+
+    public boolean getIsNight() {
+        return this.isNight;
+    }
 
     public void setCurrentPoint(int point){
         this.currentPoint = point;
