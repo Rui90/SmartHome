@@ -337,17 +337,22 @@ public class Main implements Serializable {
 
 
                                 }
+                                //é aqui que ele ao entrar numa divisao acende a luz!
                                 if (m.getDivisao() == m.getDiv() && auto) {
                                     current_point = m.getDiv();
                                     if (!goodTime || !day) {
                                         if (current_point == ROOM) {
                                             room.setLight(true);
+                                            System.out.println("Entrei na sala e liguei a luz!");
                                         } else if (current_point == BEDROOM) {
                                             bedroom.setLight(true);
+                                            System.out.println("Entrei no quarto e liguei a luz!");
                                         } else if (current_point == KITCHEN) {
-                                            room.setLight(true);
+                                            kitchen.setLight(true);
+                                            System.out.println("Entrei na cozinha e liguei a luz!");
                                         } else if (current_point == BATH) {
-                                            room.setLight(true);
+                                            System.out.println("Entrei na casa de banho e liguei a luz!");
+                                            bath.setLight(true);
                                         }
                                     }
                                 }
