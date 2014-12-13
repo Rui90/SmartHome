@@ -248,6 +248,8 @@ public class Home extends FragmentActivity
                 try {
                     Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
                     ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+
+                    ((MyApplication) getApplication()).setCurrentPoint(pos);
                     Mensagem msg = new Mensagem(pos);
                     dos.writeObject(msg);
                     dos.flush();
@@ -438,15 +440,20 @@ public class Home extends FragmentActivity
                     }
 
                     if(dif >= 0 && dif <= 20){
-                        cases(1);
+                        if(((MyApplication) getApplication()).getPoint() != 1)
+                            cases(1);
                     } else if(dif > 20 && dif <= 30) {
-                        cases(2);
+                        if(((MyApplication) getApplication()).getPoint() != 2)
+                            cases(2);
                     } else if(dif > 30 && dif <= 45) {
-                        cases(3);
+                        if(((MyApplication) getApplication()).getPoint() != 3)
+                            cases(3);
                     } else if(dif > 45 && dif <= 60){
-                        cases(4);
+                        if(((MyApplication) getApplication()).getPoint() != 4)
+                            cases(4);
                     } else {
-                        cases(0);
+                        if(((MyApplication) getApplication()).getPoint() != 0)
+                            cases(0);
                     }
 
                     Thread t = new Thread() {

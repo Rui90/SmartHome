@@ -317,7 +317,6 @@ public class Main implements Serializable {
                                         bath = m.getBathHelper();
                                     }
 
-
                                 }
                                 //é aqui que ele ao entrar numa divisao acende a luz!
                                 if (m.getDivisao() == 130 && auto) {

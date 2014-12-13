@@ -14,6 +14,15 @@ public class MyApplication extends Application {
 
     private boolean first = false;
     private boolean second = false;
+    private int currentPoint;
+
+    public void setCurrentPoint(int point){
+        this.currentPoint = point;
+    }
+
+    public int getPoint(){
+        return this.currentPoint;
+    }
 
     public void setFirst(boolean value){
         this.first = value;

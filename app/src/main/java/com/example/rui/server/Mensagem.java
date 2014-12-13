@@ -32,6 +32,7 @@ public class Mensagem  implements Serializable {
     private String ponto;
     private double old;
     private double newP;
+    private boolean isNight;
 
     public Mensagem(){
         this.isAuto = true;
@@ -49,6 +50,18 @@ public class Mensagem  implements Serializable {
        this.kitchen = kitchen;
        this.bath = bath;
    }
+
+    public Mensagem(RoomHelper room, BedroomHelper bedroom, KitchenHelper kitchen, BathHelper bath, boolean isNight){
+        this.bedroom = bedroom;
+        this.room = room;
+        this.kitchen = kitchen;
+        this.bath = bath;
+        this.isNight = isNight;
+    }
+
+    public boolean getIsNight() {
+        return this.isNight;
+    }
 
     public Mensagem(boolean l, boolean e){
         this.divisao = 100;
