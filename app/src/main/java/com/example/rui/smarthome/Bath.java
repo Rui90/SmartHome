@@ -1,5 +1,6 @@
 package com.example.rui.smarthome;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
@@ -44,10 +46,6 @@ public class Bath extends Fragment {
     View view;
     int x = 0;
     private String screen_Size = "medium";
-
-  /*  private Socket client;
-    private PrintWriter printwriter;
-    private String messsage;*/
 
     private static final int BATH = 4;
 
@@ -87,7 +85,7 @@ public class Bath extends Fragment {
             view = inflater.inflate(R.layout.bath_layout_large, container, false);
         }
 
-        receiveMessage();
+        receiveMessage(getActivity());
 
         lightButton();
 
@@ -247,48 +245,6 @@ public class Bath extends Fragment {
             }
         });
 
-        /*button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-
-
-                Thread t = new Thread() {
-
-                    public void run() {
-                    try {
-                        Socket s = new Socket("192.168.0.100", 4444);
-                        DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
-                        if(x%2==0){
-                            dos.writeUTF("LUZ LIGADA");
-                            view.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showToast(view.getContext(), "LUZ LIGADA");
-                                }
-                            });
-                        } else {
-                            dos.writeUTF("LUZ DESLIGADA");
-                            view.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showToast(view.getContext(), "LUZ DESLIGADA");
-                                }
-                            });
-                        }
-                        x++;
-                        dos.flush();
-                        dos.close();
-                        s.close();
-                    } catch (UnknownHostException e) {
-
-                    } catch (IOException e) {
-
-                    }
-                }
-                };
-                t.start();
-            }
-        });*/
     }
 
     public void newFrag(){
@@ -299,7 +255,11 @@ public class Bath extends Fragment {
                 .commit();
     }
 
-    public void receiveMessage(){
+    private void showToast(Context ctx, String msg) {
+        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void receiveMessage(final Activity act){
 
         Thread t = new Thread(){
 
@@ -309,12 +269,24 @@ public class Bath extends Fragment {
                     while(true){
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
-                        final String msg = dis.readUTF();
+                        //Log.d("o", "TOU A ESPERA");
+                        final Mensagem m = (Mensagem) dis.readObject();
+                        if(m != null){
+                            ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
+                        }
+                        Log.d("p", "RECEBI: " + m);
+                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
 
-                        view.post(new Runnable() {
+                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+
+                        handler.post(new Runnable() {
+
                             @Override
                             public void run() {
-                                showToast(getActivity().getApplicationContext(), msg);
+                                Log.d("b", "RUNNN");
+                                Toast.makeText(act, "LUZ: " + m.getBathHelper().isLight(), Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -324,31 +296,12 @@ public class Bath extends Fragment {
                 }
                 catch(IOException e){
 
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         };
         t.start();
     }
 
-    private void showToast(Context ctx, String msg) {
-        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
-    }
-
-
-
-    /*public void showToast2(final String toast)
-    {
-        try{
-            getActivity().runOnUiThread(new Runnable() {
-                public void run()
-                {
-                    Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        catch(NullPointerException e){
-
-        }
-
-    }*/
 }

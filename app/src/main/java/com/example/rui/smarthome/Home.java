@@ -11,9 +11,10 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
-import android.os.Message;
+import android.os.Looper;
+
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,24 +28,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.widget.ListView;
+
 import android.widget.RadioGroup;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInput;
+
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
+
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -52,19 +49,20 @@ import android.os.Handler;
 
 import com.example.rui.server.*;
 
+
+import android.speech.RecognizerIntent;
+import java.util.List;
+
 public class Home extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     WifiManager mainWifiObj;
     WifiScanReceiver wifiReceiver;
-    //ListView list;
-    String[] wifis;
     private static Handler hm;
-    private Socket client;
-    private PrintWriter printwriter;
-    private String messsage;
 
-    private static final String POINT = "d4:6e:5c:1c:fb:5b";
+    //private static final String POINT = "d4:6e:5c:1c:fb:5b";
+    private static final String POINT = "e8:94:f6:43:2f:c0";
+
 
     Timer timer = new Timer();
 
@@ -79,7 +77,7 @@ public class Home extends FragmentActivity
     private CharSequence mTitle;
 
     private static String getIp() {
-        return "192.168.1.100";
+        return "192.168.0.101";
     }
 
     @Override
@@ -95,9 +93,9 @@ public class Home extends FragmentActivity
 
             public void run() {
                 try {
-                    Log.d("g", "ENTREIIIIIIIIIIIIIIII");
+
                     Socket s = new Socket(getIp(), 4444);
-                    Log.d("g", "SOCKETTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+
                     ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                     Mensagem msg = new Mensagem("Cliente ligado!");
                     dos.writeObject(msg);
@@ -105,14 +103,24 @@ public class Home extends FragmentActivity
                     dos.flush();
                     dos.close();
 
-                    Log.d("g", "DIS");
+
                     Socket s2 = new Socket(getIp(), 4444);
                     ObjectInputStream dis = new ObjectInputStream(s2.getInputStream());
-                    Log.d("g", "OBJECTOUTPUTSTREAMMMMMMM");
-                    //cria-se uma nova mensagem
-                    Mensagem m = (Mensagem) dis.readObject();
 
-                    Log.d("g", "AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+                    //cria-se uma nova mensagem
+                    final Mensagem m = (Mensagem) dis.readObject();
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Informação da casa recebida!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    //Toast.makeText(getApplicationContext(), "RECEBI MENSAGEM", Toast.LENGTH_LONG).show();
+
 
                     if(m != null){
                         ((MyApplication) getApplication()).setBathHelper(m.getBathHelper());
@@ -133,42 +141,6 @@ public class Home extends FragmentActivity
             }
         };
         t.start();
-
-//        Thread tt = new Thread() {
-//
-//            public void run() {
-//                try {
-//                    Socket s = new Socket(((MyApplication) getApplication()).getIp(), 4444);
-//                    ObjectInputStream dis = new ObjectInputStream(
-//                            s.getInputStream());
-//
-//                    //cria-se uma nova mensagem
-//                    Mensagem m = (Mensagem) dis.readObject();
-//                    Mensagem msg = new Mensagem("Cliente ligado!");
-//
-//
-//                    dis.flush();
-//                    dis.close();
-//                    if(m != null){
-//                        System.out.print(m);
-//                    }
-//                    s.close();
-//                } catch (UnknownHostException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                catch (ClassNotFoundException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        tt.start();
-//
-//        ((MyApplication) getApplication()).getBathHelper().setQuantity(0);
-//        ((MyApplication) getApplication()).getBathHelper().setTemperature(0);
-//        ((MyApplication) getApplication()).getBathHelper().setLight(false);
 
         timer.schedule(new RemindTask(), 0, //initial delay
                 1 * 3000);
@@ -321,9 +293,6 @@ public class Home extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.home, menu);
             restoreActionBar();
             return true;
@@ -337,8 +306,31 @@ public class Home extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.changeMode) {
+            if(((MyApplication) getApplication()).getMode()){
+                ((MyApplication) getApplication()).setMode(false);
+            }else {
+                ((MyApplication) getApplication()).setMode(true);
+            }
+            Thread t = new Thread() {
+
+                public void run() {
+                    try {
+                        Socket s = new Socket(getIp(), 4444);
+                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                        Mensagem msg = new Mensagem(((MyApplication) getApplication()).getMode());
+                        dos.writeObject(msg);
+                        dos.flush();
+                        dos.close();
+                        s.close();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            t.start();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -394,9 +386,34 @@ public class Home extends FragmentActivity
             if ( ((MyApplication) getApplication()).getMode()) {
                 //   Log.d("entrei", "mode: " + mode);
                 final List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
+                /*for(int i=0; i<wifiScanList.size(); i++){
+                    Log.d("d", "ponto " + i + ": " + wifiScanList.get(i).BSSID + " com dist: " +
+                    calculateDistance(wifiScanList.get(i).level, wifiScanList.get(i).frequency));
+                }*/
                 double dist = 0.0;
 
                 if(((MyApplication) getApplication()).getSize()==0) {
+
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket(getIp(), 4444);
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                Mensagem msg = new Mensagem();
+                                dos.writeObject(msg);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    t.start();
+
                     for (int i = 0; i < wifiScanList.size(); i++) {
                         // ver se encontrei o ponto
                         if (wifiScanList.get(i).BSSID.equals(POINT)) {
@@ -418,13 +435,13 @@ public class Home extends FragmentActivity
                         dif = 0;
                     }
 
-                    if(dif >= 0 && dif <= 10){
+                    if(dif >= 0 && dif <= 20){
                         cases(1);
-                    } else if(dif > 10 && dif <= 20) {
+                    } else if(dif > 20 && dif <= 40) {
                         cases(2);
-                    } else if(dif > 30 && dif <= 40) {
+                    } else if(dif > 40 && dif <= 60) {
                         cases(3);
-                    } else if(dif > 40 && dif <= 50){
+                    } else if(dif > 60 && dif <= 80){
                         cases(4);
                     } else {
                         cases(0);
@@ -462,6 +479,8 @@ public class Home extends FragmentActivity
 
     public static class ModeSelect extends  Fragment {
 
+        private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
+
         View view;
         private String screen_Size = "medium";
 
@@ -484,6 +503,9 @@ public class Home extends FragmentActivity
             } else{
                 view = inflater.inflate(R.layout.mainfragment, container, false);
             }
+
+            startVoiceRecognitionActivity();
+            //Toast.makeText(getActivity(), "Que modo deseja?", Toast.LENGTH_LONG).show();
 
             final RadioGroup radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
             final Button buttonradio = (Button) view.findViewById(R.id.RadioButton);
@@ -556,9 +578,88 @@ public class Home extends FragmentActivity
             return view;
         }
 
+        private void startVoiceRecognitionActivity() {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
+            startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+                ArrayList<String> matches = data.getStringArrayListExtra(
+                        RecognizerIntent.EXTRA_RESULTS);
+                Log.d("z", ""+matches);
+                for(int i=0; i < matches.size(); i++){
+                    if(matches.get(i).equals("manual") || matches.get(i).equals("modo manual")){
+                        ((MyApplication) getActivity().getApplication()).setMode(false);
+
+                        Thread t = new Thread() {
+
+                            public void run() {
+                                try {
+                                    Socket s = new Socket(getIp(), 4444);
+                                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                    Mensagem msg = new Mensagem(false);
+                                    dos.writeObject(msg);
+                                    dos.flush();
+                                    dos.close();
+                                    s.close();
+                                } catch (UnknownHostException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        t.start();
+
+                        Fragment fragment = new HomeView();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    } else if(matches.get(i).equals("automático") || matches.get(i).equals("modo automático")
+                            || matches.get(i).equals("automatico") || matches.get(i).equals("modo automatico")){
+                        ((MyApplication) getActivity().getApplication()).setMode(true);
+                        Fragment fragment = new HomeView();
+                        Thread t = new Thread() {
+
+                            public void run() {
+                                try {
+                                    Socket s = new Socket(getIp(), 4444);
+                                    ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                    Mensagem msg = new Mensagem(true);
+                                    dos.writeObject(msg);
+                                    dos.flush();
+                                    dos.close();
+                                    s.close();
+                                } catch (UnknownHostException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        t.start();
+
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    }
+                }
+            }
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public static class HomeView extends Fragment {
+
+        private static final int VOICE_RECOGNITION_REQUEST_CODE = 1235;
 
         private String screen_Size = "medium";
         View view;
@@ -606,6 +707,8 @@ public class Home extends FragmentActivity
             {
                 view = inflater.inflate(R.layout.home_large, container, false);
             }
+
+            startVoiceRecognitionActivity();
 
             //mNavigationDrawerFragment.getListView().setItemChecked(0,true);
             Button quarto = (Button) view.findViewById((R.id.quarto));
@@ -656,6 +759,55 @@ public class Home extends FragmentActivity
             });
 
             return view;
+        }
+
+        private void startVoiceRecognitionActivity() {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
+            startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+                // Fill the list view with the strings the recognizer thought it could have heard
+                ArrayList<String> matches = data.getStringArrayListExtra(
+                        RecognizerIntent.EXTRA_RESULTS);
+                Log.d("z", ""+matches);
+                for(int i=0; i < matches.size(); i++){
+                    if(matches.get(i).equals("quarto")){
+                        getActivity().getActionBar().setTitle("Bedroom");
+                        Fragment fragment = new Bedroom();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    } else if(matches.get(i).equals("sala")){
+                        getActivity().getActionBar().setTitle("Room");
+                        Fragment fragment = new Room();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    } else if(matches.get(i).equals("cozinha")){
+                        getActivity().getActionBar().setTitle("Kitchen");
+                        Fragment fragment = new Kitchen();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    } else if(matches.get(i).equals("casa de banho") || matches.get(i).equals("wc")
+                            || matches.get(i).equals("banho")){
+                        getActivity().getActionBar().setTitle("Bath");
+                        Fragment fragment = new Bath();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment)
+                                .commit();
+                    }
+                }
+            }
+
+            super.onActivityResult(requestCode, resultCode, data);
         }
 
         @Override
@@ -712,82 +864,5 @@ public class Home extends FragmentActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-
-
-    /*String advice = "";
-
-    class MySyncTask extends AsyncTask<Integer, Integer, String> {
-        @Override
-        protected String doInBackground(Integer... params) {
-            try {
-                Socket s = new Socket("192.168.152.1", 8080);
-                InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
-                BufferedReader reader = new BufferedReader(streamReader);
-
-                String advice = reader.readLine();
-                reader.close();
-                Log.d("msg", advice);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String result) {
-            Log.d("msg", "Cool");
-        }
-
-        protected void onPreExecute() {
-            //log.i("start");
-        }
-    }*/
-
-
-    /*private class SendMessage extends AsyncTask<Void, Void, Void> {
-        private Socket client;
-        ObjectOutputStream toServer = null;
-        ObjectInputStream fromServer = null;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-
-                client = new Socket("192.168.1.102", 4444); // connect to the server
-
-                toServer = new ObjectOutputStream(client.getOutputStream());
-                fromServer = new ObjectInputStream(client.getInputStream());
-
-               // if(params[0].request.equals("GET")){
-                 toServer.writeObject("Fuckoff!");
-                try {
-                    if(fromServer.readObject() != null) {
-                        Toast.makeText(getApplicationContext(), "Sim não é null", Toast.LENGTH_LONG).show();
-                        Log.d("abc", "nao sou null, sou fixe!");
-                    }
-
-                }catch(ClassNotFoundException e) {
-
-                }
-                //}
-                printwriter = new PrintWriter(client.getOutputStream(), true);
-
-                printwriter.write(messsage); // write the message to output stream
-
-                printwriter.flush();
-                printwriter.close();
-                client.close(); // closing the connection
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }*/
 
 }

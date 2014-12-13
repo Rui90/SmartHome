@@ -1,11 +1,14 @@
 package com.example.rui.smarthome;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +37,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -106,7 +110,7 @@ public class Kitchen extends Fragment {
             view = inflater.inflate(R.layout.kitchen_layout_large, container, false);
         }
 
-        receiveMessage();
+        receiveMessage(getActivity());
 
         lightButton();
 
@@ -524,6 +528,45 @@ public class Kitchen extends Fragment {
 //            }
 //        });
 
+        if(forno.isChecked()){
+            fornoseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    value.setText(Integer.toString(progress));
+                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                Mensagem m = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                dos.writeObject(m);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
+                }
+
+            });
+        }
+
         forno.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -804,7 +847,8 @@ public class Kitchen extends Fragment {
                 .commit();
     }
 
-    public void receiveMessage(){
+    public void receiveMessage(final Activity act){
+
         Thread t = new Thread(){
 
             public void run(){
@@ -812,20 +856,43 @@ public class Kitchen extends Fragment {
                     ServerSocket ss = new ServerSocket(4444);
                     while(true){
                         Socket s = ss.accept();
-                        DataInputStream dis = new DataInputStream(s.getInputStream());
-                        final String msg = dis.readUTF();
-                        view.post(new Runnable() {
+                        ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
+                        //Log.d("o", "TOU A ESPERA");
+                        final Mensagem m = (Mensagem) dis.readObject();
+                        if(m != null){
+                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
+                        }
+                        Log.d("p", "RECEBI: " + m);
+                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
+
+                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+
+                        handler.post(new Runnable() {
+
                             @Override
                             public void run() {
-                                showToast(view.getContext(), msg);
+                                Log.d("b", "RUNNN");
+                                Toast.makeText(act, "JANELA: " + m.getKitchenHelper().isWindow() + " e LUZ: "
+                                        + m.getKitchenHelper().isLight(), Toast.LENGTH_LONG).show();
                             }
                         });
+
+//                        view.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                showToast(view.getContext(), msg);
+//                            }
+//                        });
                         dis.close();
                         s.close();
                     }
                 }
                 catch(IOException e){
 
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         };

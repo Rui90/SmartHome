@@ -33,6 +33,11 @@ public class Mensagem  implements Serializable {
     private double old;
     private double newP;
 
+    public Mensagem(){
+        this.isAuto = true;
+        this.divisao = 50;
+    }
+
    public Mensagem(boolean isAuto) {
       this.divisao = 41;
       this.isAuto = isAuto;
@@ -44,6 +49,10 @@ public class Mensagem  implements Serializable {
        this.kitchen = kitchen;
        this.bath = bath;
    }
+
+    public Mensagem(boolean l, boolean e){
+        this.divisao = 100;
+    }
 
    public Mensagem(String connected) {
        this.connected = connected;
@@ -61,7 +70,7 @@ public class Mensagem  implements Serializable {
         this.old = old;
         this.newP = newP;
         this.divisao = 46;
-        //this.isAuto = true;
+        this.isAuto = true;
     }
 
    public Mensagem(int currentDiv) {

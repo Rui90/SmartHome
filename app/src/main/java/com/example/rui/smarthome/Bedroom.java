@@ -1,10 +1,13 @@
 package com.example.rui.smarthome;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -31,8 +34,10 @@ import com.example.rui.server.Mensagem;
 import com.example.rui.server.Perfil;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -97,6 +102,8 @@ public class Bedroom extends Fragment {
             view = inflater.inflate(R.layout.bedroom_layout_large, container, false);
         }
 
+        receiveMessage(getActivity());
+
         lightButton();
 
         windowButton();
@@ -108,7 +115,7 @@ public class Bedroom extends Fragment {
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
 
         list = new ArrayList<String>();
-        Log.d("b", "SIZE: "+((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size());
+        //Log.d("b", "SIZE: "+((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size());
         for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
             list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
         }
@@ -313,29 +320,8 @@ public class Bedroom extends Fragment {
                 final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                 final Switch window = (Switch) dialog.findViewById(R.id.window);
                 final Switch lightSwitch = (Switch) dialog.findViewById(R.id.lightSwitch);
-                final SeekBar intensity = (SeekBar) dialog.findViewById(R.id.seekBarp);
-                intensity.setMax(100);
-                intensity.setLeft(0);
-                intensity.incrementProgressBy(1);
-                intensity.setProgress(0);
+
                 final TextView value = (TextView) dialog.findViewById(R.id.valueLight);
-
-                intensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        value.setText(Integer.toString(progress));
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                    }
-
-                });
 
                 cancelBtn.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
@@ -545,6 +531,58 @@ public class Bedroom extends Fragment {
             }
         }
         return null;
+    }
+
+    public void receiveMessage(final Activity act){
+
+        Thread t = new Thread(){
+
+            public void run(){
+                try{
+                    ServerSocket ss = new ServerSocket(4444);
+                    while(true){
+                        Socket s = ss.accept();
+                        ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
+                        //Log.d("o", "TOU A ESPERA");
+                        final Mensagem m = (Mensagem) dis.readObject();
+                        if(m != null){
+                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
+                        }
+                        Log.d("p", "RECEBI: " + m);
+                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
+
+                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+
+                        handler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Log.d("b", "RUNNN");
+                                Toast.makeText(act, "JANELA: " + m.getBedroomHelper().isWindow() + " e LUZ: "
+                                        + m.getBedroomHelper().isLight(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+//                        view.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                showToast(view.getContext(), msg);
+//                            }
+//                        });
+                        dis.close();
+                        s.close();
+                    }
+                }
+                catch(IOException e){
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
     }
 
 

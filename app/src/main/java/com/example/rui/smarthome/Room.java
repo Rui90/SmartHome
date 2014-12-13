@@ -1,11 +1,14 @@
 package com.example.rui.smarthome;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -93,12 +96,11 @@ public class Room extends Fragment {
             view = inflater.inflate(R.layout.dinnerroom_large_land, container, false);
         }
         else if((getResources().getDisplayMetrics().widthPixels<getResources().getDisplayMetrics().
-                heightPixels) && screen_Size.equals("large"))
-        {
+                heightPixels) && screen_Size.equals("large")) {
             view = inflater.inflate(R.layout.dinnerroom_large_layout, container, false);
         }
 
-        receiveMessage();
+        receiveMessage(getActivity());
 
         lightButton();
 
@@ -118,6 +120,46 @@ public class Room extends Fragment {
         //arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond()));
+
+        if(arcondicionadoOnOff.isChecked()){
+            arcondicionado.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    value.setText(Integer.toString(progress));
+                    ((MyApplication) getActivity().getApplication()).getRoomHelper().setTemperatureArCond(progress);
+                    Log.d("g", ""+((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond());
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    Thread t = new Thread() {
+
+                        public void run() {
+                            try {
+                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
+                                Mensagem m = new Mensagem(ROOM, ((MyApplication) getActivity().getApplication()).getRoomHelper());
+                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                dos.writeObject(m);
+                                dos.flush();
+                                dos.close();
+                                s.close();
+                            } catch (UnknownHostException e) {
+
+                            } catch (IOException e) {
+
+                            }
+                        }
+                    };
+                    t.start();
+                }
+
+            });
+        }
 
         arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -455,7 +497,7 @@ public class Room extends Fragment {
                 .commit();
     }
 
-    public void receiveMessage(){
+    public void receiveMessage(final Activity act){
 
         Thread t = new Thread(){
 
@@ -465,19 +507,42 @@ public class Room extends Fragment {
                     while(true){
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
-                        final String msg = dis.readUTF();
-                        view.post(new Runnable() {
+                        //Log.d("o", "TOU A ESPERA");
+                        final Mensagem m = (Mensagem) dis.readObject();
+                        if(m != null){
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                        }
+                        Log.d("p", "RECEBI: " + m);
+                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
+
+                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+
+                        handler.post(new Runnable() {
+
                             @Override
                             public void run() {
-                                showToast(view.getContext(), msg);
+                                Log.d("b", "RUNNN");
+                                Toast.makeText(act, "JANELA: " + m.getRoomHelper().isWindow() + " e LUZ: "
+                                        + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();
                             }
                         });
+
+//                        view.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                showToast(view.getContext(), msg);
+//                            }
+//                        });
                         dis.close();
                         s.close();
                     }
                 }
                 catch(IOException e){
 
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         };

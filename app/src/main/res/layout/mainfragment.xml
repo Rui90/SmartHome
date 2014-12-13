@@ -43,6 +43,20 @@
             android:layout_height="wrap_content"
             android:text="Confirmar Modo"
             android:id="@+id/RadioButton" />
+
     </RadioGroup>
+
+    <!--<Button-->
+        <!--android:layout_width="235dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:textSize="24sp"-->
+        <!--android:text="Voz"-->
+        <!--android:id="@+id/speakButton"-->
+        <!--android:layout_marginTop="400dp"-->
+        <!--android:layout_centerHorizontal="true"/>-->
+
+
+
+
 
 </RelativeLayout>

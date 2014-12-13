@@ -1,8 +1,11 @@
 package com.example.rui.server;
 
+import com.example.rui.smarthome.MyApplication;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,7 +14,7 @@ public class Main implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String POINT = "d4:6e:5c:1c:fb:5b";
+    //private static final String POINT = "d4:6e:5c:1c:fb:5b";
 
 	private static boolean day = true;
 	private static boolean goodTime = true;
@@ -22,7 +25,7 @@ public class Main implements Serializable {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.1.101";
+	private static final String IP = "192.168.0.100";
     private static int current_point = 0;
 
     private static boolean man = false;
@@ -46,7 +49,10 @@ public class Main implements Serializable {
 	 * static SendMessage sm;
 	 */
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
+
+
+        final ServerSocket ss = new ServerSocket(4444);
 
         //Scanner in = new Scanner(System.in);
 
@@ -54,8 +60,9 @@ public class Main implements Serializable {
 
             public void run() {
                 System.out.println(" --- SERVER STARTED --- ");
+
                 try {
-                        ServerSocket ss = new ServerSocket(4444);
+                        // ss = new ServerSocket(4444);
                         while (true) {
                             Socket s = ss.accept();
                             ObjectInputStream dis = null;
@@ -95,56 +102,61 @@ public class Main implements Serializable {
                                     toSend.flush();
                                     toSend.close();
                                     s2.close();
-                                } else if (m.getDivisao() == 45) {
+                                } else if (m.getDivisao() == 50) {
                                     //System.out.print("PONTOS: " + m.getPoints()+"\n");
-                                    access = m.getPoints();
+                                    //access = m.getPoints();
                                     //System.out.print("NUMERO DE PONTOS: " + access.size());
                                     auto = m.getAuto();
                                     if(auto){
                                         System.out.print("Modo automático. \n");
                                         //System.out.print("SIZE" + access.size());
-                                        for(int i=0; i<access.size(); i++){
-                                            AccessPoint p = access.get(i);
-                                            System.out.print("Ponto " + i + ": " + p.getScanResult() +" com Dist: "
-                                            + p.getDistance()+"\n");
-                                        }
+//                                        for(int i=0; i<access.size(); i++){
+//                                            AccessPoint p = access.get(i);
+//                                            System.out.print("Ponto " + i + ": " + p.getScanResult() +" com Dist: "
+//                                            + p.getDistance()+"\n");
+//                                        }
                                     } else {
                                         System.out.print("Modo manual. \n");
                                     }
                                 } else if(m.getDivisao() == 46){
-                                    System.out.print(m.getPonto() + "\nOLD: " + m.getOld() + "\nNEW: " + m.getNewP()+"\n");
+
+                                    //System.out.print(m.getPonto() + "\nOLD: " + m.getOld() + "\nNEW: " + m.getNewP()+"\n");
 
                                 }
                                 else if (m.getDivisao() == ROOM) {
 
                                     div = "ROOM";
 
+
+
+
                                     RoomHelper aux = m.getRoomHelper();
 
-                                    //System.out.print("ROOM: " + room + "\n" + "AUX: " + aux +"\n");
+                                    //System.out.print("ROOOOM");
 
                                 if(room != null && aux != null){
                                     if (room.isLight() != aux.isLight()) {
                                         if (room.isLight()) {
                                             System.out.print("Luz da sala desligada!\n");
+                                            room.setLight(false);
                                         } else {
                                             System.out.print("Luz da sala ligada!\n");
                                         }
                                         room.setLight(aux.isLight());
                                     }
 
-                                    //if (room.isWindow() != aux.isWindow()) {
-                                        System.out.print("JA " + room.isWindow());
+                                    if (room.isWindow() != aux.isWindow()) {
+                                        //System.out.print("JA " + room.isWindow());
                                         if (room.isWindow()) {
-                                            System.out.print("Janela da sala fechadaaaaaa!\n");
+                                            System.out.print("Janela da sala fechada!\n");
                                             room.setWindow(false);
-                                            System.out.print("AGORA " + room.isWindow()+"\n");
+                                            //System.out.print("AGORA " + room.isWindow()+"\n");
                                             man = true;
                                         } else {
                                             System.out.print("Janela da sala aberta!\n");
                                         }
-                                        //room.setWindow(aux.isWindow());
-                                    //}
+                                        room.setWindow(aux.isWindow());
+                                    }
 
                                     if (room.isTv() != aux.isTv()) {
                                         if (room.isTv()) {
@@ -174,6 +186,8 @@ public class Main implements Serializable {
 
                                 } else if (m.getDivisao() == BEDROOM) {
 
+                                    div = "BEDROOM";
+
                                     BedroomHelper aux = m.getBedroomHelper();
 
                                     if(bedroom != null && aux != null){
@@ -181,7 +195,7 @@ public class Main implements Serializable {
                                             if(bedroom.isLight()){
                                                 System.out.print("Luz do quarto desligada!\n");
                                             }else {
-                                                System.out.print("Luz da quarto ligada!\n");
+                                                System.out.print("Luz do quarto ligada!\n");
                                             }
                                             bedroom.setLight(aux.isLight());
                                         }
@@ -230,75 +244,85 @@ public class Main implements Serializable {
 
                                 } else if (m.getDivisao() == KITCHEN) {
 
+                                    div = "KITCHEN";
+
                                     KitchenHelper aux = m.getKitchenHelper();
 
-                                    if(kitchen.isLight() != aux.isLight()){
-                                        if(kitchen.isLight()){
-                                            System.out.print("Luz da cozinha desligada!\n");
-                                        }else {
-                                            System.out.print("Luz da cozinha ligada!\n");
+                                    if(kitchen != null && aux != null){
+                                        if(kitchen.isLight() != aux.isLight()){
+                                            if(kitchen.isLight()){
+                                                System.out.print("Luz da cozinha desligada!\n");
+                                            }else {
+                                                System.out.print("Luz da cozinha ligada!\n");
+                                            }
+                                            kitchen.setLight(aux.isLight());
                                         }
-                                        kitchen.setLight(aux.isLight());
-                                    }
 
-                                    if(kitchen.isWindow() != aux.isWindow()){
-                                        if(kitchen.isWindow()){
-                                            System.out.print("Janela da cozinha fechada!\n");
-                                        }else {
-                                            System.out.print("Janela da cozinha aberta!\n");
+                                        if(kitchen.isWindow() != aux.isWindow()){
+                                            if(kitchen.isWindow()){
+                                                System.out.print("Janela da cozinha fechada!\n");
+                                            }else {
+                                                System.out.print("Janela da cozinha aberta!\n");
+                                            }
+                                            kitchen.setWindow(aux.isWindow());
                                         }
-                                        kitchen.setWindow(aux.isWindow());
-                                    }
 
-                                    if(kitchen.isMicrowave() != aux.isMicrowave()){
-                                        if(kitchen.isMicrowave()){
-                                            System.out.print("Microondas desligado!\n");
-                                        }else {
-                                            System.out.print("Microondas ligado!\n");
+                                        if(kitchen.isMicrowave() != aux.isMicrowave()){
+                                            if(kitchen.isMicrowave()){
+                                                System.out.print("Microondas desligado!\n");
+                                            }else {
+                                                System.out.print("Microondas ligado!\n");
+                                            }
+                                            kitchen.setMicrowave(aux.isMicrowave());
                                         }
-                                        kitchen.setMicrowave(aux.isMicrowave());
-                                    }
 
-                                    if(kitchen.isForno() != aux.isForno()){
-                                        if(kitchen.isForno()){
-                                            System.out.print("Forno desligado!\n");
-                                        }else {
-                                            System.out.print("Forno ligado!\n");
+                                        if(kitchen.isForno() != aux.isForno()){
+                                            if(kitchen.isForno()){
+                                                System.out.print("Forno desligado!\n");
+                                            }else {
+                                                System.out.print("Forno ligado!\n");
+                                            }
+                                            kitchen.setForno(aux.isForno());
                                         }
-                                        kitchen.setForno(aux.isForno());
-                                    }
 
-                                    if(kitchen.getTempForno() != aux.getTempForno()){
-                                        System.out.print("Temperatura do forno a: "+aux.getTempForno()+"graus\n");
-                                        kitchen.setTempForno(aux.getTempForno());
-                                    }
+                                        if(kitchen.getTempForno() != aux.getTempForno()){
+                                            System.out.print("Temperatura do forno a: "+aux.getTempForno()+"graus\n");
+                                            kitchen.setTempForno(aux.getTempForno());
+                                        }
 
-                                    kitchen = m.getKitchenHelper();
+                                        kitchen = m.getKitchenHelper();
+                                    }
 
                                 } else if (m.getDivisao() == BATH) {
 
+                                    div = "BATH";
+                                    System.out.print(div+"\n");
+
                                     BathHelper aux = m.getBathHelper();
 
-                                    if(bath.isLight() != aux.isLight()){
-                                        if(bath.isLight()){
-                                            System.out.print("Luz do wc desligada!\n");
-                                        }else {
-                                            System.out.print("Luz do wc ligada!\n");
+                                    if(bath != null && aux != null){
+                                        if(bath.isLight() != aux.isLight()){
+                                            if(bath.isLight()){
+                                                System.out.print("Luz do wc desligada!\n");
+                                            }else {
+                                                System.out.print("Luz do wc ligada!\n");
+                                            }
+                                            bath.setLight(aux.isLight());
                                         }
-                                        bath.setLight(aux.isLight());
+
+                                        if(bath.getQuantity() != aux.getQuantity()){
+                                            System.out.print("Quantidade de água da banheira a: "+aux.getQuantity()+"%\n");
+                                            bath.setQuantity(aux.getQuantity());
+                                        }
+
+                                        if(bath.getTemperature() != aux.getTemperature()){
+                                            System.out.print("Temperatura de água da banheira a: "+aux.getTemperature()+"graus\n");
+                                            bath.setTemperature(aux.getTemperature());
+                                        }
+
+                                        bath = m.getBathHelper();
                                     }
 
-                                    if(bath.getQuantity() != aux.getQuantity()){
-                                        System.out.print("Quantidade de água da banheira a: "+aux.getQuantity()+"%\n");
-                                        bath.setQuantity(aux.getQuantity());
-                                    }
-
-                                    if(bath.getTemperature() != aux.getTemperature()){
-                                        System.out.print("Temperatura de água da banheira a: "+aux.getTemperature()+"graus\n");
-                                        bath.setTemperature(aux.getTemperature());
-                                    }
-
-                                    bath = m.getBathHelper();
 
                                 } else if (m.getDivisao() == m.getDiv() && auto) {
                                     current_point = m.getDiv();
@@ -344,51 +368,162 @@ public class Main implements Serializable {
                 if(auto){
                         if (!day && goodTime) {
                             System.out.print("NOITE e BOM TEMPO\n");
+
                             goodTime = false;
-                            //dos.writeUTF("Boa noite!");
-                            room.setLight(true);
-                            room.setWindow(true);
-                            bedroom.setLight(true);
-                            bedroom.setWindow(true);
-                            kitchen.setLight(true);
-                            kitchen.setWindow(true);
-                            bath.setLight(true);
+
+                            if(div.equals("ROOM")){
+                                room.setLight(true);
+                                room.setWindow(false);
+                            } else if(div.equals("BEDROOM")){
+                                bedroom.setLight(true);
+                                bedroom.setWindow(false);
+                            } else if(div.equals("KITCHEN")){
+                                kitchen.setLight(true);
+                                kitchen.setWindow(false);
+                            } else if(div.equals("BATH")){
+                                System.out.print("APANHEI");
+                                bath.setLight(true);
+                            }
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(IP, 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                        dos.writeObject(toSendMsg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
+
                         } else if (!day && !goodTime) {
                             System.out.print("NOITE e MAU TEMPO\n");
+
                             day = true;
-                            //dos.writeUTF("Bom Dia!");
-                            room.setLight(true);
-                            room.setWindow(false);
-                            bedroom.setLight(true);
-                            bedroom.setWindow(false);
-                            kitchen.setLight(true);
-                            kitchen.setWindow(false);
-                            bath.setLight(true);
-                            //  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
+
+                            if(div.equals("ROOM")){
+                                room.setLight(true);
+                                room.setWindow(false);
+                            } else if(div.equals("BEDROOM")){
+                                bedroom.setLight(true);
+                                bedroom.setWindow(false);
+                            } else if(div.equals("KITCHEN")){
+                                kitchen.setLight(true);
+                                kitchen.setWindow(false);
+                            } else if(div.equals("BATH")){
+                                bath.setLight(true);
+                            }
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(IP, 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                        dos.writeObject(toSendMsg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
+
                         } else if(day && !goodTime) {
+
                             System.out.print("DIA e MAU TEMPO\n");
+
                             goodTime = true;
-                            room.setLight(false);
-                            room.setWindow(false);
-                            bedroom.setLight(false);
-                            bedroom.setWindow(false);
-                            kitchen.setLight(false);
-                            kitchen.setWindow(false);
-                            bath.setLight(false);
+
+                            if(div.equals("ROOM")){
+                                room.setLight(true);
+                                room.setWindow(false);
+                            } else if(div.equals("BEDROOM")){
+                                bedroom.setLight(true);
+                                bedroom.setWindow(false);
+                            } else if(div.equals("KITCHEN")){
+                                kitchen.setLight(true);
+                                kitchen.setWindow(false);
+                            } else if(div.equals("BATH")){
+                                bath.setLight(true);
+                            }
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(IP, 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                        dos.writeObject(toSendMsg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
+
                         } else {
+
                             System.out.print("DIA e BOM TEMPO\n");
+
                             day = false;
-                            room.setLight(false);
-                            room.setWindow(true);
-                            bedroom.setLight(false);
-                            bedroom.setWindow(true);
-                            kitchen.setLight(false);
-                            kitchen.setWindow(true);
-                            bath.setLight(false);
-                            System.out.print("Janela esta: " + room.isWindow()+"\n");
-                            System.out.print("DIVISAO: " + div + "\n");
-                            // fechar janelas na app
-                            // acender luz na divisao corrente
+
+                            if(div.equals("ROOM")){
+                                room.setLight(false);
+                                room.setWindow(true);
+                            } else if(div.equals("BEDROOM")){
+                                bedroom.setLight(false);
+                                bedroom.setWindow(true);
+                            } else if(div.equals("KITCHEN")){
+                                kitchen.setLight(false);
+                                kitchen.setWindow(true);
+                            } else if(div.equals("BATH")){
+                                bath.setLight(false);
+                            }
+
+                            Thread t = new Thread() {
+
+                                public void run() {
+                                    try {
+                                        Socket s = new Socket(IP, 4444);
+                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                        dos.writeObject(toSendMsg);
+                                        dos.flush();
+                                        dos.close();
+                                        s.close();
+                                    } catch (UnknownHostException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            t.start();
                         }
                     }
             }
