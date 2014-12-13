@@ -89,52 +89,34 @@ public class Main implements Serializable {
                             }
 
                             if (m != null) {
-                                //System.out.print(m.getDivisao()+"\n");
                                 if (m.getDivisao() == 40) {
                                     System.out.print("Cliente chegou. \n");
                                     Socket s2 = ss.accept();
                                     Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
                                     ObjectOutputStream toSend = new ObjectOutputStream(
                                             s2.getOutputStream());
-//                                    Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
-//                                    ObjectOutputStream toSend = new ObjectOutputStream(
-//                                            s.getOutputStream());
                                     toSend.writeObject(toSendMsg);
                                     toSend.flush();
                                     toSend.close();
                                     s2.close();
                                 } else if (m.getDivisao() == 50) {
-                                    //System.out.print("PONTOS: " + m.getPoints()+"\n");
-                                    //access = m.getPoints();
-                                    //System.out.print("NUMERO DE PONTOS: " + access.size());
                                     auto = m.getAuto();
                                     if(auto){
                                         System.out.print("Modo automático. \n");
                                         //System.out.print("SIZE" + access.size());
-//                                        for(int i=0; i<access.size(); i++){
-//                                            AccessPoint p = access.get(i);
-//                                            System.out.print("Ponto " + i + ": " + p.getScanResult() +" com Dist: "
-//                                            + p.getDistance()+"\n");
-//                                        }
+
                                     } else {
                                         System.out.print("Modo manual. \n");
                                     }
                                 } else if(m.getDivisao() == 46){
-
-                                    //System.out.print(m.getPonto() + "\nOLD: " + m.getOld() + "\nNEW: " + m.getNewP()+"\n");
+                                } else if(m.getDivisao() == 130) {
+                                    current_point = m.getDivisao();
 
                                 }
                                 else if (m.getDivisao() == ROOM) {
 
                                     div = "ROOM";
-
-
-
-
                                     RoomHelper aux = m.getRoomHelper();
-
-                                    //System.out.print("ROOOOM");
-
                                 if(room != null && aux != null){
                                     if (room.isLight() != aux.isLight()) {
                                         if (room.isLight()) {
@@ -338,7 +320,7 @@ public class Main implements Serializable {
 
                                 }
                                 //é aqui que ele ao entrar numa divisao acende a luz!
-                                if (m.getDivisao() == m.getDiv() && auto) {
+                                if (m.getDivisao() == 130 && auto) {
                                     current_point = m.getDiv();
                                     if (!goodTime || !day) {
                                         if (current_point == ROOM) {
@@ -627,112 +609,6 @@ public class Main implements Serializable {
             }
         }, 30000, 30000);
 
-//        Thread t2 = new Thread(){
-//            final Timer timer = new Timer();
-//            //if (auto) {
-//            //System.out.print("AQUIIIIIIIIi");
-//            class dayNight extends TimerTask {
-//                public void run() {
-//
-//                                                /*Socket s = new Socket(IP, 4444);
-//                                                ObjectOutputStream dos = new ObjectOutputStream(
-//                                                        (s.getOutputStream()));*/
-//                    if(auto){
-//                        if (!day && goodTime) {
-//                            System.out.print("NOITE e BOM TEMPO\n");
-//                            day = true;
-//                            //dos.writeUTF("Boa noite!");
-//                            room.setLight(false);
-//                            room.setWindow(true);
-//                            bedroom.setLight(false);
-//                            bedroom.setWindow(true);
-//                            kitchen.setLight(false);
-//                            kitchen.setWindow(true);
-//                        } else if (!day && !goodTime) {
-//                            System.out.print("NOITE e MAU TEMPO\n");
-//                            day = true;
-//                            //dos.writeUTF("Bom Dia!");
-//                            room.setWindow(false);
-//                            bedroom.setWindow(false);
-//                            kitchen.setWindow(false);
-//                            //  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
-//                        } else {
-//                            System.out.print("DIA e BOM TEMPO\n");
-//                            day = false;
-//                            room.setLight(false);
-//                            room.setWindow(false);
-//                            bedroom.setLight(false);
-//                            bedroom.setWindow(false);
-//                            kitchen.setWindow(false);
-//                            kitchen.setLight(false);
-//                            // fechar janelas na app
-//                            // acender luz na divisao corrente
-//                        }
-//                    }
-//
-//
-//                    //dos.flush();
-//                    //dos.close();
-//                    //s.close();
-//
-//                }
-//            }
-//
-//            class goodTimebadTime extends TimerTask {
-//                public void run() {
-//                                            /*try {
-//                                                Socket s = new Socket(IP, 4444);
-//                                                ObjectOutputStream dos = new ObjectOutputStream(
-//                                                        (s.getOutputStream()));*/
-//
-//                    if(auto) {
-//                        if (!day && !goodTime) {
-//                            goodTime = true;
-//                            //dos.writeUTF("Bom tempo, aproveite o dia para ir lá fora!");
-//                            room.setLight(false);
-//                            room.setWindow(true);
-//                            bedroom.setLight(false);
-//                            bedroom.setWindow(true);
-//                            kitchen.setLight(false);
-//                            kitchen.setWindow(true);
-//                            time = 80000;
-//                        } else if (!day && goodTime) {
-//                            goodTime = false;
-//                            //dos.writeUTF("Chegou a tempestade!");
-//                            room.setWindow(false);
-//                            bedroom.setWindow(false);
-//                            kitchen.setWindow(false);
-//                            time = 60000;
-//                            //  passa para dia e fecha janelas e abre a luz se tivermos nessa divisao
-//                        } else if (day && goodTime) {
-//                            goodTime = false;
-//                            room.setLight(false);
-//                            room.setWindow(false);
-//                            bedroom.setLight(false);
-//                            bedroom.setWindow(false);
-//                            kitchen.setWindow(false);
-//                            kitchen.setLight(false);
-//                            time = 60000;
-//                            // fechar janelas na app
-//                            // acender luz na divisao corrente
-//                        } else {
-//                            goodTime = true;
-//                            time = 80000;
-//                        }
-//                    }
-//
-//                    //dos.flush();
-//                    //dos.close();
-//                    //s.close();
-//                    //}
-//                }
-//            }
-//
-//            timer.schedule(new dayNight(), 0, 60000);
-//            timer.schedule(new goodTimebadTime(), 0, time);
-//
-//            };
-//            t2.start();
         }
 
 

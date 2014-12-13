@@ -75,7 +75,7 @@ public class Mensagem  implements Serializable {
 
    public Mensagem(int currentDiv) {
     	this.currentDiv = currentDiv;
-        this.divisao = currentDiv;
+        this.divisao = 130;
     }
 
     public Mensagem(int currentDiv, RoomHelper room) {
