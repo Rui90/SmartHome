@@ -113,12 +113,12 @@ public class Room extends Fragment {
             }
             if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
                 if (((MyApplication) getActivity().getApplication()).getIsNight())
-                    button.setImageResource(R.drawable.roomnight1);
+                    button2.setImageResource(R.drawable.roomnight1);
                 else
-                    button.setImageResource(R.drawable.janela11);
+                    button2.setImageResource(R.drawable.janela11);
             }
             else{
-                button.setImageResource(R.drawable.janela1);
+                button2.setImageResource(R.drawable.janela1);
             }
         }else if(screen_Size.equals("large")) {
             if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
@@ -133,12 +133,12 @@ public class Room extends Fragment {
             }
             if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
                 if (((MyApplication) getActivity().getApplication()).getIsNight())
-                    button.setImageResource(R.drawable.roomnight2);
+                    button2.setImageResource(R.drawable.roomnight2);
                 else
-                    button.setImageResource(R.drawable.janela22);
+                    button2.setImageResource(R.drawable.janela22);
             }
             else{
-                button.setImageResource(R.drawable.janela2);
+                button2.setImageResource(R.drawable.janela2);
             }
 
         }
