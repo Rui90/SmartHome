@@ -102,13 +102,40 @@ public class Bedroom extends Fragment {
             view = inflater.inflate(R.layout.bedroom_layout_large, container, false);
         }
 
+        final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
+        ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
+
+        if(screen_Size.equals("medium")){
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                light.setImageResource(R.drawable.lampada11);
+            }else {
+                light.setImageResource(R.drawable.lampada1);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button.setImageResource(R.drawable.windowroom1);
+            }else {
+                button.setImageResource(R.drawable.janela1);
+            }
+        }else if(screen_Size.equals("large")) {
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                light.setImageResource(R.drawable.lampada22);
+            }else {
+                light.setImageResource(R.drawable.lampada2);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button.setImageResource(R.drawable.windowroom2);
+            }else {
+                button.setImageResource(R.drawable.janela2);
+            }
+
+        }
+
         receiveMessage(getActivity());
 
         lightButton();
 
         windowButton();
 
-        ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
         Button create_perfil = (Button) view.findViewById(R.id.createprofile);
         Button edit_perfil = (Button) view.findViewById(R.id.editMode);
         Button set_perfil = (Button) view.findViewById(R.id.buttonSet);
@@ -428,6 +455,12 @@ public class Bedroom extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Luz ligada");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada11);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada22);
+                                            }
+
                                         }
                                     });
                                 } else {
@@ -438,6 +471,11 @@ public class Bedroom extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Luz desligada");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada2);
+                                            }
                                         }
                                     });
                                 }
@@ -485,6 +523,11 @@ public class Bedroom extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.windowroom1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.windowroom2);
+                                            }
                                         }
                                     });
                                 } else {
@@ -495,6 +538,11 @@ public class Bedroom extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela fechada");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.janela1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.janela2);
+                                            }
                                         }
                                     });
                                 }

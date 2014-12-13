@@ -110,12 +110,9 @@ public class Kitchen extends Fragment {
             view = inflater.inflate(R.layout.kitchen_layout_large, container, false);
         }
 
-        receiveMessage(getActivity());
 
-        lightButton();
-
-        windowButton();
-
+        final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         //final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
         final Switch microwave = (Switch) view.findViewById(R.id.microwave);
         final Switch forno = (Switch) view.findViewById(R.id.forno);
@@ -127,6 +124,37 @@ public class Kitchen extends Fragment {
         final SeekBar fornoseek = (SeekBar) view.findViewById(R.id.seekBar3);
         //final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
+
+        if(screen_Size.equals("medium")){
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                button.setImageResource(R.drawable.lampada11);
+            }else {
+                button.setImageResource(R.drawable.lampada1);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button2.setImageResource(R.drawable.janelakitchen1);
+            }else {
+                button2.setImageResource(R.drawable.janela1);
+            }
+        }else if(screen_Size.equals("large")) {
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                button.setImageResource(R.drawable.lampada22);
+            }else {
+                button.setImageResource(R.drawable.lampada2);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()){
+                button2.setImageResource(R.drawable.kitchen2);
+            }else {
+                button2.setImageResource(R.drawable.janela2);
+            }
+
+        }
+        receiveMessage(getActivity());
+
+        lightButton();
+
+        windowButton();
+
 
         microwave.setChecked(((MyApplication) getActivity().getApplication()).getKitchenHelper().isMicrowave());
 
@@ -193,340 +221,9 @@ public class Kitchen extends Fragment {
                     }
                 };
                 t.start();
-
-//                    microwave_button.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v) {
-//                            if(microwave.isChecked()){
-//                                messsage = "MICROONDAS NO MODO: " +
-//                                        spinner.getSelectedItem().toString();
-//                                Thread t = new Thread() {
-//
-//                                    public void run() {
-//                                        try {
-//                                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-//                                            DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
-//                                            dos.writeUTF(messsage);
-//                                            view.post(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    showToast(view.getContext(), messsage);
-//                                                }
-//                                            });
-//                                            dos.flush();
-//                                            dos.close();
-//                                            s.close();
-//                                        } catch (UnknownHostException e) {
-//
-//                                        } catch (IOException e) {
-//
-//                                        }
-//                                    }
-//                                };
-//                                t.start();
-//                            }
-//                        }
-//                     });
-//                 else if(!b){
-//                    messsage = "MICROONDAS DESLIGADO";
-//                    Thread t = new Thread() {
-//
-//                        public void run() {
-//                            try {
-//                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-//                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
-//                                dos.writeUTF(messsage);
-//                                view.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        showToast(view.getContext(), messsage);
-//                                    }
-//                                });
-//                                dos.flush();
-//                                dos.close();
-//                                s.close();
-//                            } catch (UnknownHostException e) {
-//
-//                            } catch (IOException e) {
-//
-//                            }
-//                        }
-//                    };
-//                    t.start();
-//                }
             }
         });
 
-//        forno.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//
-//                fornoseek.setMax(250);
-//                fornoseek.incrementProgressBy(10);
-//                fornoseek.setProgress(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno());
-//                fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
-//                ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(b);
-//                //fornoseek.setLeft(0);
-//
-//                //if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
-//                    fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
-//
-////                    Thread t = new Thread() {
-////
-////                        public void run() {
-////                            try {
-////                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-////                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-//                                if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
-//                                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(true);
-//
-////                                    Mensagem msg = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-////                                    dos.writeObject(msg);
-////                                    view.post(new Runnable() {
-////                                        @Override
-////                                        public void run() {
-////                                            showToast(view.getContext(), "Forno ligado!");
-////                                        }
-////                                    });
-//                                } else {
-//                                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(false);
-////                                    Mensagem msg = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-////                                    dos.writeObject(msg);
-////                                    view.post(new Runnable() {
-////                                        @Override
-////                                        public void run() {
-////                                            showToast(view.getContext(), "Forno desligado!");
-////                                        }
-////                                    });
-//                                }
-////                                dos.flush();
-////                                dos.close();
-////                                s.close();
-////                            } catch (UnknownHostException e) {
-////
-////                            } catch (IOException e) {
-////
-////                            }
-////                        }
-////                    };
-////                    t.start();
-//
-//                    fornoseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//                        @Override
-//                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                            value.setText(Integer.toString(progress));
-//                            ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
-//                        }
-//
-//                        @Override
-//                        public void onStartTrackingTouch(SeekBar seekBar) {
-//                        }
-//
-//                        @Override
-//                        public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//                            /*Thread t = new Thread() {
-//
-//                                public void run() {
-//                                    try {
-//                                        Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-//                                        Mensagem m = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-//                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-//                                        dos.writeObject(m);
-//                                        dos.flush();
-//                                        dos.close();
-//                                        s.close();
-//                                    } catch (UnknownHostException e) {
-//
-//                                    } catch (IOException e) {
-//
-//                                    }
-//                                }
-//                            };
-//                            t.start();*/
-//                        }
-//
-//                    });
-//
-//                    forno_button.setOnClickListener(new View.OnClickListener() {
-//                        public void onClick(View v) {
-//                            if(forno.isChecked()){
-//
-//                                Thread t = new Thread() {
-//
-//                                    public void run() {
-//                                        try {
-//                                            Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-//                                            ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-//                                            if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()) {
-//                                                //((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(true);
-//                                                Mensagem msg = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-//                                                dos.writeObject(msg);
-//                                                view.post(new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        showToast(view.getContext(), "Forno ligado!");
-//                                                    }
-//                                                });
-//                                            } else {
-//                                                //((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(false);
-//                                                Mensagem msg = new Mensagem(KITCHEN, ((MyApplication) getActivity().getApplication()).getKitchenHelper());
-//                                                dos.writeObject(msg);
-//                                                view.post(new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        showToast(view.getContext(), "Forno desligado!");
-//                                                    }
-//                                                });
-//                                            }
-//                                            dos.flush();
-//                                            dos.close();
-//                                            s.close();
-//                                        } catch (UnknownHostException e) {
-//
-//                                        } catch (IOException e) {
-//
-//                                        }
-//                                    }
-//                                };
-//                                t.start();
-//                            }
-//                        }
-//                    });
-//                //}
-////                else {
-////                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setForno(false);
-////                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(0);
-////                    fornoseek.setProgress(0);
-////                    fornoseek.setMax(0);
-////                    fornoseek.setLeft(0);
-////                    fornoseek.incrementProgressBy(0);
-////                    value.setText(" ");
-////
-////                    messsage = "FORNO DESLIGADO";
-////                    Thread t = new Thread() {
-////
-////                        public void run() {
-////                            try {
-////                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-////                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
-////                                dos.writeUTF(messsage);
-////                                view.post(new Runnable() {
-////                                    @Override
-////                                    public void run() {
-////                                        showToast(view.getContext(), messsage);
-////                                    }
-////                                });
-////                                dos.flush();
-////                                dos.close();
-////                                s.close();
-////                            } catch (UnknownHostException e) {
-////
-////                            } catch (IOException e) {
-////
-////                            }
-////                        }
-////                    };
-////                    t.start();
-////                }
-//            }
-//        });
-
-//        fornoseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//
-//                if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno()){
-//                    value.setText(Integer.toString(progress));
-//                    ((MyApplication) getActivity().getApplication()).getKitchenHelper().setTempForno(progress);
-//
-//                    messsage = "TEMPERATURA DO FORNO: " + Integer.toString(progress) + " GRAUS";
-//                    Thread t = new Thread() {
-//
-//                        public void run() {
-//                            try {
-//                                Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
-//                                DataOutputStream dos = new DataOutputStream((s.getOutputStream()));
-//                                dos.writeUTF(messsage);
-//                                view.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        showToast(view.getContext(), messsage);
-//                                    }
-//                                });
-//                                dos.flush();
-//                                dos.close();
-//                                s.close();
-//                            } catch (UnknownHostException e) {
-//
-//                            } catch (IOException e) {
-//
-//                            }
-//                        }
-//                    };
-//                    t.start();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//        });
-
-//        arcondicionadoOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//
-//                arcondicionado.setMax(40);
-//                arcondicionado.setLeft(0);
-//                arcondicionado.incrementProgressBy(1);
-//                arcondicionado.setProgress(0);
-//
-//                if(b){
-//                    messsage = "Ligar arcondicionado";
-//                    SendMessage sendMessageTask = new SendMessage();
-//                    sendMessageTask.execute();
-//
-//                    arcondicionado.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//                        @Override
-//                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                            value.setText(Integer.toString(progress));
-//
-////                            messsage = Integer.toString(progress);
-////                            SendMessage sendMessageTask = new SendMessage();
-////                            sendMessageTask.execute();
-//                        }
-//
-//                        @Override
-//                        public void onStartTrackingTouch(SeekBar seekBar) {
-//                        }
-//
-//                        @Override
-//                        public void onStopTrackingTouch(SeekBar seekBar) {
-//                        }
-//
-//                    });
-//                } else if(!b) {
-//                    arcondicionado.setProgress(0);
-//                    arcondicionado.setMax(0);
-//                    arcondicionado.setLeft(0);
-//                    arcondicionado.incrementProgressBy(0);
-//                    value.setText(" ");
-//
-//                    messsage = "Desligar arcondicionado";
-//                    SendMessage sendMessageTask = new SendMessage();
-//                    sendMessageTask.execute();
-//                }
-//            }
-//        });
 
         if(forno.isChecked()){
             fornoseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -741,6 +438,11 @@ public class Kitchen extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada11);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada22);
+                                            }
                                             showToast(view.getContext(), "Luz ligada");
                                         }
                                     });
@@ -751,6 +453,11 @@ public class Kitchen extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada2);
+                                            }
                                             showToast(view.getContext(), "Luz desligada");
                                         }
                                     });
@@ -799,6 +506,11 @@ public class Kitchen extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.janelakitchen1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.kitchen2);
+                                            }
                                         }
                                     });
                                 } else {
@@ -809,6 +521,11 @@ public class Kitchen extends Fragment {
                                         @Override
                                         public void run() {
                                             showToast(view.getContext(), "Janela fechada");
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.janela1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.janela2);
+                                            }
                                         }
                                     });
                                 }
