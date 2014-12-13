@@ -62,8 +62,8 @@ public class Home extends FragmentActivity
     static WifiScanReceiver wifiReceiver;
     private static Handler hm;
 
-    private static final String POINT = "d4:6e:5c:1c:fb:5b";
-    //private static final String POINT = "e8:94:f6:43:2f:c0";
+    //private static final String POINT = "d4:6e:5c:1c:fb:5b";
+    private static final String POINT = "e8:94:f6:43:2f:c0";
 
     Timer timer = new Timer();
 
@@ -78,7 +78,7 @@ public class Home extends FragmentActivity
     private CharSequence mTitle;
 
     private static String getIp() {
-        return "192.168.1.100";
+        return "192.168.0.100";
     }
 
     @Override
@@ -122,8 +122,8 @@ public class Home extends FragmentActivity
                     });
                     //Toast.makeText(getApplicationContext(), "RECEBI MENSAGEM", Toast.LENGTH_LONG).show();
 
-
                     if(m != null){
+                        Log.d("d", "MENSAGEM INICIAL RECEBIDA: " + m);
                         ((MyApplication) getApplication()).setBathHelper(m.getBathHelper());
                         ((MyApplication) getApplication()).setRoomHelper(m.getRoomHelper());
                         ((MyApplication) getApplication()).setKitchenHelper(m.getKitchenHelper());
@@ -437,13 +437,13 @@ public class Home extends FragmentActivity
                         dif = 0;
                     }
 
-                    if(dif >= 0 && dif <= 6){
+                    if(dif >= 0 && dif <= 20){
                         cases(1);
-                    } else if(dif > 6 && dif <= 12) {
+                    } else if(dif > 20 && dif <= 30) {
                         cases(2);
-                    } else if(dif > 12 && dif <= 18) {
+                    } else if(dif > 30 && dif <= 45) {
                         cases(3);
-                    } else if(dif > 18 && dif <= 24){
+                    } else if(dif > 45 && dif <= 60){
                         cases(4);
                     } else {
                         cases(0);
@@ -508,9 +508,9 @@ public class Home extends FragmentActivity
                 view = inflater.inflate(R.layout.mainfragment, container, false);
             }
 
-            if(!((MyApplication) getActivity().getApplication()).getFirst()){
+            //if(!((MyApplication) getActivity().getApplication()).getFirst()){
                 startVoiceRecognitionActivity();
-            }
+            //}
             //Toast.makeText(getActivity(), "Que modo deseja?", Toast.LENGTH_LONG).show();
 
             final RadioGroup radiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);

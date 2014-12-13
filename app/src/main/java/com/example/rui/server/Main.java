@@ -25,7 +25,7 @@ public class Main implements Serializable {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.1.103";
+	private static final String IP = "192.168.0.102";
     private static int current_point = 0;
 
     private static boolean man = false;
@@ -344,15 +344,95 @@ public class Main implements Serializable {
                                         if (current_point == ROOM) {
                                             room.setLight(true);
                                             System.out.println("Entrei na sala e liguei a luz!");
+                                            Thread t = new Thread() {
+
+                                                public void run() {
+                                                    try {
+                                                        Socket s = new Socket(IP, 4444);
+                                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                                        dos.writeObject(toSendMsg);
+                                                        dos.flush();
+                                                        dos.close();
+                                                        s.close();
+                                                    } catch (UnknownHostException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                            t.start();
                                         } else if (current_point == BEDROOM) {
                                             bedroom.setLight(true);
                                             System.out.println("Entrei no quarto e liguei a luz!");
+                                            Thread t = new Thread() {
+
+                                                public void run() {
+                                                    try {
+                                                        Socket s = new Socket(IP, 4444);
+                                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                                        dos.writeObject(toSendMsg);
+                                                        dos.flush();
+                                                        dos.close();
+                                                        s.close();
+                                                    } catch (UnknownHostException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                            t.start();
                                         } else if (current_point == KITCHEN) {
                                             kitchen.setLight(true);
                                             System.out.println("Entrei na cozinha e liguei a luz!");
+                                            Thread t = new Thread() {
+
+                                                public void run() {
+                                                    try {
+                                                        Socket s = new Socket(IP, 4444);
+                                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                                        dos.writeObject(toSendMsg);
+                                                        dos.flush();
+                                                        dos.close();
+                                                        s.close();
+                                                    } catch (UnknownHostException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                            t.start();
                                         } else if (current_point == BATH) {
                                             System.out.println("Entrei na casa de banho e liguei a luz!");
                                             bath.setLight(true);
+                                            Thread t = new Thread() {
+
+                                                public void run() {
+                                                    try {
+                                                        Socket s = new Socket(IP, 4444);
+                                                        ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+                                                        Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
+                                                        //System.out.print("PARA ENVIAR: " + toSendMsg +"\n");
+                                                        dos.writeObject(toSendMsg);
+                                                        dos.flush();
+                                                        dos.close();
+                                                        s.close();
+                                                    } catch (UnknownHostException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                            t.start();
                                         }
                                     }
                                 }
@@ -389,16 +469,16 @@ public class Main implements Serializable {
 
                             goodTime = false;
 
-                            if(div.equals("ROOM")){
+                            if(current_point == ROOM){
                                 room.setLight(true);
                                 room.setWindow(false);
-                            } else if(div.equals("BEDROOM")){
+                            } else if(current_point == BEDROOM){
                                 bedroom.setLight(true);
                                 bedroom.setWindow(false);
-                            } else if(div.equals("KITCHEN")){
+                            } else if(current_point == KITCHEN){
                                 kitchen.setLight(true);
                                 kitchen.setWindow(false);
-                            } else if(div.equals("BATH")){
+                            } else if(current_point == BATH){
                                 System.out.print("APANHEI");
                                 bath.setLight(true);
                             }
@@ -429,16 +509,16 @@ public class Main implements Serializable {
 
                             day = true;
 
-                            if(div.equals("ROOM")){
+                            if(current_point == ROOM){
                                 room.setLight(true);
                                 room.setWindow(false);
-                            } else if(div.equals("BEDROOM")){
+                            } else if(current_point == BEDROOM){
                                 bedroom.setLight(true);
                                 bedroom.setWindow(false);
-                            } else if(div.equals("KITCHEN")){
+                            } else if(current_point == KITCHEN){
                                 kitchen.setLight(true);
                                 kitchen.setWindow(false);
-                            } else if(div.equals("BATH")){
+                            } else if(current_point == BATH){
                                 bath.setLight(true);
                             }
 
@@ -469,16 +549,16 @@ public class Main implements Serializable {
 
                             goodTime = true;
 
-                            if(div.equals("ROOM")){
+                            if(current_point == ROOM){
                                 room.setLight(true);
                                 room.setWindow(false);
-                            } else if(div.equals("BEDROOM")){
+                            } else if(current_point == BEDROOM){
                                 bedroom.setLight(true);
                                 bedroom.setWindow(false);
-                            } else if(div.equals("KITCHEN")){
+                            } else if(current_point == KITCHEN){
                                 kitchen.setLight(true);
                                 kitchen.setWindow(false);
-                            } else if(div.equals("BATH")){
+                            } else if(current_point == BATH){
                                 bath.setLight(true);
                             }
 
@@ -509,16 +589,16 @@ public class Main implements Serializable {
 
                             day = false;
 
-                            if(div.equals("ROOM")){
+                            if(current_point == ROOM){
                                 room.setLight(false);
                                 room.setWindow(true);
-                            } else if(div.equals("BEDROOM")){
+                            } else if(current_point == BEDROOM){
                                 bedroom.setLight(false);
                                 bedroom.setWindow(true);
-                            } else if(div.equals("KITCHEN")){
+                            } else if(current_point == KITCHEN){
                                 kitchen.setLight(false);
                                 kitchen.setWindow(true);
-                            } else if(div.equals("BATH")){
+                            } else if(current_point == BATH){
                                 bath.setLight(false);
                             }
 

@@ -449,9 +449,9 @@ public class Room extends Fragment {
                                         public void run() {
                                             showToast(view.getContext(), "Janela aberta");
                                             if(screen_Size.equals("medium")){
-                                                button.setImageResource(R.drawable.janela1);
+                                                button.setImageResource(R.drawable.janela11);
                                             }else if(screen_Size.equals("large")){
-                                                button.setImageResource(R.drawable.janela2);
+                                                button.setImageResource(R.drawable.janela22);
                                             }
                                         }
                                     });
@@ -464,9 +464,9 @@ public class Room extends Fragment {
                                         public void run() {
                                             showToast(view.getContext(), "Janela fechada");
                                             if(screen_Size.equals("medium")){
-                                                button.setImageResource(R.drawable.janela11);
+                                                button.setImageResource(R.drawable.janela1);
                                             }else if(screen_Size.equals("large")){
-                                                button.setImageResource(R.drawable.janela22);
+                                                button.setImageResource(R.drawable.janela2);
                                             }
                                         }
                                     });
