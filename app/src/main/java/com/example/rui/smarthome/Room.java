@@ -92,6 +92,38 @@ public class Room extends Fragment {
             view = inflater.inflate(R.layout.dinnerroom_large_layout, container, false);
         }
 
+        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
+        final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
+        final TextView value = (TextView) view.findViewById(R.id.textView2);
+        final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+
+        if(screen_Size.equals("medium")){
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                tvbutton.setImageResource(R.drawable.telev1);
+            }else {
+                tvbutton.setImageResource(R.drawable.telev11);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                button.setImageResource(R.drawable.lampada1);
+            }else {
+                button.setImageResource(R.drawable.lampada11);
+            }
+        }else if(screen_Size.equals("large")) {
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                tvbutton.setImageResource(R.drawable.telev2);
+            }else {
+                tvbutton.setImageResource(R.drawable.telev22);
+            }
+            if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                button.setImageResource(R.drawable.lampada2);
+            }else {
+                button.setImageResource(R.drawable.lampada22);
+            }
+        }
+
+
         receiveMessage(getActivity());
 
         lightButton();
@@ -100,13 +132,8 @@ public class Room extends Fragment {
 
         tvButton();
 
-        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
-        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
-        final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
-        final TextView value = (TextView) view.findViewById(R.id.textView2);
-        final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
 
-        if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+       /* if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
             if(screen_Size.equals("medium")){
                 tvbutton.setImageResource(R.drawable.telev1);
             }else if(screen_Size.equals("large")){
@@ -118,7 +145,7 @@ public class Room extends Fragment {
             }else if(screen_Size.equals("large")){
                 tvbutton.setImageResource(R.drawable.telev22);
             }
-        }
+        }*/
 
         arcondicionado.setMax(40);
         arcondicionado.setLeft(0);
@@ -340,6 +367,11 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada11);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada22);
+                                            }
                                             showToast(view.getContext(), "Luz ligada");
                                         }
                                     });
@@ -350,6 +382,11 @@ public class Room extends Fragment {
                                     view.post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(screen_Size.equals("medium")){
+                                                button.setImageResource(R.drawable.lampada1);
+                                            }else if(screen_Size.equals("large")){
+                                                button.setImageResource(R.drawable.lampada2);
+                                            }
                                             showToast(view.getContext(), "Luz desligada");
                                         }
                                     });
