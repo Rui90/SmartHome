@@ -13,10 +13,10 @@ public class Perfil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Perfil (String name_perfil, boolean light_perfil, boolean window_perfil) {
+    public Perfil (String name_perfil, boolean window_perfil, boolean light_perfil) {
         this.name_perfil = name_perfil;
-        this.light_perfil = light_perfil;
         this.window_perfil = window_perfil;
+        this.light_perfil = light_perfil;
     }
 
     public String getName_perfil() {

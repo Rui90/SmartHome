@@ -8,7 +8,7 @@ public class BedroomHelper implements Serializable {
     private boolean light;
     private boolean window;
     private int modo;
-    private LinkedList<Perfil> perfis;
+    private LinkedList<Perfil> perfis = new LinkedList<Perfil>();
 
     private static final long serialVersionUID = 1L;
 

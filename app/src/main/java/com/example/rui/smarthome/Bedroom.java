@@ -154,17 +154,19 @@ public class Bedroom extends Fragment {
                             if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(selected)) {
                                 Perfil p = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
                                 ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(p.getLight_Perfil());
-                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(p.getWindow_perfil());
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setWindow(p.getWindow_perfil());
+                                break;
                             }
-                            break;
                     }
-                    ((MyApplication) getActivity().getApplication()).getBedroomHelper()
+                    ((MyApplication) getActivity().getApplication()).getBedroomHelper();
                     Thread t = new Thread() {
 
                         public void run() {
                             try {
                                 Socket s = new Socket(((MyApplication) getActivity().getApplication()).getIp(), 4444);
                                 Mensagem m = new Mensagem(BEDROOM, ((MyApplication) getActivity().getApplication()).getBedroomHelper());
+                                Log.d("f",((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight() + "\n" +
+                                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow());
                                 ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
                                 dos.writeObject(m);
                                 dos.flush();
@@ -205,14 +207,18 @@ public class Bedroom extends Fragment {
                     final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                     final Switch window = (Switch) dialog.findViewById(R.id.window);
                     final Switch light  = (Switch) dialog.findViewById(R.id.lightSwitch);
+                    Log.d("y", "SIZE: " + ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size());
                     for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                        Log.d("f", "DENTRO DO FOR " + selected);
                                 if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(selected)) {
+                                    Log.d("c", "DENTRO DO IF " + prof.getWindow_perfil());
                                     Perfil p = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
                                     name.setText(selected);
                                     window.setChecked(p.getWindow_perfil());
                                     light.setChecked(p.getLight_Perfil());
+                                    break;
                                 }
-                                break;
+
                     }
 
                     apagar.setOnClickListener(new View.OnClickListener() {
@@ -335,8 +341,6 @@ public class Bedroom extends Fragment {
                 final Switch window = (Switch) dialog.findViewById(R.id.window);
                 final Switch lightSwitch = (Switch) dialog.findViewById(R.id.lightSwitch);
 
-                final TextView value = (TextView) dialog.findViewById(R.id.valueLight);
-
                 cancelBtn.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
                         dialog.hide();
@@ -349,11 +353,10 @@ public class Bedroom extends Fragment {
                         String name_perfil = name.getText().toString();
                         boolean window_perfil = window.isChecked();
                         boolean light_perfil = lightSwitch.isChecked();
-//                        int valor = 0;
-//                        if(!value.getText().toString().equals("")) {
-//                            valor = Integer.parseInt(value.getText().toString());
-//                        }
-                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().add(new Perfil(name_perfil, light_perfil, window_perfil));
+//
+                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().add(new Perfil(name_perfil, window_perfil, light_perfil));
+                        Log.d("c", "WINDOWWWWWWWW: " + window_perfil + "\n");
+                        Log.d("v", "LIGHTTTTTTTTT: " + light_perfil + "\n");
                         list = new ArrayList<String>();
                         for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
                             list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());

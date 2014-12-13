@@ -211,7 +211,15 @@ public class Main implements Serializable {
                                         }
 
                                         if(bedroom.getPerfis().size() != aux.getPerfis().size()){
-                                            System.out.print("Lista de Modos:\n");
+
+                                            System.out.print("LUZ: " + m.getBedroomHelper().isLight() + "\n" +
+                                                "WINDOW: " + m.getBedroomHelper().isWindow() + "\n");
+
+                                            if(aux.getPerfis().size()==0){
+                                                System.out.print("Sem modos\n");
+                                            } else {
+                                                System.out.print("Lista de Modos:\n");
+                                            }
                                             for(int i=0; i < aux.getPerfis().size(); i++){
                                                 Perfil p = aux.getPerfis().get(i);
                                                 if(p.getWindow_perfil() && p.getLight_Perfil()){
@@ -219,15 +227,18 @@ public class Main implements Serializable {
                                                         + " com janela aberta e luz ligada.\n");
                                                     //aux.setWindow(true);
                                                     //aux.setLight(true);
-                                                } else if(!p.getLight_Perfil() && p.getWindow_perfil()) {
+                                                }
+                                                if(!p.getLight_Perfil() && p.getWindow_perfil()) {
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela aberta e luz desligada.\n");
                                                     //aux.setWindow(true);
-                                                } else if(p.getLight_Perfil() && !p.getWindow_perfil()){
+                                                }
+                                                if(p.getLight_Perfil() && !p.getWindow_perfil()){
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela fechada e luz ligada.\n");
                                                     //aux.setLight(true);
-                                                } else {
+                                                }
+                                                if(!p.getLight_Perfil() && !p.getWindow_perfil()){
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela fechada e luz desligada.\n");
                                                     //aux.setWindow(false);
