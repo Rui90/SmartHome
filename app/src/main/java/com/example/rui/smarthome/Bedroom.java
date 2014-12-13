@@ -612,7 +612,7 @@ public class Bedroom extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-
+        boolean run = false;
         Thread t = new Thread(){
 
             public void run(){
@@ -657,7 +657,17 @@ public class Bedroom extends Fragment {
                 }
             }
         };
-        t.start();
+        if(!run) {
+            run = true;
+            t.start();
+        }
+        else{
+            Fragment fragment = new Room();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
     }
 
 

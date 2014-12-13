@@ -583,7 +583,7 @@ public class Kitchen extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-
+        boolean finished = false;
         Thread t = new Thread(){
 
             public void run(){
@@ -637,7 +637,17 @@ public class Kitchen extends Fragment {
                 }
             }
         };
-        t.start();
+        if(!finished){
+            finished = true;
+            t.start();
+        }
+        else{
+            Fragment fragment = new Kitchen();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
     }
 
 }

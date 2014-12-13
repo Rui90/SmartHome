@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rui.server.Mensagem;
+import com.example.rui.server.RoomHelper;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -588,9 +589,8 @@ public class Room extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-
+        boolean run = false;
         Thread t = new Thread(){
-
             public void run(){
                 try{
                     ServerSocket ss = new ServerSocket(4444);
@@ -615,14 +615,8 @@ public class Room extends Fragment {
                                         + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();
                             }
                         });
-
                         dis.close();
                         s.close();
-                        Fragment fragment = new Room();
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, fragment)
-                                .commit();
                     }
                 }
                 catch(IOException e){
@@ -632,7 +626,18 @@ public class Room extends Fragment {
                 }
             }
         };
-        t.start();
+        if(!run) {
+            run = true;
+            t.start();
+        }
+        else{
+            Fragment fragment = new Room();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
+
     }
 
 }
