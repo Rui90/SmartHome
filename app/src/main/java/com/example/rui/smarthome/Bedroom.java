@@ -150,7 +150,15 @@ public class Bedroom extends Fragment {
                 if(list.size() > 0) {
                     final String selected = spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
                     ((MyApplication) getActivity().getApplication()).getBedroomHelper().setModo(spinner.getSelectedItemPosition());
-
+                    for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                            if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(selected)) {
+                                Perfil p = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(p.getLight_Perfil());
+                                ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(p.getWindow_perfil());
+                            }
+                            break;
+                    }
+                    ((MyApplication) getActivity().getApplication()).getBedroomHelper()
                     Thread t = new Thread() {
 
                         public void run() {
@@ -197,20 +205,24 @@ public class Bedroom extends Fragment {
                     final EditText name = (EditText) dialog.findViewById(R.id.name_profile);
                     final Switch window = (Switch) dialog.findViewById(R.id.window);
                     final Switch light  = (Switch) dialog.findViewById(R.id.lightSwitch);
-
-                    if (prof != null) {
-                        name.setText(prof.getName_perfil());
-                        window.setChecked(prof.getLight_Perfil());
+                    for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
+                                if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(selected)) {
+                                    Perfil p = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
+                                    name.setText(selected);
+                                    window.setChecked(p.getWindow_perfil());
+                                    light.setChecked(p.getLight_Perfil());
+                                }
+                                break;
                     }
 
                     apagar.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             List<String> list = new ArrayList<String>();
                             for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
-                                if (((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(prof.getName_perfil())) {
-                                    ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().remove(i);
-                                    break;
-                                }
+                                    if (((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil().equals(prof.getName_perfil())) {
+                                        ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().remove(i);
+                                        break;
+                                    }
                             }
 
                             for (int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
