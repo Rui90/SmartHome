@@ -25,7 +25,7 @@ public class Main implements Serializable {
 	private static BathHelper bath = new BathHelper(false, 0, 0);
 	private static KitchenHelper kitchen = new KitchenHelper(false, false, false, false, 0);
 	private static LinkedList<AccessPoint> access = new LinkedList<AccessPoint>();
-	private static final String IP = "192.168.0.102";
+	private static final String IP = "192.168.0.101";
     private static int current_point = 0;
 
     private static boolean man = false;
@@ -290,7 +290,7 @@ public class Main implements Serializable {
                                 } else if (m.getDivisao() == BATH) {
 
                                     div = "BATH";
-                                    System.out.print(div+"\n");
+
 
                                     BathHelper aux = m.getBathHelper();
 

@@ -154,20 +154,8 @@ public class Room extends Fragment {
 
         tvButton();
 
+        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
 
-       /* if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
-            if(screen_Size.equals("medium")){
-                tvbutton.setImageResource(R.drawable.telev1);
-            }else if(screen_Size.equals("large")){
-                tvbutton.setImageResource(R.drawable.telev2);
-            }
-        }else {
-            if(screen_Size.equals("medium")){
-                tvbutton.setImageResource(R.drawable.telev11);
-            }else if(screen_Size.equals("large")){
-                tvbutton.setImageResource(R.drawable.telev22);
-            }
-        }*/
 
         arcondicionado.setMax(40);
         arcondicionado.setLeft(0);
@@ -604,8 +592,11 @@ public class Room extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
 
                         if(m != null) {
-                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
+                            ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
                             ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
 
                         }
                         Log.d("p", "RECEBI: " + m);
@@ -628,7 +619,7 @@ public class Room extends Fragment {
                                         button.setImageResource(R.drawable.lampada1);
                                     }
                                     if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight1);
                                         else
                                             button2.setImageResource(R.drawable.janela11);
@@ -648,7 +639,7 @@ public class Room extends Fragment {
                                         button.setImageResource(R.drawable.lampada2);
                                     }
                                     if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight2);
                                         else
                                             button2.setImageResource(R.drawable.janela22);

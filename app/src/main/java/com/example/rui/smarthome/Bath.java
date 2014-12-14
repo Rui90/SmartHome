@@ -301,8 +301,11 @@ public class Bath extends Fragment {
                         //Log.d("o", "TOU A ESPERA");
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
-                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
                             ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
 
                         }
                         Log.d("p", "RECEBI: " + m);
