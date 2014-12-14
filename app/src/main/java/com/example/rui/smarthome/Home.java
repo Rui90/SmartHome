@@ -128,6 +128,11 @@ public class Home extends FragmentActivity
                         ((MyApplication) getApplication()).setRoomHelper(m.getRoomHelper());
                         ((MyApplication) getApplication()).setKitchenHelper(m.getKitchenHelper());
                         ((MyApplication) getApplication()).setBedroomHelper(m.getBedroomHelper());
+                    }else {
+                        ((MyApplication) getApplication()).setBathHelper(new BathHelper(false, 0, 0));
+                        ((MyApplication) getApplication()).setRoomHelper(new RoomHelper(false, false, false, false, 0));
+                        ((MyApplication) getApplication()).setKitchenHelper(new KitchenHelper(false, false, false, false, 0));
+                        ((MyApplication) getApplication()).setBedroomHelper(new BedroomHelper(false, false, 1, new LinkedList<Perfil>()));
                     }
                     s.close();
                 } catch (UnknownHostException e) {

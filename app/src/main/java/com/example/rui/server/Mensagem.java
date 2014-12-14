@@ -34,11 +34,6 @@ public class Mensagem  implements Serializable {
     private double newP;
     private boolean isNight;
 
-//    public Mensagem(){
-//        this.isAuto = true;
-//        this.divisao = 50;
-//    }
-
    public Mensagem(boolean isAuto) {
       this.divisao = 50;
       this.isAuto = isAuto;
