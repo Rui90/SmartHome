@@ -111,7 +111,6 @@ public class Bath extends Fragment {
         waterQuantity.setMax(100);
         waterQuantity.setLeft(0);
         waterQuantity.incrementProgressBy(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity());
-        //waterQuantity.setProgress(0);
         final TextView value = (TextView) view.findViewById(R.id.textView);
         value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity()));
 
@@ -156,7 +155,6 @@ public class Bath extends Fragment {
         waterTemperature.setMax(45);
         waterTemperature.setLeft(5);
         waterTemperature.incrementProgressBy(((MyApplication) getActivity().getApplication()).getBathHelper().getTemperature());
-        //waterTemperature.setProgress(0);
         final TextView value2 = (TextView) view.findViewById(R.id.textView2);
         value2.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getBathHelper().getTemperature()));
 
@@ -298,12 +296,14 @@ public class Bath extends Fragment {
                     while(true){
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
-                        //Log.d("o", "TOU A ESPERA");
+
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
-                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
                             ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
-
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
                         Handler handler = new Handler(Looper.getMainLooper());

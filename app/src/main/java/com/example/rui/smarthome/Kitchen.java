@@ -51,25 +51,13 @@ import java.util.List;
  */
 public class Kitchen extends Fragment {
 
-    //Camera cam = Camera.open();
     View view;
-    //final Camera.Parameters p = cam.getParameters();
     int x = 0;
     int y = 0;
+
     private String screen_Size = "medium";
-
-    private Socket client;
-    private PrintWriter printwriter;
-    private String messsage;
-
-    private static ServerSocket serverSocket;
-    private static Socket clientSocket;
-    private static InputStreamReader inputStreamReader;
-    private static BufferedReader bufferedReader;
     private static final int KITCHEN = 3;
 
-    private static final int WINDOW = 10;
-    private static final int LIGHT = 11;
 
     // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,16 +101,16 @@ public class Kitchen extends Fragment {
 
         final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
         final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
-        //final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+
         final Switch microwave = (Switch) view.findViewById(R.id.microwave);
         final Switch forno = (Switch) view.findViewById(R.id.forno);
         forno.setChecked(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
         final Button microwave_button = (Button) view.findViewById(R.id.mode);
         final Chronometer chronometer = (Chronometer) view.findViewById(R.id.chronometer);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinnerKitchen);
-        //final TextView temperatur = (TextView) view.findViewById(R.id.temp);
+
         final SeekBar fornoseek = (SeekBar) view.findViewById(R.id.seekBar3);
-        //final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
+
         final TextView value = (TextView) view.findViewById(R.id.textView2);
 
         if(screen_Size.equals("medium")){
@@ -192,8 +180,6 @@ public class Kitchen extends Fragment {
 
                 ((MyApplication) getActivity().getApplication()).getKitchenHelper().setMicrowave(b);
 
-
-                //messsage = "MICROONDAS LIGADO";
                 Thread t = new Thread() {
 
                     public void run() {
@@ -280,7 +266,6 @@ public class Kitchen extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Log.d("h", "FORNO LIGADO");
                 fornoseek.setMax(250);
-                //fornoseek.setLeft(0);
                 fornoseek.incrementProgressBy(10);
                 fornoseek.setProgress(((MyApplication) getActivity().getApplication()).getKitchenHelper().getTempForno());
                 fornoseek.setEnabled(((MyApplication) getActivity().getApplication()).getKitchenHelper().isForno());
@@ -597,6 +582,9 @@ public class Kitchen extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
                             ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
+                            ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
+                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);

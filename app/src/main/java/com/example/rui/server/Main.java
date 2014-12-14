@@ -32,29 +32,15 @@ public class Main implements Serializable {
 
     private static String div = "";
 
-
     private static final int ROOM = 1;
     private static final int BEDROOM = 2;
     private static final int BATH = 4;
     private static final int KITCHEN = 3;
 
-    private static final int WINDOW = 10;
-    private static final int LIGHT = 11;
-
-	/*
-	 * private static ServerSocket serverSocket; private static Socket
-	 * clientSocket; private static ObjectInputStream inputStreamReader; private
-	 * static ObjectOutputStream outputStreamReader; private static
-	 * BufferedReader bufferedReader; private static String message; private
-	 * static SendMessage sm;
-	 */
-
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 
         final ServerSocket ss = new ServerSocket(4444);
-
-        //Scanner in = new Scanner(System.in);
 
         Thread t = new Thread() {
 
@@ -63,9 +49,10 @@ public class Main implements Serializable {
 
                 try {
                         Socket s = null;
-                        // ss = new ServerSocket(4444);
+
                         while (true) {
                             s = ss.accept();
+                            ObjectOutputStream toSend = null;
                             ObjectInputStream dis = null;
                             try{
                                 dis = new ObjectInputStream(s.getInputStream());
@@ -93,7 +80,7 @@ public class Main implements Serializable {
                                     System.out.print("Cliente chegou. \n");
                                     Socket s2 = ss.accept();
                                     Mensagem toSendMsg = new Mensagem(room, bedroom, kitchen, bath);
-                                    ObjectOutputStream toSend = new ObjectOutputStream(
+                                    toSend = new ObjectOutputStream(
                                             s2.getOutputStream());
                                     toSend.writeObject(toSendMsg);
                                     toSend.flush();
@@ -103,7 +90,7 @@ public class Main implements Serializable {
                                     auto = m.getAuto();
                                     if(auto){
                                         System.out.print("Modo automático. \n");
-                                        //System.out.print("SIZE" + access.size());
+
 
                                     } else {
                                         System.out.print("Modo manual. \n");
@@ -129,11 +116,11 @@ public class Main implements Serializable {
                                     }
 
                                     if (room.isWindow() != aux.isWindow()) {
-                                        //System.out.print("JA " + room.isWindow());
+
                                         if (room.isWindow()) {
                                             System.out.print("Janela da sala fechada!\n");
                                             room.setWindow(false);
-                                            //System.out.print("AGORA " + room.isWindow()+"\n");
+
                                             man = true;
                                         } else {
                                             System.out.print("Janela da sala aberta!\n");
@@ -207,24 +194,22 @@ public class Main implements Serializable {
                                                 if(p.getWindow_perfil() && p.getLight_Perfil()){
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela aberta e luz ligada.\n");
-                                                    //aux.setWindow(true);
-                                                    //aux.setLight(true);
+
                                                 }
                                                 if(!p.getLight_Perfil() && p.getWindow_perfil()) {
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela aberta e luz desligada.\n");
-                                                    //aux.setWindow(true);
+
                                                 }
                                                 if(p.getLight_Perfil() && !p.getWindow_perfil()){
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela fechada e luz ligada.\n");
-                                                    //aux.setLight(true);
+
                                                 }
                                                 if(!p.getLight_Perfil() && !p.getWindow_perfil()){
                                                 System.out.print("Modo " + i + ": " + p.getName_perfil()
                                                         + " com janela fechada e luz desligada.\n");
-                                                    //aux.setWindow(false);
-                                                    //aux.setLight(false);
+
                                                 }
                                             }
                                             //System.out.print("\n");
@@ -290,7 +275,7 @@ public class Main implements Serializable {
                                 } else if (m.getDivisao() == BATH) {
 
                                     div = "BATH";
-                                    System.out.print(div+"\n");
+                                    //System.out.print(div+"\n");
 
                                     BathHelper aux = m.getBathHelper();
 
