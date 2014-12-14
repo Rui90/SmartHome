@@ -398,25 +398,25 @@ public class Home extends FragmentActivity
 
                 if(((MyApplication) getApplication()).getSize()==0) {
 
-                    Thread t = new Thread() {
-
-                        public void run() {
-                            try {
-                                Socket s = new Socket(getIp(), 4444);
-                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
-                                Mensagem msg = new Mensagem();
-                                dos.writeObject(msg);
-                                dos.flush();
-                                dos.close();
-                                s.close();
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    t.start();
+//                    Thread t = new Thread() {
+//
+//                        public void run() {
+//                            try {
+//                                Socket s = new Socket(getIp(), 4444);
+//                                ObjectOutputStream dos = new ObjectOutputStream((s.getOutputStream()));
+//                                Mensagem msg = new Mensagem();
+//                                dos.writeObject(msg);
+//                                dos.flush();
+//                                dos.close();
+//                                s.close();
+//                            } catch (UnknownHostException e) {
+//                                e.printStackTrace();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//                    t.start();
 
                     for (int i = 0; i < wifiScanList.size(); i++) {
                         // ver se encontrei o ponto
