@@ -616,18 +616,18 @@ public class Room extends Fragment {
 
                             @Override
                             public void run() {
-                                if(screen_Size.equals("medium")){
-                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                               if(screen_Size.equals("medium")){
+                                    if(((MyApplication) act.getApplication()).getRoomHelper().isTv()){
                                         tvbutton.setImageResource(R.drawable.telev1);
                                     }else {
                                         tvbutton.setImageResource(R.drawable.telev11);
                                     }
-                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getRoomHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada11);
                                     }else {
                                         button.setImageResource(R.drawable.lampada1);
                                     }
-                                    if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                                    if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
                                         if (((MyApplication) getActivity().getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight1);
                                         else
@@ -637,27 +637,28 @@ public class Room extends Fragment {
                                         button2.setImageResource(R.drawable.janela1);
                                     }
                                 }else if(screen_Size.equals("large")) {
-                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                                    if(((MyApplication) act.getApplication()).getRoomHelper().isTv()){
                                         tvbutton.setImageResource(R.drawable.telev2);
                                     }else {
                                         tvbutton.setImageResource(R.drawable.telev22);
                                     }
-                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getRoomHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada22);
                                     }else {
                                         button.setImageResource(R.drawable.lampada2);
                                     }
-                                    if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                                    if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
                                         if (((MyApplication) getActivity().getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight2);
                                         else
                                             button2.setImageResource(R.drawable.janela22);
                                     }
-                                    else{
+                                    else {
                                         button2.setImageResource(R.drawable.janela2);
                                     }
-
                                 }
+
+
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getRoomHelper().isWindow() + " e LUZ: "
                                         + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();

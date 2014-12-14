@@ -645,13 +645,13 @@ public class Bedroom extends Fragment {
                                 ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
 
                                 if(screen_Size.equals("medium")){
-                                    if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getBedroomHelper().isLight()){
                                         light.setImageResource(R.drawable.lampada11);
                                     }else {
                                         light.setImageResource(R.drawable.lampada1);
                                     }
-                                    if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                    if (((MyApplication) act.getApplication()).getBedroomHelper().isWindow()) {
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button.setImageResource(R.drawable.bednight1);
                                         else
                                             button.setImageResource(R.drawable.windowroom1);
@@ -660,13 +660,13 @@ public class Bedroom extends Fragment {
                                         button.setImageResource(R.drawable.janela1);
                                     }
                                 }else if(screen_Size.equals("large")) {
-                                    if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getBedroomHelper().isLight()){
                                         light.setImageResource(R.drawable.lampada22);
                                     }else {
                                         light.setImageResource(R.drawable.lampada2);
                                     }
-                                    if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                    if (((MyApplication) act.getApplication()).getBedroomHelper().isWindow()) {
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button.setImageResource(R.drawable.bednight2);
                                         else
                                             button.setImageResource(R.drawable.windowroom2);

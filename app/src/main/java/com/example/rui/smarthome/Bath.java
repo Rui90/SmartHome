@@ -315,14 +315,14 @@ public class Bath extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "LUZ: " + m.getBathHelper().isLight(), Toast.LENGTH_LONG).show();
                                 if(screen_Size.equals("medium")){
-                                    if(((MyApplication) getActivity().getApplication()).getBathHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getBathHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada11);
                                     }else {
                                         button.setImageResource(R.drawable.lampada1);
                                     }
 
                                 }else if(screen_Size.equals("large")) {
-                                    if(((MyApplication) getActivity().getApplication()).getBathHelper().isLight()){
+                                    if(((MyApplication)act.getApplication()).getBathHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada22);
                                     }else {
                                         button.setImageResource(R.drawable.lampada2);

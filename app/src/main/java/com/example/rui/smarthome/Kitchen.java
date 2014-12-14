@@ -600,7 +600,6 @@ public class Kitchen extends Fragment {
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                         }
                         Log.d("p", "RECEBI: " + m);
-  ;
 
                         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -612,14 +611,14 @@ public class Kitchen extends Fragment {
                                 Toast.makeText(act, "JANELA: " + m.getKitchenHelper().isWindow() + " e LUZ: "
                                         + m.getKitchenHelper().isLight(), Toast.LENGTH_LONG).show();
                                 if(screen_Size.equals("medium")){
-                                    if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getKitchenHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada11);
                                     }else {
                                         button.setImageResource(R.drawable.lampada1);
                                     }
 
-                                    if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                    if (((MyApplication) act.getApplication()).getKitchenHelper().isWindow()) {
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.kitchennight1);
                                         else
                                             button2.setImageResource(R.drawable.janelakitchen1);
@@ -629,14 +628,14 @@ public class Kitchen extends Fragment {
                                     }
 
                                 }else if(screen_Size.equals("large")) {
-                                    if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                                    if(((MyApplication) act.getApplication()).getKitchenHelper().isLight()){
                                         button.setImageResource(R.drawable.lampada22);
                                     }else {
                                         button.setImageResource(R.drawable.lampada2);
                                     }
 
-                                    if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                    if (((MyApplication) act.getApplication()).getKitchenHelper().isWindow()) {
+                                        if (((MyApplication) act.getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.kitchennight2);
                                         else
                                             button2.setImageResource(R.drawable.kitchen2);
