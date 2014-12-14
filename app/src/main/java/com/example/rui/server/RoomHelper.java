@@ -47,7 +47,7 @@ public class RoomHelper implements Serializable {
 	}
 	
 	private boolean light;
-	private boolean arcondicionado;
+	private boolean arcondicionado = false;
 	private boolean tv; 
 	private boolean window;
     private int temperatureArCond;
