@@ -628,11 +628,7 @@ public class Bedroom extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                           /* Fragment fragment = new Bedroom();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.container, fragment)
-                                    .commit();*/
+
                             th.setFinished(true);
                         }
                         Log.d("p", "RECEBI: " + m);
@@ -644,6 +640,41 @@ public class Bedroom extends Fragment {
 
                             @Override
                             public void run() {
+
+                                final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
+                                ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
+
+                                if(screen_Size.equals("medium")){
+                                    if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
+                                        light.setImageResource(R.drawable.lampada11);
+                                    }else {
+                                        light.setImageResource(R.drawable.lampada1);
+                                    }
+                                    if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button.setImageResource(R.drawable.bednight1);
+                                        else
+                                            button.setImageResource(R.drawable.windowroom1);
+                                    }
+                                    else{
+                                        button.setImageResource(R.drawable.janela1);
+                                    }
+                                }else if(screen_Size.equals("large")) {
+                                    if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
+                                        light.setImageResource(R.drawable.lampada22);
+                                    }else {
+                                        light.setImageResource(R.drawable.lampada2);
+                                    }
+                                    if (((MyApplication) getActivity().getApplication()).getBedroomHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button.setImageResource(R.drawable.bednight2);
+                                        else
+                                            button.setImageResource(R.drawable.windowroom2);
+                                    }
+                                    else{
+                                        button.setImageResource(R.drawable.janela2);
+                                    }
+                                }
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getBedroomHelper().isWindow() + " e LUZ: "
                                         + m.getBedroomHelper().isLight(), Toast.LENGTH_LONG).show();
@@ -660,19 +691,8 @@ public class Bedroom extends Fragment {
                 }
             }
         };
-        if(!th.getFinished())
             t.start();
-       /* if(!run) {
-            run = true;
-            t.start();
-        }*/
-        else{
-            Fragment fragment = new Bedroom();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
+
     }
 
 

@@ -583,7 +583,8 @@ public class Kitchen extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-       // boolean finished = false;
+        final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         Thread t = new Thread(){
 
             public void run(){
@@ -597,16 +598,9 @@ public class Kitchen extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                           /* Fragment fragment = new Kitchen();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.container, fragment)
-                                    .commit();*/
                         }
                         Log.d("p", "RECEBI: " + m);
-                        //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
-
-                        //Toast.makeText(act, "RECEBI", Toast.LENGTH_LONG).show();
+  ;
 
                         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -617,15 +611,44 @@ public class Kitchen extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getKitchenHelper().isWindow() + " e LUZ: "
                                         + m.getKitchenHelper().isLight(), Toast.LENGTH_LONG).show();
+                                if(screen_Size.equals("medium")){
+                                    if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                                        button.setImageResource(R.drawable.lampada11);
+                                    }else {
+                                        button.setImageResource(R.drawable.lampada1);
+                                    }
+
+                                    if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button2.setImageResource(R.drawable.kitchennight1);
+                                        else
+                                            button2.setImageResource(R.drawable.janelakitchen1);
+                                    }
+                                    else{
+                                        button2.setImageResource(R.drawable.janela1);
+                                    }
+
+                                }else if(screen_Size.equals("large")) {
+                                    if(((MyApplication) getActivity().getApplication()).getKitchenHelper().isLight()){
+                                        button.setImageResource(R.drawable.lampada22);
+                                    }else {
+                                        button.setImageResource(R.drawable.lampada2);
+                                    }
+
+                                    if (((MyApplication) getActivity().getApplication()).getKitchenHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button2.setImageResource(R.drawable.kitchennight2);
+                                        else
+                                            button2.setImageResource(R.drawable.kitchen2);
+                                    }
+                                    else{
+                                        button2.setImageResource(R.drawable.janela2);
+                                    }
+
+                                }
                             }
                         });
 
-//                        view.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showToast(view.getContext(), msg);
-//                            }
-//                        });
                         dis.close();
                         s.close();
                     }
@@ -637,18 +660,8 @@ public class Kitchen extends Fragment {
                 }
             }
         };
-        t.start();/*
-        if(!finished){
-            finished = true;
-            t.start();
-        }
-        else{
-            Fragment fragment = new Kitchen();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }*/
+        t.start();
+
     }
 
 }

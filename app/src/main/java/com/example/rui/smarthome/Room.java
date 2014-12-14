@@ -590,12 +590,6 @@ public class Room extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-        //boolean run = false;
-        final ThreadHelper th = new ThreadHelper(false);
-
-        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
-        final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
-        final TextView value = (TextView) view.findViewById(R.id.textView2);
         final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
         final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
@@ -610,73 +604,9 @@ public class Room extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
 
                         if(m != null) {
+                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
 
-                            RoomHelper aux = m.getRoomHelper();
-                            RoomHelper room = ((MyApplication) act.getApplication()).getRoomHelper();
-                            if (room != null && aux != null) {
-                                ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                                if (room.isLight() != aux.isLight()) {
-                                    if (room.isLight()) {
-                                        if(screen_Size.equals("medium")){
-                                            button.setImageResource(R.drawable.lampada1);
-                                        }else if(screen_Size.equals("large")){
-                                            button.setImageResource(R.drawable.lampada2);
-                                        }
-                                    } else {
-                                        if(screen_Size.equals("medium")){
-                                            button.setImageResource(R.drawable.lampada11);
-                                        }else if(screen_Size.equals("large")){
-                                            button.setImageResource(R.drawable.lampada22);
-                                        }
-                                    }
-                                    room.setLight(aux.isLight());
-                                }
-
-                                if (room.isWindow() != aux.isWindow()) {
-                                    //System.out.print("JA " + room.isWindow());
-                                    if (room.isWindow()) {
-                                        if(screen_Size.equals("medium")){
-                                            button.setImageResource(R.drawable.janela1);
-                                        }else if(screen_Size.equals("large")){
-                                            button.setImageResource(R.drawable.janela2);
-                                        }
-                                        //System.out.print("AGORA " + room.isWindow()+"\n");
-                                    } else {
-                                        if(screen_Size.equals("medium")){
-                                            if(((MyApplication) getActivity().getApplication()).getIsNight())
-                                                button2.setImageResource(R.drawable.roomnight1);
-                                            else
-                                                button2.setImageResource(R.drawable.janela11);
-                                        }else if(screen_Size.equals("large")){
-                                            if(((MyApplication) getActivity().getApplication()).getIsNight())
-                                                button2.setImageResource(R.drawable.roomnight2);
-                                            else
-                                                button2.setImageResource(R.drawable.janela22);
-                                        }
-                                    }
-                                    room.setWindow(aux.isWindow());
-                                }
-
-                                if (room.isTv() != aux.isTv()) {
-                                    if (room.isTv()) {
-                                        if(screen_Size.equals("medium")){
-                                            tvbutton.setImageResource(R.drawable.telev11);
-                                        }else if(screen_Size.equals("large")){
-                                            tvbutton.setImageResource(R.drawable.telev22);
-                                        }
-                                    } else {
-                                        if(screen_Size.equals("medium")){
-                                            tvbutton.setImageResource(R.drawable.telev1);
-                                        }else if(screen_Size.equals("large")){
-                                            tvbutton.setImageResource(R.drawable.telev2);
-                                        }
-                                    }
-                                    room.setTv(aux.isTv());
-                                }
-
-                                room = m.getRoomHelper();
-                                ((MyApplication) act.getApplication()).setRoomHelper(room);
-                            }
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -686,6 +616,48 @@ public class Room extends Fragment {
 
                             @Override
                             public void run() {
+                                if(screen_Size.equals("medium")){
+                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                                        tvbutton.setImageResource(R.drawable.telev1);
+                                    }else {
+                                        tvbutton.setImageResource(R.drawable.telev11);
+                                    }
+                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                                        button.setImageResource(R.drawable.lampada11);
+                                    }else {
+                                        button.setImageResource(R.drawable.lampada1);
+                                    }
+                                    if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button2.setImageResource(R.drawable.roomnight1);
+                                        else
+                                            button2.setImageResource(R.drawable.janela11);
+                                    }
+                                    else{
+                                        button2.setImageResource(R.drawable.janela1);
+                                    }
+                                }else if(screen_Size.equals("large")) {
+                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+                                        tvbutton.setImageResource(R.drawable.telev2);
+                                    }else {
+                                        tvbutton.setImageResource(R.drawable.telev22);
+                                    }
+                                    if(((MyApplication) getActivity().getApplication()).getRoomHelper().isLight()){
+                                        button.setImageResource(R.drawable.lampada22);
+                                    }else {
+                                        button.setImageResource(R.drawable.lampada2);
+                                    }
+                                    if (((MyApplication) getActivity().getApplication()).getRoomHelper().isWindow()) {
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
+                                            button2.setImageResource(R.drawable.roomnight2);
+                                        else
+                                            button2.setImageResource(R.drawable.janela22);
+                                    }
+                                    else{
+                                        button2.setImageResource(R.drawable.janela2);
+                                    }
+
+                                }
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getRoomHelper().isWindow() + " e LUZ: "
                                         + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();
