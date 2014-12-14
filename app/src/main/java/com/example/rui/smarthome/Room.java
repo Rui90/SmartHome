@@ -27,13 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rui.server.Mensagem;
+import com.example.rui.server.RoomHelper;
+import com.example.rui.server.ThreadHelper;
 
-
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -51,6 +55,7 @@ public class Room extends Fragment {
     private static final int ROOM = 1;
 
 
+    // metodo para mostrar o que vai aparecer na criacao
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +95,7 @@ public class Room extends Fragment {
         }
 
         final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
-
+        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
         final TextView value = (TextView) view.findViewById(R.id.textView2);
         final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
@@ -149,12 +154,26 @@ public class Room extends Fragment {
 
         tvButton();
 
-        arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
+
+       /* if(((MyApplication) getActivity().getApplication()).getRoomHelper().isTv()){
+            if(screen_Size.equals("medium")){
+                tvbutton.setImageResource(R.drawable.telev1);
+            }else if(screen_Size.equals("large")){
+                tvbutton.setImageResource(R.drawable.telev2);
+            }
+        }else {
+            if(screen_Size.equals("medium")){
+                tvbutton.setImageResource(R.drawable.telev11);
+            }else if(screen_Size.equals("large")){
+                tvbutton.setImageResource(R.drawable.telev22);
+            }
+        }*/
 
         arcondicionado.setMax(40);
         arcondicionado.setLeft(0);
         arcondicionado.incrementProgressBy(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond());
 
+        //arcondicionadoOnOff.setChecked(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
         value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond()));
 
@@ -203,6 +222,7 @@ public class Room extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                 arcondicionado.setMax(40);
+                //arcondicionado.setLeft(0);
                 arcondicionado.incrementProgressBy(1);
                 arcondicionado.setProgress(((MyApplication) getActivity().getApplication()).getRoomHelper().getTemperatureArCond());
                 arcondicionado.setEnabled(((MyApplication) getActivity().getApplication()).getRoomHelper().isArcondicionado());
@@ -584,11 +604,8 @@ public class Room extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
 
                         if(m != null) {
-                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
-                            ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
-                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
-                            ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
 
                         }
                         Log.d("p", "RECEBI: " + m);
@@ -611,7 +628,7 @@ public class Room extends Fragment {
                                         button.setImageResource(R.drawable.lampada1);
                                     }
                                     if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
-                                        if (((MyApplication) act.getApplication()).getIsNight())
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight1);
                                         else
                                             button2.setImageResource(R.drawable.janela11);
@@ -631,7 +648,7 @@ public class Room extends Fragment {
                                         button.setImageResource(R.drawable.lampada2);
                                     }
                                     if (((MyApplication) act.getApplication()).getRoomHelper().isWindow()) {
-                                        if (((MyApplication) act.getApplication()).getIsNight())
+                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
                                             button2.setImageResource(R.drawable.roomnight2);
                                         else
                                             button2.setImageResource(R.drawable.janela22);

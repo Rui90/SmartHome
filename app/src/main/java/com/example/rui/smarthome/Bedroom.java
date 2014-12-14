@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.rui.server.Mensagem;
 import com.example.rui.server.Perfil;
+import com.example.rui.server.ThreadHelper;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -103,7 +104,7 @@ public class Bedroom extends Fragment {
         }
 
         final ImageButton button = (ImageButton) view.findViewById(R.id.imageButton2);
-        final ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
+        ImageButton light = (ImageButton) view.findViewById(R.id.lampada);
 
         if(screen_Size.equals("medium")){
             if(((MyApplication) getActivity().getApplication()).getBedroomHelper().isLight()){
@@ -149,7 +150,7 @@ public class Bedroom extends Fragment {
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
 
         list = new ArrayList<String>();
-
+        //Log.d("b", "SIZE: "+((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size());
         if(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis() != null){
             for(int i = 0; i < ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().size(); i++) {
                 list.add(((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i).getName_perfil());
@@ -161,12 +162,15 @@ public class Bedroom extends Fragment {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
+
+
+        //Actualiza os campos sempre que se altera o perfil seleccionado
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-
+               // loadSelectedProfile();
             }
 
             @Override
@@ -186,42 +190,6 @@ public class Bedroom extends Fragment {
                                 Perfil p = ((MyApplication) getActivity().getApplication()).getBedroomHelper().getPerfis().get(i);
                                 ((MyApplication) getActivity().getApplication()).getBedroomHelper().setLight(p.getLight_Perfil());
                                 ((MyApplication) getActivity().getApplication()).getBedroomHelper().setWindow(p.getWindow_perfil());
-                                if(p.getLight_Perfil()){
-                                    if(screen_Size.equals("medium")){
-                                        light.setImageResource(R.drawable.lampada11);
-                                    }
-                                    if(screen_Size.equals("large")){
-                                        light.setImageResource(R.drawable.lampada22);
-                                    }
-                                } else {
-                                    if(screen_Size.equals("medium")){
-                                        light.setImageResource(R.drawable.lampada1);
-                                    }
-                                    if(screen_Size.equals("large")){
-                                        light.setImageResource(R.drawable.lampada2);
-                                    }
-                                }
-                                if(p.getWindow_perfil()){
-                                    if(screen_Size.equals("medium")){
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
-                                            button.setImageResource(R.drawable.bednight1);
-                                        else
-                                            button.setImageResource(R.drawable.windowroom1);
-                                    }
-                                    if(screen_Size.equals("large")){
-                                        button.setImageResource(R.drawable.windowroom2);
-                                    }
-                                } else {
-                                    if(screen_Size.equals("medium")){
-                                        if (((MyApplication) getActivity().getApplication()).getIsNight())
-                                            button.setImageResource(R.drawable.janela1);
-                                        else
-                                            button.setImageResource(R.drawable.janela1);
-                                    }
-                                    if(screen_Size.equals("large")){
-                                        button.setImageResource(R.drawable.janela2);
-                                    }
-                                }
                                 break;
                             }
                     }
@@ -645,7 +613,8 @@ public class Bedroom extends Fragment {
     }
 
     public void receiveMessage(final Activity act){
-
+        //boolean run = false;
+        final ThreadHelper th = new ThreadHelper(false);
         Thread t = new Thread(){
 
             public void run(){
@@ -654,15 +623,13 @@ public class Bedroom extends Fragment {
                     while(true){
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
-
+                        //Log.d("o", "TOU A ESPERA");
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
-                            ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
-                            ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
-                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
                             ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
 
+                            th.setFinished(true);
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -727,5 +694,6 @@ public class Bedroom extends Fragment {
             t.start();
 
     }
+
 
 }
