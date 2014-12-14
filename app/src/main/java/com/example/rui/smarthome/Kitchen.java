@@ -597,6 +597,11 @@ public class Kitchen extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            Fragment fragment = new Kitchen();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
                         }
                         Log.d("p", "RECEBI: " + m);
                         //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
@@ -612,11 +617,6 @@ public class Kitchen extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getKitchenHelper().isWindow() + " e LUZ: "
                                         + m.getKitchenHelper().isLight(), Toast.LENGTH_LONG).show();
-                                Fragment fragment = new Kitchen();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container, fragment)
-                                        .commit();
                             }
                         });
 
@@ -628,11 +628,6 @@ public class Kitchen extends Fragment {
 //                        });
                         dis.close();
                         s.close();
-                        Fragment fragment = new Kitchen();
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, fragment)
-                                .commit();
                     }
                 }
                 catch(IOException e){

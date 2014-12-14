@@ -601,6 +601,11 @@ public class Room extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            Fragment fragment = new Room();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -613,11 +618,6 @@ public class Room extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getRoomHelper().isWindow() + " e LUZ: "
                                         + m.getRoomHelper().isLight(), Toast.LENGTH_LONG).show();
-                                Fragment fragment = new Room();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container, fragment)
-                                        .commit();
                             }
                         });
                         dis.close();
@@ -637,11 +637,7 @@ public class Room extends Fragment {
             t.start();
         }
         else{
-            Fragment fragment = new Room();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
+
         }*/
 
     }

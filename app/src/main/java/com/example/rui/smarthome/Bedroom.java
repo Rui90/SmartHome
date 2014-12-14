@@ -626,6 +626,11 @@ public class Bedroom extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            Fragment fragment = new Bedroom();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -639,20 +644,10 @@ public class Bedroom extends Fragment {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "JANELA: " + m.getBedroomHelper().isWindow() + " e LUZ: "
                                         + m.getBedroomHelper().isLight(), Toast.LENGTH_LONG).show();
-                                Fragment fragment = new Room();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container, fragment)
-                                        .commit();
                             }
                         });
                         dis.close();
                         s.close();
-                        Fragment fragment = new Bedroom();
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, fragment)
-                                .commit();
                     }
                 }
                 catch(IOException e){

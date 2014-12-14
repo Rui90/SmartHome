@@ -302,6 +302,11 @@ public class Bath extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                            Fragment fragment = new Kitchen();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.container, fragment)
+                                    .commit();
                         }
                         Log.d("p", "RECEBI: " + m);
                         //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
@@ -316,21 +321,11 @@ public class Bath extends Fragment {
                             public void run() {
                                 Log.d("b", "RUNNN");
                                 Toast.makeText(act, "LUZ: " + m.getBathHelper().isLight(), Toast.LENGTH_LONG).show();
-                                Fragment fragment = new Kitchen();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.container, fragment)
-                                        .commit();
                             }
                         });
 
                         dis.close();
                         s.close();
-                        Fragment fragment = new Bath();
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, fragment)
-                                .commit();
                     }
                 }
                 catch(IOException e){
