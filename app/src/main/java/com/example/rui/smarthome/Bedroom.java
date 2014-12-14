@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.rui.server.Mensagem;
 import com.example.rui.server.Perfil;
+import com.example.rui.server.ThreadHelper;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -613,6 +614,7 @@ public class Bedroom extends Fragment {
 
     public void receiveMessage(final Activity act){
         //boolean run = false;
+        final ThreadHelper th = new ThreadHelper(false);
         Thread t = new Thread(){
 
             public void run(){
@@ -631,6 +633,7 @@ public class Bedroom extends Fragment {
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
                                     .commit();*/
+                            th.setFinished(true);
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -657,18 +660,19 @@ public class Bedroom extends Fragment {
                 }
             }
         };
-        t.start();
+        if(!th.getFinished())
+            t.start();
        /* if(!run) {
             run = true;
             t.start();
-        }
+        }*/
         else{
-            Fragment fragment = new Room();
+            Fragment fragment = new Bedroom();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-        }*/
+        }
     }
 
 
