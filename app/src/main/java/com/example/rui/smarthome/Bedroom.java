@@ -626,11 +626,11 @@ public class Bedroom extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setBedroomHelper(m.getBedroomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                            Fragment fragment = new Bedroom();
+                           /* Fragment fragment = new Bedroom();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
-                                    .commit();
+                                    .commit();*/
                         }
                         Log.d("p", "RECEBI: " + m);
 

@@ -601,11 +601,11 @@ public class Room extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                            Fragment fragment = new Room();
+                           /* Fragment fragment = new Room();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
-                                    .commit();
+                                    .commit();*/
                         }
                         Log.d("p", "RECEBI: " + m);
 

@@ -597,11 +597,11 @@ public class Kitchen extends Fragment {
                         if(m != null){
                             ((MyApplication) act.getApplication()).setKitchenHelper(m.getKitchenHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                            Fragment fragment = new Kitchen();
+                           /* Fragment fragment = new Kitchen();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.container, fragment)
-                                    .commit();
+                                    .commit();*/
                         }
                         Log.d("p", "RECEBI: " + m);
                         //Log.d("c", "AGORA TA " + m.getRoomHelper().isWindow());
