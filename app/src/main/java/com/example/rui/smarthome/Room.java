@@ -592,6 +592,14 @@ public class Room extends Fragment {
     public void receiveMessage(final Activity act){
         //boolean run = false;
         final ThreadHelper th = new ThreadHelper(false);
+
+        final Switch arcondicionadoOnOff = (Switch) view.findViewById(R.id.arcondicionado);
+        final SeekBar arcondicionado = (SeekBar) view.findViewById(R.id.seekBar);
+        final TextView value = (TextView) view.findViewById(R.id.textView2);
+        final ImageButton tvbutton = (ImageButton) view.findViewById(R.id.tvButton);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        final ImageButton button2 = (ImageButton) view.findViewById(R.id.imageButton2);
+
         Thread t = new Thread(){
             public void run(){
                 try{
@@ -600,15 +608,75 @@ public class Room extends Fragment {
                         Socket s = ss.accept();
                         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
                         final Mensagem m = (Mensagem) dis.readObject();
-                        if(m != null){
-                            ((MyApplication) act.getApplication()).setRoomHelper(m.getRoomHelper());
-                            ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
-                            th.setFinished(true);
-                           /* Fragment fragment = new Room();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.container, fragment)
-                                    .commit();*/
+
+                        if(m != null) {
+
+                            RoomHelper aux = m.getRoomHelper();
+                            RoomHelper room = ((MyApplication) act.getApplication()).getRoomHelper();
+                            if (room != null && aux != null) {
+                                ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
+                                if (room.isLight() != aux.isLight()) {
+                                    if (room.isLight()) {
+                                        if(screen_Size.equals("medium")){
+                                            button.setImageResource(R.drawable.lampada1);
+                                        }else if(screen_Size.equals("large")){
+                                            button.setImageResource(R.drawable.lampada2);
+                                        }
+                                    } else {
+                                        if(screen_Size.equals("medium")){
+                                            button.setImageResource(R.drawable.lampada11);
+                                        }else if(screen_Size.equals("large")){
+                                            button.setImageResource(R.drawable.lampada22);
+                                        }
+                                    }
+                                    room.setLight(aux.isLight());
+                                }
+
+                                if (room.isWindow() != aux.isWindow()) {
+                                    //System.out.print("JA " + room.isWindow());
+                                    if (room.isWindow()) {
+                                        if(screen_Size.equals("medium")){
+                                            button.setImageResource(R.drawable.janela1);
+                                        }else if(screen_Size.equals("large")){
+                                            button.setImageResource(R.drawable.janela2);
+                                        }
+                                        //System.out.print("AGORA " + room.isWindow()+"\n");
+                                    } else {
+                                        if(screen_Size.equals("medium")){
+                                            if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                button2.setImageResource(R.drawable.roomnight1);
+                                            else
+                                                button2.setImageResource(R.drawable.janela11);
+                                        }else if(screen_Size.equals("large")){
+                                            if(((MyApplication) getActivity().getApplication()).getIsNight())
+                                                button2.setImageResource(R.drawable.roomnight2);
+                                            else
+                                                button2.setImageResource(R.drawable.janela22);
+                                        }
+                                    }
+                                    room.setWindow(aux.isWindow());
+                                }
+
+                                if (room.isTv() != aux.isTv()) {
+                                    if (room.isTv()) {
+                                        if(screen_Size.equals("medium")){
+                                            tvbutton.setImageResource(R.drawable.telev11);
+                                        }else if(screen_Size.equals("large")){
+                                            tvbutton.setImageResource(R.drawable.telev22);
+                                        }
+                                    } else {
+                                        if(screen_Size.equals("medium")){
+                                            tvbutton.setImageResource(R.drawable.telev1);
+                                        }else if(screen_Size.equals("large")){
+                                            tvbutton.setImageResource(R.drawable.telev2);
+                                        }
+                                    }
+                                    room.setTv(aux.isTv());
+                                }
+
+                                room = m.getRoomHelper();
+                                ((MyApplication) act.getApplication()).setRoomHelper(room);
+                            }
                         }
                         Log.d("p", "RECEBI: " + m);
 
@@ -635,19 +703,6 @@ public class Room extends Fragment {
             }
         };
         t.start();
-        if(!th.getFinished())
-            t.start();
-       /* if(!run) {
-            run = true;
-            t.start();
-        }*/
-        else{
-            Fragment fragment = new Room();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
-        }
 
     }
 

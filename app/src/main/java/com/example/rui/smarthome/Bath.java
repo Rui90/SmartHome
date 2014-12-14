@@ -289,14 +289,12 @@ public class Bath extends Fragment {
 
     public void receiveMessage(final Activity act){
 
-        /*final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
+        final ImageButton button = (ImageButton) view.findViewById(R.id.lampada);
         final SeekBar waterQuantity = (SeekBar) view.findViewById(R.id.seekBar);
         waterQuantity.setMax(100);
         waterQuantity.setLeft(0);
-        waterQuantity.incrementProgressBy(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity());
-        //waterQuantity.setProgress(0);
+        waterQuantity.setProgress(0);
         final TextView value = (TextView) view.findViewById(R.id.textView);
-        value.setText(Integer.toString(((MyApplication) getActivity().getApplication()).getBathHelper().getQuantity()));*/
        // boolean finished = false;
         Thread t = new Thread(){
 
@@ -310,7 +308,7 @@ public class Bath extends Fragment {
                         final Mensagem m = (Mensagem) dis.readObject();
                         if(m != null){
 
-                           /* BathHelper bath = ((MyApplication) act.getApplication()).getBathHelper();
+                        BathHelper bath = ((MyApplication) act.getApplication()).getBathHelper();
                             BathHelper aux = m.getBathHelper();
 
                             if(bath != null && aux != null){
@@ -332,14 +330,16 @@ public class Bath extends Fragment {
                                 }
                                 if(bath.getQuantity() != aux.getQuantity()){
                                     bath.setQuantity(aux.getQuantity());
+                                    waterQuantity.incrementProgressBy(aux.getQuantity());
                                 }
 
                                 if(bath.getTemperature() != aux.getTemperature()){
                                     System.out.print("Temperatura de água da banheira a: "+aux.getTemperature()+"graus\n");
                                     bath.setTemperature(aux.getTemperature());
+                                    value.setText(Integer.toString(aux.getTemperature()));
                                 }
 
-                            }*/
+                            }
                             ((MyApplication) act.getApplication()).setBathHelper(m.getBathHelper());
                             ((MyApplication) act.getApplication()).setIsNight(m.getIsNight());
                             /*Fragment fragment = new Kitchen();
